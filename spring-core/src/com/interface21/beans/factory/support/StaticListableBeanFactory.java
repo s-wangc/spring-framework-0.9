@@ -13,9 +13,9 @@ import com.interface21.beans.factory.ListableBeanFactory;
 import com.interface21.beans.factory.NoSuchBeanDefinitionException;
 
 /**
- * Singleton only.
- * Allows beans to be registered by name programmatically.
- * Mainly useful for testing.
+ * 仅限单例.
+ * 允许以编程方式按name注册bean.
+ * 主要用于测试.
  *
  * @author Rod Johnson
  * @since 06-Jan-03
@@ -23,7 +23,7 @@ import com.interface21.beans.factory.NoSuchBeanDefinitionException;
 public class StaticListableBeanFactory implements ListableBeanFactory {
 
 	/**
-	 * Map from bean name to bean instance
+	 * 存放bean名称到bean实例映射的Map
 	 */
 	private Map beans = new HashMap();
 
@@ -84,7 +84,7 @@ public class StaticListableBeanFactory implements ListableBeanFactory {
 	}
 
 	/**
-	 * Add a new singleton bean
+	 * 添加一个新的单例bean
 	 */
 	public void addBean(String name, Object bean) {
 		this.beans.put(name, bean);
