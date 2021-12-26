@@ -24,12 +24,10 @@ import com.interface21.beans.factory.BeanFactory;
 import com.interface21.util.StringUtils;
 
 /**
- * Concrete implementation of ListableBeanFactory.
- * Includes convenient methods to populate the factory from a Map
- * and a ResourceBundle, and to add bean defintions one by one.
+ * ListableBeanFactory的具体实现.
+ * 包括从Map和ResourceBundle填充工厂, 以及逐个添加bean定义的便捷方法.
  *
- * <p>Can be used as a standalone bean factory,
- * or as a superclass for custom bean factories.
+ * <p>可以用作独立的bean工厂, 也可以用作自定义bean工厂的超类.
  *
  * @author Rod Johnson
  * @version $Id: ListableBeanFactoryImpl.java,v 1.8 2003/06/20 20:28:43 jhoeller Exp $
@@ -38,52 +36,51 @@ import com.interface21.util.StringUtils;
 public class ListableBeanFactoryImpl extends AbstractBeanFactory implements ListableBeanFactory {
 
 	/**
-	 * Prefix for bean definition keys in Maps.
+	 * Map中bean定义key的前缀.
 	 */
 	public static final String DEFAULT_PREFIX = "beans.";
 
 	/**
-	 * Prefix for the class property of a root bean definition.
+	 * 根bean定义的class属性的前缀.
 	 */
 	public static final String CLASS_KEY = "class";
 
 	/**
-	 * Special string added to distinguish owner.(singleton)=true
-	 * Default is true.
+	 * 为区分所有者而添加的特殊字符串.(singleton)=true
+	 * 默认值为true.
 	 */
 	public static final String SINGLETON_KEY = "(singleton)";
 
 	/**
-	 * Reserved "property" to indicate the parent of a child bean definition.
+	 * 保留的"property"表示子bean定义的父级.
 	 */
 	public static final String PARENT_KEY = "parent";
 
 	/**
-	 * Separator between bean name and property name.
-	 * We follow normal Java conventions.
+	 * bean名称和属性名称之间的分隔符.
+	 * 我们遵守正常的Java约定.
 	 */
 	public static final String SEPARATOR = ".";
 
 	/**
-	 * Property suffix for references to other beans in the current
-	 * BeanFactory: e.g. owner.dog(ref)=fido.
-	 * Whether this is a reference to a singleton or a prototype
-	 * will depend on the definition of the target bean.
+	 * 引用当前BeanFactory中其他bean的属性后缀:
+	 * 例如 owner.dog(ref)=fido.
+	 * 这是对singleton的引用还是对prototype的引用将取决于目标bean的定义.
 	 */
 	public static final String REF_SUFFIX = "(ref)";
 
 	/**
-	 * Prefix before values referencing other beans
+	 * 引用其他bean的值之前的前缀
 	 */
 	public static final String REF_PREFIX = "*";
 
 
 	//---------------------------------------------------------------------
-	// Instance data
+	// 实例数据
 	//---------------------------------------------------------------------
 
 	/**
-	 * Map of BeanDefinition objects, keyed by prototype name
+	 * BeanDefinition对象的Map, 由原型名称作为key
 	 */
 	private Map beanDefinitionHash = new HashMap();
 
@@ -93,33 +90,30 @@ public class ListableBeanFactoryImpl extends AbstractBeanFactory implements List
 	//---------------------------------------------------------------------
 
 	/**
-	 * Creates a new ListableBeanFactoryImpl
+	 * 创建一个新的ListableBeanFactoryImpl
 	 */
 	public ListableBeanFactoryImpl() {
 		super();
 	}
 
 	/**
-	 * Creates a new ListableBeanFactoryImpl with the given parent
+	 * 使用给定的父级创建新的ListableBeanFactoryImpl
 	 */
 	public ListableBeanFactoryImpl(BeanFactory parentBeanFactory) {
 		super(parentBeanFactory);
 	}
 
 	/**
-	 * Set the default parent bean for this bean factory.
-	 * If a child bean definition (i.e. a definition without class
-	 * attribute) handled by this factory doesn't provide a parent
-	 * attribute, this default value gets used.
-	 * <p>Can be used e.g. for view definition files, to define a
-	 * parent with common attributes for all views.
+	 * 为这个BeanFactory设置默认的父bean. 如果此工厂处理的子bean定义
+	 * (即没有class属性的定义)未提供parent属性, 则使用此默认值.
+	 * <p>例如, 可用于view定义文件, 为所有view定义具有公共属性的父级.
 	 */
 	public void setDefaultParentBean(String defaultParentBean) {
 		this.defaultParentBean = defaultParentBean;
 	}
 
 	/**
-	 * Return the default parent bean for this bean factory.
+	 * 返回此bean工厂的默认父bean.
 	 */
 	public String getDefaultParentBean() {
 		return defaultParentBean;
@@ -127,7 +121,7 @@ public class ListableBeanFactoryImpl extends AbstractBeanFactory implements List
 
 
 	//---------------------------------------------------------------------
-	// Implementation of ListableBeanFactory
+	// ListableBeanFactory的实现
 	//---------------------------------------------------------------------
 
 	/**
@@ -154,8 +148,7 @@ public class ListableBeanFactoryImpl extends AbstractBeanFactory implements List
 
 
 	/**
-	 * Note that this method is slow. Don't invoke it too often:
-	 * it's best used only in application initialization.
+	 * 请注意, 此方法很慢. 不要经常调用它: 最好只在应用程序初始化时使用它.
 	 */
 	public final String[] getBeanDefinitionNames(Class type) {
 		Set keys = beanDefinitionHash.keySet();
@@ -177,13 +170,12 @@ public class ListableBeanFactoryImpl extends AbstractBeanFactory implements List
 	//---------------------------------------------------------------------
 
 	/**
-	 * Subclasses or users should call this method to register new bean definitions
-	 * with this class. All other registration methods in this class use this method.
-	 * <br/>This method isn't guaranteed to be threadsafe. It should be called
-	 * before any bean instances are accessed.
+	 * 子类或用户应该调用此方法来为此类注册新的bean定义.
+	 * 此类中的所有其他注册方法都使用此方法.
+	 * <br/>此方法不保证是线程安全的. 应该在访问任何bean实例之前调用它.
 	 *
-	 * @param prototypeName  name of the bean instance to register
-	 * @param beanDefinition definition of the bean instance to register
+	 * @param prototypeName  要注册的bean实例的名称
+	 * @param beanDefinition 要注册的bean实例的定义
 	 */
 	public final void registerBeanDefinition(String prototypeName, AbstractBeanDefinition beanDefinition) throws BeansException {
 		beanDefinitionHash.put(prototypeName, beanDefinition);
@@ -191,12 +183,12 @@ public class ListableBeanFactoryImpl extends AbstractBeanFactory implements List
 
 
 	/**
-	 * Ensure that even potentially unreferenced singletons are instantiated
-	 * Subclasses or callers should invoke this if they want this behavior.
+	 * 确保即使实例化了潜在的未引用的单例, 子类或调用者也应在需要此行为时调用它.
 	 */
 	public void preInstantiateSingletons() {
-		// Ensure that unreferenced singletons are instantiated
+		// 确保实例化了未引用的单例
 		String[] beanNames = getBeanDefinitionNames();
+		// 遍历所有的bean定义, 如果该bean为单例模式, 则实例化
 		for (int i = 0; i < beanNames.length; i++) {
 			AbstractBeanDefinition bd = getBeanDefinition(beanNames[i]);
 			if (bd.isSingleton()) {
@@ -208,31 +200,28 @@ public class ListableBeanFactoryImpl extends AbstractBeanFactory implements List
 
 
 	/**
-	 * Register valid bean definitions in a properties file.
-	 * Ignore ineligible properties
+	 * 在属性文件中注册有效的bean定义. 忽略不合格的属性.
 	 *
-	 * @param m      Map name -> property (String or Object). Property values
-	 *               will be strings if coming from a Properties file etc. Property names
-	 *               (keys) <b>must</b> be strings. Class keys must be Strings.
+	 * @param m      Map name -> property (String or Object). 如果来自属性文件等,
+	 *               属性值将是字符串. 属性名称(key)<b>必须</b>是字符串.Class key必须是字符串.
 	 *               <code>
-	 *               employee.class=MyClass              // special property
-	 *               //employee.abstract=true              // this prototype can't be instantiated directly
+	 *               employee.class=MyClass              // 特殊属性
+	 *               //employee.abstract=true              // 这个原型无法直接实例化
 	 *               employee.group=Insurance Services   // real property
-	 *               employee.usesDialUp=false           // default unless overriden
+	 *               employee.usesDialUp=false           // 默认值, 除非被重写
 	 *               <p>
-	 *               employee.manager(ref)=tony		   // reference to another prototype defined in the same file
-	 *               // cyclic and unresolved references will be detected
+	 *               employee.manager(ref)=tony		   // 对于同一文件中定义的另一个原型的引用将检测到循环引用和未解析引用
 	 *               salesrep.parent=employee
 	 *               salesrep.department=Sales and Marketing
 	 *               <p>
 	 *               techie.parent=employee
 	 *               techie.department=Software Engineering
-	 *               techie.usesDialUp=true              // overridden property
+	 *               techie.usesDialUp=true              // 重写的属性
 	 *               </code>
-	 * @param prefix The match or filter within the keys
-	 *               in the map: e.g. 'beans.'
-	 * @return the number of bean definitions found
-	 * @throws BeansException if there is an error trying to register a definition
+	 * @param prefix Map中keys里面的匹配项或过滤器(以此开头的才会注册):
+	 *               例如 'beans.'
+	 * @return 找到的bean定义数
+	 * @throws BeansException 如果尝试注册定义时出错
 	 */
 	public final int registerBeanDefinitions(Map m, String prefix) throws BeansException {
 		if (prefix == null)
@@ -244,36 +233,36 @@ public class ListableBeanFactoryImpl extends AbstractBeanFactory implements List
 		while (itr.hasNext()) {
 			String key = (String) itr.next();
 			if (key.startsWith(prefix)) {
-				// Key is of form prefix<name>.property
+				// Key的格式为prefix<name>.property
 				String nameAndProperty = key.substring(prefix.length());
 				int sepIndx = nameAndProperty.indexOf(SEPARATOR);
+				// 如果找到了属性分隔符
 				if (sepIndx != -1) {
+					// bean名称
 					String beanName = nameAndProperty.substring(0, sepIndx);
 					logger.debug("Found bean name '" + beanName + "'");
 					if (beanDefinitionHash.get(beanName) == null) {
-						// If we haven't already registered it...
+						// 如果我们还没有注册它...
 						registerBeanDefinition(beanName, m, prefix + beanName);
 						++beanCount;
 					}
 				} else {
-					// Ignore it: it wasn't a valid bean name and property,
-					// although it did start with the required prefix
+					// 忽略它: 它不是一个有效的bean名称和属性, 尽管它确实以所需的前缀开头
 					logger.debug("invalid name and property '" + nameAndProperty + "'");
 				}
-			}    // if the key started with the prefix we're looking for
-		}    // while there are more keys
+			}    // 如果key以我们正在寻找的前缀开头
+		}    // 还有更多的key
 
 		return beanCount;
 	}
 
 
 	/**
-	 * Get all property values, given a prefix (which will be stripped)
-	 * and add the bean they define to the factory with the given name
+	 * 获取所有属性值, 给定一个前缀(将被剥离), 并将他们定义的bean添加到具有给定名称的工厂.
 	 *
-	 * @param beanName name of the bean to define
-	 * @param m        Map containing string pairs
-	 * @param prefix   prefix of each entry, which will be stripped
+	 * @param beanName 要定义的bean的名称
+	 * @param m        包含字符串对的映射
+	 * @param prefix   每个条目的前缀, 将被剥离
 	 */
 	private void registerBeanDefinition(String beanName, Map m, String prefix) throws BeansException {
 		String className = null;
@@ -287,32 +276,39 @@ public class ListableBeanFactoryImpl extends AbstractBeanFactory implements List
 			String key = (String) itr.next();
 			if (key.startsWith(prefix + SEPARATOR)) {
 				String property = key.substring(prefix.length() + SEPARATOR.length());
+				// 如果是class
 				if (property.equals(CLASS_KEY)) {
 					className = (String) m.get(key);
-				} else if (property.equals(SINGLETON_KEY)) {
+				}
+				// 如果是singleton
+				else if (property.equals(SINGLETON_KEY)) {
 					String val = (String) m.get(key);
 					singleton = val == null || !val.toUpperCase().equals("FALSE");
-				} else if (property.equals(PARENT_KEY)) {
+				}
+				// 如果是parent
+				else if (property.equals(PARENT_KEY)) {
 					parent = (String) m.get(key);
-				} else if (property.endsWith(REF_SUFFIX)) {
-					// This isn't a real property, but a reference to another prototype
-					// Extract property name: property is of form dog(ref)
+				}
+				// 如果是ref
+				else if (property.endsWith(REF_SUFFIX)) {
+					// 这不是一个真正的属性, 而是对另一个原型的引用
+					// 提取属性名称: 属性的形式为dog(ref)
 					property = property.substring(0, property.length() - REF_SUFFIX.length());
 					String ref = (String) m.get(key);
 
-					// It doesn't matter if the referenced bean hasn't yet been registered:
-					// this will ensure that the reference is resolved at rungime
-					// Default is not to use singleton
+					// 不管被引用的bean是否还没有注册:
+					// 这将确保在runtime时解析引用
+					// 默认情况下不使用singleton
 					Object val = new RuntimeBeanReference(ref);
 					pvs.addPropertyValue(new PropertyValue(property, val));
 				} else {
-					// Normal bean property
+					// 普通bean属性
 					Object val = m.get(key);
 					if (val instanceof String) {
 						String sval = (String) val;
-						// If it starts with unescaped prefix...
+						// 如果它以未转义的前缀开头...
 						if (sval.startsWith(REF_PREFIX)) {
-							// Expand reference
+							// 展开引用
 							String targetName = ((String) val).substring(1);
 							if (sval.startsWith("**")) {
 								val = targetName;
@@ -338,8 +334,8 @@ public class ListableBeanFactoryImpl extends AbstractBeanFactory implements List
 
 			AbstractBeanDefinition beanDefinition = null;
 			if (className != null) {
-				// Load the class using a special class loader if one is available.
-				// Otherwise rely on the thread context classloader.
+				// 如果可用的话, 使用特殊的类加载器加载类.
+				// 否则依赖线程上下文类加载器.
 				Class clazz = Class.forName(className, true, Thread.currentThread().getContextClassLoader());
 				beanDefinition = new RootBeanDefinition(clazz, pvs, singleton);
 			} else {
@@ -353,12 +349,11 @@ public class ListableBeanFactoryImpl extends AbstractBeanFactory implements List
 
 
 	/**
-	 * Register bean definitions in a ResourceBundle. Similar syntax
-	 * as for a Map. This method is useful to enable standard
-	 * Java internationalization support.
+	 * 在ResourceBundle中注册bean定义. 与Map类似的语法.
+	 * 此方法对于支持标准Java国际化支持非常有用.
 	 */
 	public final int registerBeanDefinitions(ResourceBundle rb, String prefix) throws BeansException {
-		// Simply create a map and call overloaded method
+		// 只需创建一个Map并调用重载方法
 		Map m = new HashMap();
 		Enumeration keys = rb.getKeys();
 		while (keys.hasMoreElements()) {
@@ -371,7 +366,7 @@ public class ListableBeanFactoryImpl extends AbstractBeanFactory implements List
 
 
 	//---------------------------------------------------------------------
-	// Implementation of superclass protected abstract methods
+	// 超类protected抽象方法的实现
 	//---------------------------------------------------------------------
 
 	/**
