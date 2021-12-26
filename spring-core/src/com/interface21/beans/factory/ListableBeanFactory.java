@@ -10,39 +10,39 @@
 package com.interface21.beans.factory;
 
 /**
- * Extension of BeanFactory to be implemented by bean factories that
- * can enumerate all their bean instances, rather than attempting bean lookup
- * by name one by one as requested by clients.
- * <br/>With the exception of getBeanDefinitionCount(), the methods 
- * in this interface are not design for frequent invocation. Implementations
- * may be slow.
- * <br/>BeanFactory implementations that preload all their beans (for
- * example, DOM-based XML factories) may implement this interface.
- * <br/>This interface is discussed in "Expert One-on-One J2EE", by Rod Johnson.
+ * BeanFactory的扩展将由bean工厂实现, 该工厂可以枚举所有bean实例,
+ * 而不是按客户端的请求逐个尝试按名称查找bean.
+ * <br/>除了getBeanDefinitionCount()之外, 此接口的方法不是为频繁
+ * 调用而设计的. 实现可能很慢.
+ * <br/>预加载所有bean的BeanFactory实现(例如, 基于DOM的XML工厂)
+ * 可以实现此接口.
+ * <br/>这个接口在Rod Johnson的"Expert One-on-One J2EE"中讨论.
+ *
  * @author Rod Johnson
  * @since 16 April 2001
  */
 public interface ListableBeanFactory extends BeanFactory {
 
 	/**
-	 * Return the number of beans defined in the factory
-	 * @return the number of beans defined in the factory
+	 * 返回工厂中定义的bean数
+	 *
+	 * @return 工厂中定义的bean数量
 	 */
 	int getBeanDefinitionCount();
 
 	/**
-	 * Return the names of all beans defined in this factory
-	 * @return the names of all beans defined in this factory.
-	 * Returns the empty String[], rather than null, if no beans are defined.
+	 * 返回此工厂中定义的所有bean的名称
+	 *
+	 * @return 此工厂中定义的所有bean的名称.
+	 * 如果没有定义bean, 则返回空String[], 而不是null.
 	 */
 	String[] getBeanDefinitionNames();
 
 	/**
-	 * Return the names of beans matching the given object type 
-	 * (including subclasses). 
-	 * @param type class or interface to match
-	 * @return the names of beans matching the given object type 
-	 * (including subclasses). Never returns null.
+	 * 返回与给定对象类型匹配的bean的nam(包括子类).
+	 *
+	 * @param type 要匹配的类或接口
+	 * @return 与给定对象类型(包括子类)匹配的bean的name. 永远不会返回null.
 	 */
 	String[] getBeanDefinitionNames(Class type);
 
