@@ -6,15 +6,13 @@ import java.util.Properties;
 import com.interface21.beans.MutablePropertyValues;
 
 /**
- * Editor for PropertyValues objects. Not
- * a GUI editor.
- * <br>NB: this editor must be registered with the JavaBeans API before it
- * will be available. Editors in this package are
- * registered by BeanWrapperImpl.
- * <br>The required format is defined in java.util.Properties documentation.
- * Each property must be on a new line.
+ * PropertyValues对象的编辑器不是GUI编辑器.
+ * <br>注意: 此编辑器必须在JavaBeans API中注册才能使用.
+ * 此包中的编辑器由BeanWrapperImpl注册.
+ * <br>java.util.Properties文档中定义了所需的格式.
+ * 每个属性必须在新行上.
  * <br>
- * The present implementation relies on a PropertiesEditor.
+ * 本实现依赖于PropertiesEditor.
  *
  * @author Rod Johnson
  */

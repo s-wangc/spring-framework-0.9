@@ -6,16 +6,14 @@ import java.text.ParseException;
 import java.util.Date;
 
 /**
- * PropertyEditor for Date, supporting a custom DateFormat.
+ * Date的PropertyEditor, 支持自定义DateFormat.
  *
- * <p>This is not meant to be used as system PropertyEditor
- * but rather as locale-specific date editor within custom
- * controller code, to parse user-entered date strings into
- * Date properties of beans, and render them in the UI form.
+ * <p>这不是要用作系统PropertyEditor, 而是用作自定义controller
+ * 代码中特定于语言环境的日期编辑器, 用于将用户输入的日期字符串解析
+ * 为bean的Date属性, 并在UI表单中呈现它们.
  *
- * <p>In web MVC code, this editor will typically be
- * registered with binder.registerCustomEditor calls in an
- * implementation of BaseCommandController's initBinder method.
+ * <p>在web MVC代码中, 此编辑器通常将在BaseCommandController的initBinder
+ * 方法的实现中使用binder.registerCustomEditor调用进行注册.
  *
  * @author Juergen Hoeller
  * @see com.interface21.validation.DataBinder#registerCustomEditor
@@ -29,14 +27,12 @@ public class CustomDateEditor extends PropertyEditorSupport {
 	private final boolean allowEmpty;
 
 	/**
-	 * Create a new instance, using the given DateFormat for
-	 * parsing and rendering.
-	 * <p>The allowEmpty parameter states if an empty String should
-	 * be allowed for parsing, i.e. get interpreted as null value.
-	 * Else, an IllegalArgumentException gets thrown in that case.
+	 * 创建一个新实例, 使用给定的DateFormat进行解析和渲染.
+	 * <p>allowEmpty参数指出是否应允许空字符串进行解析, 即将其解释为null值.
+	 * 否则, 在这种情况下会抛出IllegalArgumentException.
 	 *
-	 * @param dateFormat DateFormat to use for parsing and rendering
-	 * @param allowEmpty if empty strings should be allowed
+	 * @param dateFormat 用于解析和呈现的DateFormat
+	 * @param allowEmpty 如果应该允许空字符串
 	 */
 	public CustomDateEditor(DateFormat dateFormat, boolean allowEmpty) {
 		this.dateFormat = dateFormat;
@@ -44,7 +40,7 @@ public class CustomDateEditor extends PropertyEditorSupport {
 	}
 
 	/**
-	 * Parse the Date from the given text, using the specified DateFormat.
+	 * 使用指定的DateFormat从给定文本中解析Date.
 	 */
 	public void setAsText(String text) throws IllegalArgumentException {
 		if (this.allowEmpty && text.trim().equals("")) {
@@ -60,7 +56,7 @@ public class CustomDateEditor extends PropertyEditorSupport {
 	}
 
 	/**
-	 * Format the Date as String, using the specified DateFormat.
+	 * 使用指定的DateFormat将Date格式化为String.
 	 */
 	public String getAsText() {
 		return this.dateFormat.format((Date) getValue());

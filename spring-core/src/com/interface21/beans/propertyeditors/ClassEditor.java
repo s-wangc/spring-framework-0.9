@@ -3,8 +3,7 @@ package com.interface21.beans.propertyeditors;
 import java.beans.PropertyEditorSupport;
 
 /**
- * Editor for java.lang.Class, to directly feed a Class property
- * instead of needing an additional class name property.
+ * java.lang.Class的编辑器, 直接提供Class属性, 而不需要额外的类名属性.
  *
  * @author Juergen Hoeller
  * @since 13.05.2003

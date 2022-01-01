@@ -6,9 +6,9 @@ import java.util.Locale;
 import com.interface21.util.StringUtils;
 
 /**
- * Editor for java.util.Locale, to directly feed a Locale property.
- * Expects the same syntax as Locale.toString, i.e. language + optionally
- * country + optionally variant, separated by "_" (e.g. "en", "en_US").
+ * java.util.Locale的编辑器, 以直接提供locale属性.
+ * 需要与Locale.toString相同的语法, 即语言+可选的国家/地区+可选的变体, 用"\"分隔
+ * (例如"en", "en_US").
  *
  * @author Juergen Hoeller
  * @since 26.05.2003

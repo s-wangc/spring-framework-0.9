@@ -5,9 +5,9 @@ import java.beans.PropertyEditorSupport;
 import com.interface21.util.StringUtils;
 
 /**
- * Properties editor for String[] type.
- * Strings must be in CSV format.
- * This property editor is registered by BeanWrapperImpl.
+ * String[]类型的属性编辑器.
+ * 字符串必须为CSV格式.
+ * 此属性编辑器由BeanWrapperImpl注册.
  *
  * @author Rod Johnson
  */
