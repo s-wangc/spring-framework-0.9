@@ -40,24 +40,18 @@ import com.interface21.beans.propertyeditors.PropertyValuesEditor;
 import com.interface21.beans.propertyeditors.StringArrayPropertyEditor;
 
 /**
- * Default implementation of the BeanWrapper interface that should be sufficient
- * for all normal uses. Caches introspection results for efficiency.
+ * BeanWrapper接口的默认实现, 应该足以满足所有正常使用. 缓存内省结果以提高效率.
  *
- * <p>Note: this class never tries to load a class by name, as this can pose
- * class loading problems in J2EE applications with multiple deployment modules.
- * For example, loading a class by name won't work in some application servers
- * if the class is used in a WAR but was loaded by the EJB class loader and the
- * class to be loaded is in the WAR. (This class would use the EJB classloader,
- * which couldn't see the required class.) We don't attempt to solve such problems
- * by obtaining the classloader at runtime, because this violates the EJB
- * programming restrictions.
+ * <p>注意: 此类永远不会尝试按名称加载类, 因为这会在具有多个部署模块的J2EE应用
+ * 程序中造成类加载问题. 例如, 如果类在WAR中使用, 但是由EJB类加载器加载, 并且
+ * 要加载的类在WAR中, 则按名称加载类在某些应用程序服务器中将不起作用.
+ * (这个类将使用EJB类加载器, 它看不到所需的类.)我们不会尝试通过在运行时获取类加载器
+ * 来解决此类问题, 因为这违反了EJB编程限制.
  *
- * <p>Note: Regards property editors in com.interface21.beans.propertyeditors.
- * Also explictly register the default ones to care for JREs that do not use
- * the thread context class loader for editor search paths.
- * Applications can either use a standard PropertyEditorManager to register a
- * custom editor before using a BeanWrapperImpl instance, or call the instance's
- * registerCustomEditor method to register an editor for the particular instance.
+ * <p>注意: 关于com.interface21.beans.propertyeditors中的属性编辑器.
+ * 还明确地注册默认的JRE, 以关心那些不使用线程context类加载器进行编辑器搜索路径的JRE.
+ * 应用程序可以在使用BeanWrapperImpl实例之前使用标准PropertyEditorManager注册自定义
+ * 编辑器, 也可以调用实例的registerCustomEditor方法为特定实例注册编辑器.
  *
  * @author Rod Johnson
  * @version $Revision: 1.10 $
@@ -68,23 +62,26 @@ import com.interface21.beans.propertyeditors.StringArrayPropertyEditor;
 public class BeanWrapperImpl implements BeanWrapper {
 
 	/**
-	 * Should JavaBeans event propagation be enabled by default?
+	 * 默认情况下是否应该启用JavaBeans事件传播?
 	 */
 	public static final boolean DEFAULT_EVENT_PROPAGATION_ENABLED = false;
 
 	/**
-	 * We'll create a lot of these objects, so we don't want a new logger every time.
+	 * 我们将创建很多这样的对象, 因此我们不希望每次都有一个新的logger.
 	 */
 	private static final Log logger = LogFactory.getLog(BeanWrapperImpl.class);
 
+	/**
+	 * 存放默认编辑器
+	 */
 	private static final Map defaultEditors = new HashMap();
 
 	static {
-		// install default property editors
+		// 安装默认属性编辑器
 		try {
-			// this one can't apply the <ClassName>Editor naming pattern
+			// 这个不能应用<ClassName>编辑器命名模式
 			PropertyEditorManager.registerEditor(String[].class, StringArrayPropertyEditor.class);
-			// register all editors in our standard package
+			// 在我们的标准包中注册所有编辑器
 			PropertyEditorManager.setEditorSearchPath(new String[]{
 					"sun.beans.editors",
 					"com.interface21.beans.propertyeditors"
@@ -94,9 +91,8 @@ public class BeanWrapperImpl implements BeanWrapper {
 			logger.warn("Cannot register property editors with PropertyEditorManager", ex);
 		}
 
-		// register default editors in this class, for restricted environments
-		// where the above threw a SecurityException, and for JDKs that don't
-		// use the thread context class loader for property editor lookup
+		// 在此类中注册默认编辑器, 用于上述抛出SecurityException的受限环境,
+		// 以及不使用线程context类加载器进行属性编辑器查找的JDK.
 		defaultEditors.put(String[].class, new StringArrayPropertyEditor());
 		defaultEditors.put(PropertyValues.class, new PropertyValuesEditor());
 		defaultEditors.put(Properties.class, new PropertiesEditor());
@@ -106,40 +102,39 @@ public class BeanWrapperImpl implements BeanWrapper {
 
 
 	//---------------------------------------------------------------------
-	// Instance data
+	// 实例数据
 	//---------------------------------------------------------------------
 
 	/**
-	 * The wrapped object
+	 * 被包装的对象
 	 */
 	private Object object;
 
 	/**
-	 * Cached introspections results for this object, to prevent encountering the cost
-	 * of JavaBeans introspection every time.
+	 * 缓存这个对象的内省结果, 以防止每次遇到JavaBeans内省的开销.
 	 */
 	private CachedIntrospectionResults cachedIntrospectionResults;
 
 	/**
-	 * Standard java.beans helper object used to propagate events
+	 * 用于传播事件的标准java.beans辅助器对象
 	 */
 	private VetoableChangeSupport vetoableChangeSupport;
 
 	/**
-	 * Standard java.beans helper object used to propagate events
+	 * 用于传播事件的标准java.beans辅助器对象
 	 */
 	private PropertyChangeSupport propertyChangeSupport;
 
 	/**
-	 * Should we propagate events to listeners?
+	 * 我们应该将事件传播给listeners吗?
 	 */
 	private boolean eventPropagationEnabled = DEFAULT_EVENT_PROPAGATION_ENABLED;
 
-	/* Map with cached nested BeanWrappers */
+	/* 使用缓存的嵌套BeanWrappers进行映射 */
 	private Map nestedBeanWrappers;
 
 	/**
-	 * Map with custom PropertyEditor instances
+	 * 使用自定义PropertyEditor实例映射
 	 */
 	private Map customEditors;
 
@@ -149,22 +144,21 @@ public class BeanWrapperImpl implements BeanWrapper {
 	//---------------------------------------------------------------------
 
 	/**
-	 * Creates new BeanWrapperImpl with default event propagation (disabled)
+	 * 使用默认事件传播创建新的BeanWrapper(disabled)
 	 *
-	 * @param object object wrapped by this BeanWrapper.
-	 * @throws BeansException if the object cannot be wrapped by a BeanWrapper
+	 * @param object 被这个BeanWrapper包装的对象.
+	 * @throws BeansException 如果对象不能被BeanWrapper包装
 	 */
 	public BeanWrapperImpl(Object object) throws BeansException {
 		this(object, DEFAULT_EVENT_PROPAGATION_ENABLED);
 	}
 
 	/**
-	 * Creates new BeanWrapperImpl, allowing specification of whether event
-	 * propagation is enabled.
+	 * 创建新的BeanWrapperImpl, 允许指定是否启用事件传播.
 	 *
-	 * @param object                  object wrapped by this BeanWrapper.
-	 * @param eventPropagationEnabled whether event propagation should be enabled
-	 * @throws BeansException if the object cannot be wrapped by a BeanWrapper
+	 * @param object                  被这个BeanWrapper包装的对象.
+	 * @param eventPropagationEnabled 是否应启用事件传播
+	 * @throws BeansException 如果对象不能被BeaWrapper包装
 	 */
 	public BeanWrapperImpl(Object object, boolean eventPropagationEnabled) throws BeansException {
 		this.eventPropagationEnabled = eventPropagationEnabled;
@@ -172,10 +166,10 @@ public class BeanWrapperImpl implements BeanWrapper {
 	}
 
 	/**
-	 * Creates new BeanWrapperImpl, wrapping a new instance of the specified class
+	 * 创建新的BeanWrapperImpl, 包装指定类的新实例
 	 *
-	 * @param clazz class to instantiate and wrap
-	 * @throws BeansException if the class cannot be wrapped by a BeanWrapper
+	 * @param clazz 要实例化和包装的类
+	 * @throws BeansException 如果该类不能被BeanWrapper包装
 	 */
 	public BeanWrapperImpl(Class clazz) throws BeansException {
 		this.cachedIntrospectionResults = CachedIntrospectionResults.forClass(clazz);
@@ -183,13 +177,11 @@ public class BeanWrapperImpl implements BeanWrapper {
 	}
 
 	/**
-	 * Creates new BeanWrapperImpl given the cached introspection results and
-	 * the given object. Used internally only.
+	 * 给定缓存的内省结果和给定对象, 创建新的BeanWrapperImpl. 仅供内部使用.
 	 *
-	 * @param cachedIntrospectionResults cached results of introspection, used
-	 *                                   for efficiency in manipulating objects of this type.
+	 * @param cachedIntrospectionResults 缓存的内省结果, 用于提高操作此类对象的效率.
 	 * @param obj                        object to wrap
-	 * @throws BeansException if a wrapper cannot be constructed
+	 * @throws BeansException 如果无法构造包装器
 	 */
 	private BeanWrapperImpl(CachedIntrospectionResults cachedIntrospectionResults, Object obj) throws BeansException {
 		this.cachedIntrospectionResults = cachedIntrospectionResults;
@@ -197,18 +189,14 @@ public class BeanWrapperImpl implements BeanWrapper {
 	}
 
 	/**
-	 * This method is included for efficiency. If an implementation
-	 * caches all necessary information about the class,
-	 * it might be <b>much</b> faster to instantiate a new wrapper copying
-	 * the cached information, than to use introspection again.
-	 * The wrapped instance is independent, as is the new BeanWrapper:
-	 * only the cached introspection information is copied.
+	 * 为了提高效率, 包括了此方法. 如果实现缓存了有关改类的所有必要信息,
+	 * 则实例化一个新的包装器来复制缓存的信息的可能要比再次使用内省快得<b>多</b>.
+	 * 包装的实例是独立的, 新的BeanWrapper也是如此:
+	 * 仅复制缓存的内省信息.
 	 *
-	 * @param obj new object to be wrapped by this BeanWrapper,
-	 *            replacing the present target object.
-	 * @return a BeanWrapper for the new object, based on cached
-	 * information available to this object
-	 * @throws BeansException if the target cannot be changed
+	 * @param obj 要由此BeanWrapper包装的新对象, 替换当前的目标对象.
+	 * @return 新对象的BeanWrapper, 基于此对象可用的缓存信息
+	 * @throws BeansException 如果目标无法更改.
 	 */
 	public BeanWrapper newWrapper(Object obj) throws BeansException {
 		if (!this.cachedIntrospectionResults.getBeanClass().equals(obj.getClass()))
@@ -219,11 +207,11 @@ public class BeanWrapperImpl implements BeanWrapper {
 	}
 
 	/**
-	 * Implementation method to switch the target object, replacing the cached introspection results
-	 * only if the class of the new object is different to that of the replaced object
+	 * 切换目标对象的实现方法, 仅当新对象的类与替换对象的类不同时才替换
+	 * 缓存的内省结果
 	 *
 	 * @param object new target
-	 * @throws BeansException if the object cannot be changed
+	 * @throws BeansException 如果对象无法更改
 	 */
 	private void setObject(Object object) throws BeansException {
 		if (object == null)
@@ -303,7 +291,7 @@ public class BeanWrapperImpl implements BeanWrapper {
 			return null;
 		}
 		if (propertyName != null) {
-			// check property-specific editor first
+			// 首先检查特定于属性的编辑器
 			PropertyDescriptor descriptor = getPropertyDescriptor(propertyName);
 			PropertyEditor editor = (PropertyEditor) this.customEditors.get(propertyName);
 			if (editor != null) {
@@ -322,27 +310,24 @@ public class BeanWrapperImpl implements BeanWrapper {
 				}
 			}
 		}
-		// no property-specific editor -> check type-specific editor
+		// 无特定于属性的编辑器 -> 检查特定于类型的编辑器
 		return (PropertyEditor) this.customEditors.get(requiredType);
 	}
 
 
 	/**
-	 * Convert the value to the required type (if necessary from a string),
-	 * to create a PropertyChangeEvent.
-	 * Conversions from String to any type use the setAsTest() method of
-	 * the PropertyEditor class. Note that a PropertyEditor must be registered
-	 * for this class for this to work. This is a standard Java Beans API.
-	 * A number of property editors are automatically registered by this class.
+	 * 将值转换为所需类型(如果有必要, 可以从字符串中转换), 以创建PropertyChangeEvent.
+	 * 从String到任何类型的转换使用PropertyEditor类的setAsTest()方法. 请注意,
+	 * 必须为此类注册PropertyEditor才能使其生效. 这是一个标准的Java Beans API.
+	 * 本类会自动注册许多属性编辑器.
 	 *
 	 * @param target       target bean
 	 * @param propertyName name of the property
-	 * @param oldValue     previous value, if available. May be null.
+	 * @param oldValue     之前的值(如果可用). 可能为空.
 	 * @param newValue     proposed change value.
-	 * @param requiredType type we must convert to
-	 * @return a PropertyChangeEvent, containing the converted type of the new
-	 * value.
-	 * @throws BeansException if there is an internal error
+	 * @param requiredType 我们必须转换为的类型
+	 * @return 一个PropertyChangeEvent, 包含新值的转换类型.
+	 * @throws BeansException 如果有内部错误
 	 */
 	private PropertyChangeEvent createPropertyChangeEventWithTypeConversionIfNecessary(
 			Object target, String propertyName,
@@ -352,37 +337,35 @@ public class BeanWrapperImpl implements BeanWrapper {
 	}
 
 	/**
-	 * Convert the value to the required type (if necessary from a string)
-	 * Conversions from String to any type use the setAsTest() method of
-	 * the PropertyEditor class. Note that a PropertyEditor must be registered
-	 * for this class for this to work. This is a standard Java Beans API.
-	 * A number of property editors are automatically registered by this class.
+	 * 将值转换为所需类型(如果需要, 可以从字符串中转换)从String到任何类型的转换使用
+	 * PropertyEditor类的setAsTest()方法. 请注意, 必须为此类注册PropertyEditor
+	 * 才能使其工作. 这是一个标准的Java Beans API.
+	 * 本类会自动注册许多属性编辑器.
 	 *
 	 * @param target       target bean
 	 * @param propertyName name of the property
-	 * @param oldValue     previous value, if available. May be null.
+	 * @param oldValue     之前的值, 如果有的话. 可能为空.
 	 * @param newValue     proposed change value.
-	 * @param requiredType type we must convert to
-	 * @return new value, possibly the result of type convertion.
-	 * @throws BeansException if there is an internal error
+	 * @param requiredType 我们必须转换为的类型
+	 * @return 新值, 可能是类型转换的结果.
+	 * @throws BeansException 如果有内部错误
 	 */
 	public Object doTypeConversionIfNecessary(
 			Object target, String propertyName,
 			Object oldValue, Object newValue,
 			Class requiredType) throws BeansException {
-		// Only need to cast if value isn't null
+		// 仅当值不为null时才需要强制转换
 		if (newValue != null) {
-			// We may need to change the value of newValue
-			// custom editor for this type?
+			// 我们可能需要更改此类型的newValue自定义编辑器的值?
 			PropertyEditor pe = findCustomEditor(requiredType, propertyName);
 			if ((pe != null || !requiredType.isAssignableFrom(newValue.getClass())) && (newValue instanceof String)) {
 				if (logger.isDebugEnabled())
 					logger.debug("Convert: String to " + requiredType);
 				if (pe == null) {
-					// no custom editor -> check BeanWrapper's default editors
+					// 没有自定义编辑器 -> 检查BeanWrapper的默认编辑器
 					pe = (PropertyEditor) defaultEditors.get(requiredType);
 					if (pe == null) {
-						// no BeanWrapper default editor -> check standard editors
+						// 没有BeanWrapper默认编辑器 -> 检查标准编辑器
 						pe = PropertyEditorManager.findEditor(requiredType);
 					}
 				}
@@ -410,37 +393,39 @@ public class BeanWrapperImpl implements BeanWrapper {
 	}
 
 	/**
-	 * Is the property nested? That is, does it contain the nested
-	 * property separator (usually .)
+	 * 该属性是否嵌套? 也就是说, 它是否包含嵌套属性分隔符(通常是.)
 	 *
 	 * @param path property path
-	 * @return boolean is the property nested
+	 * @return 表示是否是嵌套属性的boolean值
 	 */
 	private boolean isNestedProperty(String path) {
 		return path.indexOf(NESTED_PROPERTY_SEPARATOR) != -1;
 	}
 
 	/**
-	 * Get the last component of the path. Also works if not nested.
+	 * 获取路径的最后一个组件. 如果没有嵌套, 也可以工作.
 	 *
-	 * @param nestedPath property path we know is nested
-	 * @return last component of the path (the property on the target bean)
+	 * @param nestedPath 我们知道的属性路径是嵌套的
+	 * @return 路径的最后一个组件(目标bean上的属性)
 	 */
 	private String getFinalPath(String nestedPath) {
 		return nestedPath.substring(nestedPath.lastIndexOf(NESTED_PROPERTY_SEPARATOR) + 1);
 	}
 
 	/**
-	 * Recursively navigate to return a BeanWrapper for the nested path.
+	 * 递归导航以返回嵌套路径的BeanWrapper.
 	 *
-	 * @param path property path, which may be nested
-	 * @return a BeanWrapper for the target bean
+	 * @param path 属性路径, 可以嵌套
+	 * @return 目标bean的BeanWrapper
 	 */
 	private BeanWrapperImpl getBeanWrapperForNestedProperty(String path) {
+		// 属性分隔符所在的索引
 		int pos = path.indexOf(NESTED_PROPERTY_SEPARATOR);
-		// Handle nested properties recursively
+		// 递归处理嵌套属性
 		if (pos > -1) {
+			// 嵌套属性的属性名
 			String nestedProperty = path.substring(0, pos);
+			// 嵌套属性的嵌套路径(去掉了属性名的路径)
 			String nestedPath = path.substring(pos + 1);
 			logger.debug("Navigating to property path '" + nestedPath + "' of nested property '" + nestedProperty + "'");
 			BeanWrapperImpl nestedBw = getNestedBeanWrapper(nestedProperty);
@@ -451,29 +436,28 @@ public class BeanWrapperImpl implements BeanWrapper {
 	}
 
 	/**
-	 * Retrieve a BeanWrapper for the given nested property.
-	 * Create a new one if not found in the cache.
-	 * <p>Note: Caching nested BeanWrappers is necessary now,
-	 * to keep registered custom editors for nested properties.
+	 * 检索给定嵌套属性的BeanWrapper.
+	 * 如果在缓存中找不到, 则创建一个新的.
+	 * <p>注意: 缓存嵌套的BeanWrappers现在是必要的, 以便为嵌套属性保留已注册的自定义编辑器.
 	 *
-	 * @param nestedProperty property to create the BeanWrapper for
-	 * @return the BeanWrapper instance, either cached or newly created
+	 * @param nestedProperty 用于创建BeanWrapper的属性
+	 * @return BeanWrapper实例, 可以是缓存的, 也可以是新创建的
 	 */
 	private BeanWrapperImpl getNestedBeanWrapper(String nestedProperty) {
 		if (this.nestedBeanWrappers == null) {
 			this.nestedBeanWrappers = new HashMap();
 		}
-		// get value of bean property
+		// 获取bean属性的值
 		Object propertyValue = getPropertyValue(nestedProperty);
 		if (propertyValue == null) {
 			throw new NullValueInNestedPathException(getWrappedClass(), nestedProperty);
 		}
-		// lookup cached sub-BeanWrapper, create new one if not found
+		// 查找缓存的子BeanWrapper, 如果找不到则新建一个
 		BeanWrapperImpl nestedBw = (BeanWrapperImpl) this.nestedBeanWrappers.get(propertyValue);
 		if (nestedBw == null) {
 			logger.debug("Creating new nested BeanWrapper for property '" + nestedProperty + "'");
 			nestedBw = new BeanWrapperImpl(propertyValue, false);
-			// inherit all type-specific PropertyEditors
+			// 继承所有特定于类型的PropertyEditors
 			if (this.customEditors != null) {
 				for (Iterator it = this.customEditors.keySet().iterator(); it.hasNext(); ) {
 					Object key = it.next();
@@ -492,61 +476,62 @@ public class BeanWrapperImpl implements BeanWrapper {
 	}
 
 	/**
-	 * Set an individual field.
-	 * All other setters go through this.
+	 * 设置单个字段.
+	 * 所有其他的setters都要经历这个.
 	 *
-	 * @param pv property value to use for update
-	 * @throws PropertyVetoException if a listeners throws a JavaBeans API veto
-	 * @throws BeansException        if there's a low-level, fatal error
+	 * @param pv 用于更新的属性值
+	 * @throws PropertyVetoException 如果listener抛出JavaBeans API 否决
+	 * @throws BeansException        如果存在低级致命错误
 	 */
 	public void setPropertyValue(PropertyValue pv) throws PropertyVetoException, BeansException {
 
+		// 该属性是否嵌套(属性是否有嵌套属性的分隔符)
 		if (isNestedProperty(pv.getName())) {
 			try {
 				BeanWrapper nestedBw = getBeanWrapperForNestedProperty(pv.getName());
 				nestedBw.setPropertyValue(new PropertyValue(getFinalPath(pv.getName()), pv.getValue()));
 				return;
 			} catch (NullValueInNestedPathException ex) {
-				// Let this through
+				// 让这个通过
 				throw ex;
 			} catch (FatalBeanException ex) {
-				// Error in the nested path
+				// 嵌套路径中出错
 				throw new NotWritablePropertyException(pv.getName(), getWrappedClass());
 			}
 		}
 
+		// 该属性是否可写
 		if (!isWritableProperty(pv.getName())) {
 			throw new NotWritablePropertyException(pv.getName(), getWrappedClass());
 		}
 
+		// 获取属性修饰器
 		PropertyDescriptor pd = getPropertyDescriptor(pv.getName());
 		Method writeMethod = pd.getWriteMethod();
 		Method readMethod = pd.getReadMethod();
-		Object oldValue = null;    // May stay null if it's not a readable property
+		Object oldValue = null;    // 如果它不是可读属性, 可以保留为null
 		PropertyChangeEvent propertyChangeEvent = null;
 
 		try {
 			if (readMethod != null && eventPropagationEnabled) {
-				// Can only find existing value if it's a readable property
+				// 只能在可读属性的情况下找到现有值
 				try {
 					oldValue = readMethod.invoke(object, new Object[]{});
 				} catch (Exception ex) {
-					// The getter threw an exception, so we couldn't retrieve the old value.
-					// We're not really interested in any exceptions at this point,
-					// so we merely log the problem and leave oldValue null
+					// getter抛出了一个异常, 因此我们无法检索旧值.
+					// 我们此时并不真正对任何异常感兴趣, 所以我们只记录问题并将oldValue保留为null
 					logger.warn("Failed to invoke getter '" + readMethod.getName()
 									+ "' to get old property value before property change: getter probably threw an exception",
 							ex);
 				}
 			}
 
-			// Old value may still be null
+			// 旧值可能仍为null
 			propertyChangeEvent = createPropertyChangeEventWithTypeConversionIfNecessary(
 					object, pv.getName(), oldValue, pv.getValue(), pd.getPropertyType());
 
-			// May throw PropertyVetoException: if this happens the PropertyChangeSupport
-			// class fires a reversion event, and we jump out of this method, meaning
-			// the change was never actually made
+			// 可能抛出PropertyVetoException: 如果发生这种情况, PropertyChangeSupport
+			// 类会触发一个reversion事件, 我们将跳出这个方法, 这意味着实际上从未进行过更改
 			if (eventPropagationEnabled) {
 				vetoableChangeSupport.fireVetoableChange(propertyChangeEvent);
 			}
@@ -555,7 +540,7 @@ public class BeanWrapperImpl implements BeanWrapper {
 				throw new IllegalArgumentException("Invalid value [" + pv.getValue() + "] for property [" + pd.getName() + "] of primitive type [" + pd.getPropertyType() + "]");
 			}
 
-			// Make the change
+			// 做出改变
 			if (logger.isDebugEnabled())
 				logger.debug("About to invoke write method ["
 						+ writeMethod + "] on object of class '" + object.getClass().getName() + "'");
@@ -563,7 +548,7 @@ public class BeanWrapperImpl implements BeanWrapper {
 			if (logger.isDebugEnabled())
 				logger.debug("Invoked write method [" + writeMethod + "] ok");
 
-			// If we get here we've changed the property OK and can broadcast it
+			// 如果我们到了这里, 我们已经改变了属性, 可以广播了
 			if (eventPropagationEnabled)
 				propertyChangeSupport.firePropertyChange(propertyChangeEvent);
 		} catch (InvocationTargetException ex) {
@@ -581,13 +566,12 @@ public class BeanWrapperImpl implements BeanWrapper {
 
 
 	/**
-	 * Bulk update from a Map.
-	 * Bulk updates from PropertyValues are more powerful: this method is
-	 * provided for convenience.
+	 * 从Map进行批量更新.
+	 * PropertyValues的批量更新功能更强大: 此方法是为方便起见而提供的.
 	 *
-	 * @param map map containing properties to set, as name-value pairs.
-	 *            The map may include nested properties.
-	 * @throws BeansException if there's a fatal, low-level exception
+	 * @param map 包含要设置的属性的map, 作为name-value对.
+	 *            Map可能包含嵌套属性.
+	 * @throws BeansException 如果有一个致命的, 低级别的异常
 	 */
 	public void setPropertyValues(Map map) throws BeansException {
 		setPropertyValues(new MutablePropertyValues(map));
@@ -595,6 +579,8 @@ public class BeanWrapperImpl implements BeanWrapper {
 
 
 	/**
+	 * 给被包装的bean设置属性值
+	 *
 	 * @see BeanWrapper#setPropertyValues(PropertyValues)
 	 */
 	public void setPropertyValues(PropertyValues pvs) throws BeansException {
@@ -603,11 +589,13 @@ public class BeanWrapperImpl implements BeanWrapper {
 
 
 	/**
+	 * 给被包装的bean设置属性值
+	 *
 	 * @see BeanWrapper#setPropertyValues(PropertyValues, boolean, PropertyValuesValidator)
 	 */
 	public void setPropertyValues(PropertyValues propertyValues,
 								  boolean ignoreUnknown, PropertyValuesValidator pvsValidator) throws BeansException {
-		// Create only if needed
+		// 仅在需要时创建
 		PropertyVetoExceptionsException propertyVetoExceptionsException = new PropertyVetoExceptionsException(this);
 
 		if (pvsValidator != null) {
@@ -621,16 +609,15 @@ public class BeanWrapperImpl implements BeanWrapper {
 		PropertyValue[] pvs = propertyValues.getPropertyValues();
 		for (int i = 0; i < pvs.length; i++) {
 			try {
-				// This method may throw ReflectionException, which won't be caught
-				// here, if there is a critical failure such as no matching field.
-				// We can attempt to deal only with less serious exceptions
+				// 如果出现严重故障(例如没有匹配字段), 则此方法可能抛出ReflectionException,
+				// 此处不会捕获该异常. 我们可以尝试只处理不那么严重的异常.
 				setPropertyValue(pvs[i]);
 			}
-			// Fatal ReflectionExceptions will just be rethrown
+			// 致命的ReflectionExceptions将被重新抛出
 			catch (NotWritablePropertyException ex) {
 				if (!ignoreUnknown)
 					throw ex;
-				// Otherwise, just ignore it and continue...
+				// 否则, 只需忽略它并继续...
 			} catch (PropertyVetoException ex) {
 				propertyVetoExceptionsException.addPropertyVetoException(ex);
 			} catch (TypeMismatchException ex) {
@@ -640,7 +627,7 @@ public class BeanWrapperImpl implements BeanWrapper {
 			}
 		}   // for each property
 
-		// If we encountered individual exceptions, throw the composite exception
+		// 如果遇到个别异常, 则抛出复合异常
 		if (propertyVetoExceptionsException.getExceptionCount() > 0) {
 			throw propertyVetoExceptionsException;
 		}
@@ -676,12 +663,12 @@ public class BeanWrapperImpl implements BeanWrapper {
 	}
 
 	/**
-	 * Get the value of an indexed property
+	 * 获取索引属性的值
 	 *
-	 * @param propertyName name of the property to get value of
-	 * @param index        index from 0 of the property
-	 * @return the value of the property
-	 * @throws BeansException if there's a fatal exception
+	 * @param propertyName 要获取其值的属性的名称
+	 * @param index        属性的从0开始的索引
+	 * @return 属性的值
+	 * @throws BeansException 如果有致命异常
 	 */
 	public Object getIndexedPropertyValue(String propertyName, int index) throws BeansException {
 		PropertyDescriptor pd = getPropertyDescriptor(propertyName);
@@ -703,10 +690,10 @@ public class BeanWrapperImpl implements BeanWrapper {
 	}
 
 	/**
-	 * Method getProperties.
+	 * getProperties方法.
 	 *
-	 * @return PropertyDescriptor[] property descriptor for the wrapped target
-	 * @throws BeansException if property descriptors cannot be obtained
+	 * @return PropertyDescriptor[] 包装目标的属性描述符
+	 * @throws BeansException 如果无法获得属性描述符
 	 */
 	public PropertyDescriptor[] getProperties() throws BeansException {
 		return cachedIntrospectionResults.getBeanInfo().getPropertyDescriptors();
@@ -727,7 +714,7 @@ public class BeanWrapperImpl implements BeanWrapper {
 		try {
 			return getPropertyDescriptor(propertyName).getReadMethod() != null;
 		} catch (BeansException ex) {
-			// Doesn't exist, so can't be readable
+			// 不存在, 所以不可读
 			return false;
 		}
 	}
@@ -739,7 +726,7 @@ public class BeanWrapperImpl implements BeanWrapper {
 		try {
 			return getPropertyDescriptor(propertyName).getWriteMethod() != null;
 		} catch (BeansException ex) {
-			// Doesn't exist, so can't be writable
+			// 不存在, 所以不可写
 			return false;
 		}
 	}
@@ -852,14 +839,13 @@ public class BeanWrapperImpl implements BeanWrapper {
 	}
 
 	/**
-	 * Disabling event propagation improves
-	 * performance
+	 * 禁用事件传播可提高性能
 	 *
-	 * @param flag whether event propagation should be enabled.
+	 * @param flag 是否应该启用事件传播.
 	 */
 	public void setEventPropagationEnabled(boolean flag) {
 		this.eventPropagationEnabled = flag;
-		// Lazily initialize support for events if not already initialized
+		// 如果尚未初始化, 则延迟初始化对事件的支持
 		if (eventPropagationEnabled && (vetoableChangeSupport == null || propertyChangeSupport == null)) {
 			vetoableChangeSupport = new VetoableChangeSupport(object);
 			propertyChangeSupport = new PropertyChangeSupport(object);
@@ -872,10 +858,9 @@ public class BeanWrapperImpl implements BeanWrapper {
 	//---------------------------------------------------------------------
 
 	/**
-	 * This method is expensive! Only call for diagnostics and debugging reasons,
-	 * not in production
+	 * 这种方法代价很昂贵! 仅用于诊断和调试原因, 不用于生产
 	 *
-	 * @return a string describing the state of this object
+	 * @return 描述此对象状态的字符串
 	 */
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
