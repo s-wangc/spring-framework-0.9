@@ -1,8 +1,8 @@
 /**
- * Generic framework code included with 
+ * Generic framework code included with
  * <a href="http://www.amazon.com/exec/obidos/tg/detail/-/1861007841/">Expert One-On-One J2EE Design and Development</a>
- * by Rod Johnson (Wrox, 2002). 
- * This code is free to use and modify. 
+ * by Rod Johnson (Wrox, 2002).
+ * This code is free to use and modify.
  * Please contact <a href="mailto:rod.johnson@interface21.com">rod.johnson@interface21.com</a>
  * for commercial support.
  */
@@ -34,18 +34,18 @@ public class SQLErrorCodeSQLExceptionTranslater implements SQLExceptionTranslate
 	protected SQLErrorCodes sqlErrorCodes;
 
 	public SQLErrorCodeSQLExceptionTranslater() {
-		this.sqlErrorCodes = new SQLErrorCodes();		
+		this.sqlErrorCodes = new SQLErrorCodes();
 	}
 
 	public SQLErrorCodeSQLExceptionTranslater(SQLErrorCodes sec) {
-		this.sqlErrorCodes = sec;		
+		this.sqlErrorCodes = sec;
 	}
 
 	/**
 	 * set the error codes to be used for translation
 	 */
 	public void setSqlErrorCodes(SQLErrorCodes sec) {
-		this.sqlErrorCodes = sec;		
+		this.sqlErrorCodes = sec;
 	}
 
 	/**
@@ -58,20 +58,20 @@ public class SQLErrorCodeSQLExceptionTranslater implements SQLExceptionTranslate
 			logTranslation(task, sql, sqlex);
 			return new BadSqlGrammarException(task, sql, sqlex);
 		}
-		if (java.util.Arrays.binarySearch(sqlErrorCodes.getDataIntegrityViolationCodes() , errorCode) >= 0) {
+		if (java.util.Arrays.binarySearch(sqlErrorCodes.getDataIntegrityViolationCodes(), errorCode) >= 0) {
 			logTranslation(task, sql, sqlex);
 			return new DataIntegrityViolationException(task + ": " + sqlex.getMessage(), sqlex);
 		}
 
 		// We couldn't identify it more precisely - let's hand it over to the SQLState Translater.
-		logger.warn("Unable to translate SQLException with errorCode=" + sqlex.getErrorCode() + 
-						", will now try the SQLState Translater");
+		logger.warn("Unable to translate SQLException with errorCode=" + sqlex.getErrorCode() +
+				", will now try the SQLState Translater");
 		SQLStateSQLExceptionTranslater lastResort = new SQLStateSQLExceptionTranslater();
 		return lastResort.translate(task, sql, sqlex);
 	}
 
 	private void logTranslation(String task, String sql, SQLException sqlex) {
-		logger.warn("Translating SQLException with SQLState='" + sqlex.getSQLState() + "' and errorCode=" + sqlex.getErrorCode() + 
-						" and message=" + sqlex.getMessage() + "; sql was '" + sql + "'");
+		logger.warn("Translating SQLException with SQLState='" + sqlex.getSQLState() + "' and errorCode=" + sqlex.getErrorCode() +
+				" and message=" + sqlex.getMessage() + "; sql was '" + sql + "'");
 	}
 }

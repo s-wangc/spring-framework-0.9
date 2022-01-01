@@ -10,17 +10,17 @@ import com.interface21.jdbc.core.DataFieldMaxValueIncrementer;
  * Implementation of {@link com.interface21.jdbc.core.DataFieldMaxValueIncrementer}
  * Uses <b>Template Method</b> design pattern
  * Subclasses should provide implementations of protected abstract methods.
- * <br><br><b>History:</b> 
+ * <br><br><b>History:</b>
  * <li>17/04/2003 : donated to Spring by Dmitriy Kopylenko
  * <li>19/04/2003 : modified by Isabelle Muszynski, added nextDoubleValue
  * <li>09/05/2003 : modified by JPP, added nextLongValue
  * <li>17/06/2003 : modified by Ken Krebs, added common functionality form subclasses
+ *
  * @author Dmitriy Kopylenko
  * @author Isabelle Muszynski
  * @author Jean-Pierre Pawlak
  * @author Ken Krebs
  * @version $Id: AbstractDataFieldMaxValueIncrementer.java,v 1.14 2003/06/20 15:47:26 dkopylenko Exp $
- *
  */
 public abstract class AbstractDataFieldMaxValueIncrementer implements DataFieldMaxValueIncrementer, InitializingBean {
 
@@ -29,19 +29,29 @@ public abstract class AbstractDataFieldMaxValueIncrementer implements DataFieldM
 	//-----------------------------------------------------------------
 	private DataSource dataSource;
 
-	/** The name of the sequence/table containing the sequence */
+	/**
+	 * The name of the sequence/table containing the sequence
+	 */
 	private String incrementerName;
 
-	/** The name of the column to use for this sequence */
+	/**
+	 * The name of the column to use for this sequence
+	 */
 	private String columnName;
 
-	/** The number of keys buffered in a cache */
+	/**
+	 * The number of keys buffered in a cache
+	 */
 	private int cacheSize = 1;
 
-	/** Flag if dirty definition */
+	/**
+	 * Flag if dirty definition
+	 */
 	private boolean dirty = true;
 
-	/** Gets the state of the dirty flag */
+	/**
+	 * Gets the state of the dirty flag
+	 */
 	public boolean isDirty() {
 		return this.dirty;
 	}
@@ -54,7 +64,8 @@ public abstract class AbstractDataFieldMaxValueIncrementer implements DataFieldM
 
 	/**
 	 * Constructor
-	 * @param ds the datasource to use
+	 *
+	 * @param ds              the datasource to use
 	 * @param incrementerName the name of the sequence/table to use
 	 **/
 	public AbstractDataFieldMaxValueIncrementer(DataSource ds, String incrementerName) {
@@ -64,9 +75,10 @@ public abstract class AbstractDataFieldMaxValueIncrementer implements DataFieldM
 
 	/**
 	 * Constructor
-	 * @param ds the datasource to use
+	 *
+	 * @param ds              the datasource to use
 	 * @param incrementerName the name of the sequence/table to use
-	 * @param columnName the name of the column in the sequence table to use
+	 * @param columnName      the name of the column in the sequence table to use
 	 **/
 	public AbstractDataFieldMaxValueIncrementer(DataSource ds, String incrementerName, String columnName) {
 		this.dataSource = ds;
@@ -76,9 +88,10 @@ public abstract class AbstractDataFieldMaxValueIncrementer implements DataFieldM
 
 	/**
 	 * Constructor
-	 * @param ds the datasource to use
+	 *
+	 * @param ds              the datasource to use
 	 * @param incrementerName the name of the sequence/table to use
-	 * @param cacheSize the number of buffered keys
+	 * @param cacheSize       the number of buffered keys
 	 **/
 	public AbstractDataFieldMaxValueIncrementer(DataSource ds, String incrementerName, int cacheSize) {
 		this.dataSource = ds;
@@ -88,10 +101,11 @@ public abstract class AbstractDataFieldMaxValueIncrementer implements DataFieldM
 
 	/**
 	 * Constructor
-	 * @param ds the datasource to use
+	 *
+	 * @param ds              the datasource to use
 	 * @param incrementerName the name of the sequence/table to use
-	 * @param columnName the name of the column in the sequence table to use
-	 * @param cacheSize the number of buffered keys
+	 * @param columnName      the name of the column in the sequence table to use
+	 * @param cacheSize       the number of buffered keys
 	 **/
 	public AbstractDataFieldMaxValueIncrementer(DataSource ds, String incrementerName, String columnName, int cacheSize) {
 		this.dataSource = ds;
@@ -100,13 +114,16 @@ public abstract class AbstractDataFieldMaxValueIncrementer implements DataFieldM
 		this.cacheSize = cacheSize;
 	}
 
-	/** Sets the state of the dirty flag	 */
+	/**
+	 * Sets the state of the dirty flag
+	 */
 	public void setDirty(boolean dirty) {
 		this.dirty = dirty;
 	}
 
 	/**
 	 * Gets the data source.
+	 *
 	 * @return ds The data source to return
 	 */
 	public DataSource getDataSource() {
@@ -115,6 +132,7 @@ public abstract class AbstractDataFieldMaxValueIncrementer implements DataFieldM
 
 	/**
 	 * Sets the data source.
+	 *
 	 * @param ds The data source to set
 	 */
 	public void setDataSource(DataSource dataSource) {
@@ -124,6 +142,7 @@ public abstract class AbstractDataFieldMaxValueIncrementer implements DataFieldM
 
 	/**
 	 * Gets the incrementerName.
+	 *
 	 * @return incrementerName The incrementerName to return
 	 */
 	public String getIncrementerName() {
@@ -132,6 +151,7 @@ public abstract class AbstractDataFieldMaxValueIncrementer implements DataFieldM
 
 	/**
 	 * Sets the incrementerName.
+	 *
 	 * @param incrementerName The incrementerName to set
 	 */
 	public void setIncrementerName(String incrementerName) {
@@ -141,6 +161,7 @@ public abstract class AbstractDataFieldMaxValueIncrementer implements DataFieldM
 
 	/**
 	 * Gets the columnName.
+	 *
 	 * @return columnName The columnName to return
 	 */
 	public String getColumnName() {
@@ -149,6 +170,7 @@ public abstract class AbstractDataFieldMaxValueIncrementer implements DataFieldM
 
 	/**
 	 * Sets the columnName.
+	 *
 	 * @param columnName The columnName to set
 	 */
 	public void setColumnName(String columnName) {
@@ -158,6 +180,7 @@ public abstract class AbstractDataFieldMaxValueIncrementer implements DataFieldM
 
 	/**
 	 * Gets the cacheSize.
+	 *
 	 * @return cacheSize The cacheSize to return
 	 */
 	public int getCacheSize() {
@@ -166,6 +189,7 @@ public abstract class AbstractDataFieldMaxValueIncrementer implements DataFieldM
 
 	/**
 	 * Sets the cacheSize.
+	 *
 	 * @param cacheSize The number of buffered keys
 	 */
 	public void setCacheSize(int cacheSize) {
@@ -175,6 +199,7 @@ public abstract class AbstractDataFieldMaxValueIncrementer implements DataFieldM
 
 	/**
 	 * Template method
+	 *
 	 * @see com.interface21.jdbc.core.DataFieldMaxValueIncrementer#nextIntValue
 	 */
 	public final int nextIntValue() throws DataAccessException {
@@ -183,6 +208,7 @@ public abstract class AbstractDataFieldMaxValueIncrementer implements DataFieldM
 
 	/**
 	 * Template method
+	 *
 	 * @see com.interface21.jdbc.core.DataFieldMaxValueIncrementer#nextLongValue
 	 */
 	public final long nextLongValue() throws DataAccessException {
@@ -191,6 +217,7 @@ public abstract class AbstractDataFieldMaxValueIncrementer implements DataFieldM
 
 	/**
 	 * Template method
+	 *
 	 * @see com.interface21.jdbc.core.DataFieldMaxValueIncrementer#nextDoubleValue
 	 */
 	public final double nextDoubleValue() throws DataAccessException {
@@ -199,6 +226,7 @@ public abstract class AbstractDataFieldMaxValueIncrementer implements DataFieldM
 
 	/**
 	 * Template method
+	 *
 	 * @see com.interface21.jdbc.core.DataFieldMaxValueIncrementer#nextStringValue()
 	 */
 	public final String nextStringValue() throws DataAccessException {
@@ -207,6 +235,7 @@ public abstract class AbstractDataFieldMaxValueIncrementer implements DataFieldM
 
 	/**
 	 * Template method
+	 *
 	 * @see com.interface21.jdbc.core.DataFieldMaxValueIncrementer#nextValue(java.lang.Class)
 	 */
 	public final Object nextValue(Class keyClass) throws DataAccessException {
@@ -224,24 +253,28 @@ public abstract class AbstractDataFieldMaxValueIncrementer implements DataFieldM
 
 	/**
 	 * Template method implementation to be provided by concrete subclasses
+	 *
 	 * @see #nextIntValue
 	 */
 	protected abstract int incrementIntValue() throws DataAccessException;
 
 	/**
 	 * Template method implementation to be provided by concrete subclasses
+	 *
 	 * @see #nextLongValue
 	 */
 	protected abstract long incrementLongValue() throws DataAccessException;
 
 	/**
 	 * Template method implementation to be provided by concrete subclasses
+	 *
 	 * @see #nextDoubleValue
 	 */
 	protected abstract double incrementDoubleValue() throws DataAccessException;
 
 	/**
 	 * Template method implementation to be provided by concrete subclasses
+	 *
 	 * @see #nextStringValue
 	 */
 	protected abstract String incrementStringValue() throws DataAccessException;

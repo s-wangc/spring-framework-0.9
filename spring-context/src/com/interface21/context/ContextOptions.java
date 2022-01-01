@@ -3,6 +3,7 @@ package com.interface21.context;
 /**
  * Base bean to hold minimum of application context configuration.
  * Can be subclassed to add additional properties.
+ *
  * @author Rod Johnson
  */
 public class ContextOptions {
@@ -18,6 +19,7 @@ public class ContextOptions {
 	 * in a production environment. An implementation of reloading that cannot be
 	 * guaranteed to be threadsafe but is sufficient during development is all that
 	 * is required. Of course any limitations of an implementation should be documented.
+	 *
 	 * @return whether we can reload this config
 	 */
 	public boolean isReloadable() {
@@ -26,6 +28,7 @@ public class ContextOptions {
 
 	/**
 	 * Set if we can reload this config.
+	 *
 	 * @param reloadable if we can reload this config.
 	 */
 	public void setReloadable(boolean reloadable) {

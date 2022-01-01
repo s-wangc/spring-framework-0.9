@@ -42,10 +42,11 @@ public class FieldError extends ObjectError {
 	/**
 	 * Create a new FieldError instance, using multiple codes.
 	 * <p>This is only meant to be used by subclasses.
+	 *
 	 * @see com.interface21.context.MessageSourceResolvable#getCodes
 	 */
 	protected FieldError(String objectName, String field, Object rejectedValue,
-	                     String[] codes, Object[] args, String defaultMessage) {
+						 String[] codes, Object[] args, String defaultMessage) {
 		super(objectName, codes, args, defaultMessage);
 		this.field = field;
 		this.rejectedValue = rejectedValue;
@@ -55,12 +56,12 @@ public class FieldError extends ObjectError {
 	 * Create a new FieldError instance, using a default code.
 	 */
 	public FieldError(String objectName, String field, Object rejectedValue,
-	                  String code, Object[] args, String defaultMessage) {
+					  String code, Object[] args, String defaultMessage) {
 		this(objectName, field, rejectedValue,
-		     new String[] {code + CODE_SEPARATOR + objectName + CODE_SEPARATOR + field,
-		                   code + CODE_SEPARATOR + field,
-		                   code},
-		     args, defaultMessage);
+				new String[]{code + CODE_SEPARATOR + objectName + CODE_SEPARATOR + field,
+						code + CODE_SEPARATOR + field,
+						code},
+				args, defaultMessage);
 	}
 
 	public String getField() {
@@ -73,8 +74,8 @@ public class FieldError extends ObjectError {
 
 	public String toString() {
 		return "FieldError occurred in object [" + getObjectName() + "] on [" +
-		    this.field + "]: rejectedValue [" + this.rejectedValue + "]; " +
-		    resolvableToString();
+				this.field + "]: rejectedValue [" + this.rejectedValue + "]; " +
+				resolvableToString();
 	}
 
 }

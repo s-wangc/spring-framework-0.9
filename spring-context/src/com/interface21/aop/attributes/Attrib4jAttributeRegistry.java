@@ -2,7 +2,7 @@
  * The Spring Framework is published under the terms
  * of the Apache Software License.
  */
- 
+
 package com.interface21.aop.attributes;
 
 import java.lang.reflect.AccessibleObject;
@@ -13,8 +13,8 @@ import org.aopalliance.AttributeRegistry;
 
 /**
  * @author Rod Johnson
- * @since 13-Mar-2003
  * @version $Revision: 1.3 $
+ * @since 13-Mar-2003
  */
 public class Attrib4jAttributeRegistry implements AttributeRegistry {
 
@@ -29,7 +29,7 @@ public class Attrib4jAttributeRegistry implements AttributeRegistry {
 
 		throw new UnsupportedOperationException("Attrib4j integration not yet implemented");
 	}
-		
+
 
 	/**
 	 * @see org.aopalliance.AttributeRegistry#getAttributes(java.lang.Class)

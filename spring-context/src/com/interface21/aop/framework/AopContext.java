@@ -2,7 +2,7 @@
  * The Spring Framework is published under the terms
  * of the Apache Software License.
  */
- 
+
 package com.interface21.aop.framework;
 
 import org.aopalliance.AspectException;
@@ -21,12 +21,13 @@ import org.aopalliance.MethodInvocation;
  * However, this approach should not be used when there is
  * a reasonable alternative, as it makes application code dependent on
  * usage under AOP and--specifically--the Spring AOP framework.
+ *
  * @author Rod Johnson
- * @since 13-Mar-2003
  * @version $Id: AopContext.java,v 1.2 2003/04/08 20:30:14 johnsonr Exp $
+ * @since 13-Mar-2003
  */
 public abstract class AopContext {
-	
+
 	/**
 	 * Invocation associated with this thread. Will be null unless the
 	 * exposeInvocation property on the controlling proxy has been set to true.
@@ -37,6 +38,7 @@ public abstract class AopContext {
 	/**
 	 * Internal method that the AOP framework uses to set the current
 	 * AOP context if it is configured to expose call contexts.
+	 *
 	 * @param invocation the current AOP invocation context
 	 */
 	static void setCurrentInvocation(MethodInvocation invocation) {
@@ -49,12 +51,13 @@ public abstract class AopContext {
 	 * via AOP, and the AOP framework has been set to
 	 * expose invocations. Otherwise, this method will throw
 	 * AspectException.
+	 *
 	 * @return MethodInvocation the current AOP invocation.
 	 * Never returns null.
 	 * @throws AspectException if the invocation cannot be found,
-	 * because the method was invoked outside an AOP invocation
-	 * context or because the AOP framework has not been configured
-	 * to expose the invocation context.
+	 *                         because the method was invoked outside an AOP invocation
+	 *                         context or because the AOP framework has not been configured
+	 *                         to expose the invocation context.
 	 */
 	public static MethodInvocation currentInvocation() {
 		if (currentInvocation == null || currentInvocation.get() == null)

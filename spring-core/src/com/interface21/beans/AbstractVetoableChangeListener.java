@@ -34,34 +34,39 @@ import java.util.HashMap;
  * validation methods must be able to cope with initial values. They can, however,
  * throw another PropertyVetoException, which will be ignored by the caller.<br/>
  * Subclasses should be threadsafe: nothing in this superclass will cause a problem.
- * @author  Rod Johnson
+ *
+ * @author Rod Johnson
  * @version $Id: AbstractVetoableChangeListener.java,v 1.2 2003/02/27 10:09:31 jhoeller Exp $
  */
 public abstract class AbstractVetoableChangeListener implements VetoableChangeListener {
-	
-	/** Prefix for validation methods: a typical name might be
+
+	/**
+	 * Prefix for validation methods: a typical name might be
 	 * validateAge()
 	 */
 	protected static final String VALIDATE_METHOD_PREFIX = "validate";
-	
-	/** Validation methods, keyed by propertyName */
+
+	/**
+	 * Validation methods, keyed by propertyName
+	 */
 	private HashMap validationMethodHash = new HashMap();
-	
-	
-	/** Creates new AbstractVetoableChangeListener.
+
+
+	/**
+	 * Creates new AbstractVetoableChangeListener.
 	 * Caches validation methods for efficiency.
 	 */
 	public AbstractVetoableChangeListener() throws SecurityException {
 		// Look at all methods in the subclass, trying to find
 		// methods that are validators according to our criteria
-		Method [] methods = getClass().getMethods();
+		Method[] methods = getClass().getMethods();
 		for (int i = 0; i < methods.length; i++) {
 			// We're looking for methods with names starting with the given prefix,
 			// and two parameters: the value (which may be of any type, primitive or object)
 			// and a PropertyChangeEvent.
 			if (methods[i].getName().startsWith(VALIDATE_METHOD_PREFIX) &&
-				methods[i].getParameterTypes().length == 2 &&
-				PropertyChangeEvent.class.isAssignableFrom(methods[i].getParameterTypes()[1])) {
+					methods[i].getParameterTypes().length == 2 &&
+					PropertyChangeEvent.class.isAssignableFrom(methods[i].getParameterTypes()[1])) {
 				// We've found a potential validator: it has the right number of parameters
 				// and its name begins with validate...
 				//System.out.println("Found potential validator method [" + methods[i] + "]");
@@ -75,19 +80,18 @@ public abstract class AbstractVetoableChangeListener implements VetoableChangeLi
 					String propertyName = Introspector.decapitalize(methods[i].getName().substring(VALIDATE_METHOD_PREFIX.length()));
 					validationMethodHash.put(propertyName, methods[i]);
 					//System.out.println(methods[i] + " is validator for property " + propertyName);
-				}
-				else {
+				} else {
 					//System.out.println("invalid validator");
 				}
-			}
-			else {
+			} else {
 				//System.out.println("method [" + methods[i] + "] is not a validator");
 			}
 		}
-	}	// constructor
-	
-	
-	/** Implementation of VetoableChangeListener.
+	}    // constructor
+
+
+	/**
+	 * Implementation of VetoableChangeListener.
 	 * Will attempt to locate the appropriate validator method and
 	 * invoke it. Will do nothing if there is no validation method for this
 	 * property.
@@ -96,20 +100,18 @@ public abstract class AbstractVetoableChangeListener implements VetoableChangeLi
 		//System.out.println("VetoableChangeEvent: old value=[" + e.getOldValue() + "] new value=[" + e.getNewValue() + "]");
 		//if (m==null)
 		Method m = (Method) validationMethodHash.get(e.getPropertyName());
-				
+
 		if (m != null) {
 			try {
 				//System.out.println("Using validator method " + m);
 				Object val = e.getNewValue();
 				//String vals = (String) val;
 				//if (false) 
-				m.invoke(this, new Object[] { val, e });
+				m.invoke(this, new Object[]{val, e});
 				//System.out.println("PROPERTY VALUE NOT VETOED: OK");
-			}
-			catch (IllegalAccessException ex) {
+			} catch (IllegalAccessException ex) {
 				//System.out.println("WARNING: can't validate. method isn't accessible");
-			}
-			catch (InvocationTargetException ex) {
+			} catch (InvocationTargetException ex) {
 				// This is what we're looking for: the subclass's
 				// validator method vetoed the property change event
 				// We know that the exception must be of the correct type (unless
@@ -122,16 +124,18 @@ public abstract class AbstractVetoableChangeListener implements VetoableChangeLi
 				PropertyVetoException pex = (PropertyVetoException) ex.getTargetException();
 				throw pex;
 			}
-		}	// if there was a validator method for this property
+		}    // if there was a validator method for this property
 		else {
 			//System.out.println("no validation method for " + e.getPropertyName());
 		}
-	}	// vetoableChange
-	
-	
-	/** Private convenience method used in this class */
+	}    // vetoableChange
+
+
+	/**
+	 * Private convenience method used in this class
+	 */
 	private static String capitalize(String propertyName) {
 		return propertyName.substring(0, 1).toUpperCase() + propertyName.substring(1);
 	}
-	
-}	// class AbstractVetoableChangeListener
+
+}    // class AbstractVetoableChangeListener

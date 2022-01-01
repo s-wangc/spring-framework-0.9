@@ -19,9 +19,9 @@ import com.interface21.web.util.HtmlUtils;
  * copied into the respective BindStatus instance.
  *
  * @author Juergen Hoeller
- * @since 01.03.2003
  * @see com.interface21.web.servlet.support.RequestContext#getErrors
  * @see com.interface21.web.servlet.tags.BindTag
+ * @since 01.03.2003
  */
 public class EscapedErrors implements Errors {
 
@@ -119,8 +119,8 @@ public class EscapedErrors implements Errors {
 
 	private List escapeObjectErrors(List source) {
 		List escaped = new ArrayList();
-		for (Iterator it = source.iterator(); it.hasNext();) {
-			ObjectError objectError = (ObjectError)it.next();
+		for (Iterator it = source.iterator(); it.hasNext(); ) {
+			ObjectError objectError = (ObjectError) it.next();
 			escaped.add(escapeObjectError(objectError));
 		}
 		return escaped;

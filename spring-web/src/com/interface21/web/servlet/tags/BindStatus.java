@@ -16,7 +16,7 @@ import com.interface21.util.StringUtils;
  * @author Juergen Hoeller
  */
 public class BindStatus {
-	
+
 	private final String expression;
 
 	private final Object value;
@@ -28,9 +28,10 @@ public class BindStatus {
 	/**
 	 * Create a new BindStatus instance,
 	 * representing a field or object status.
-	 * @param expression expression suitable for HTML input name
-	 * @param value current field value
-	 * @param errorCodes error codes for the field or object
+	 *
+	 * @param expression    expression suitable for HTML input name
+	 * @param value         current field value
+	 * @param errorCodes    error codes for the field or object
 	 * @param errorMessages resolved error messages for the field or object
 	 */
 	protected BindStatus(String expression, Object value, String[] errorCodes, String[] errorMessages) {
@@ -109,6 +110,7 @@ public class BindStatus {
 	/**
 	 * Return an error message string, concatenating all messages
 	 * separated by the given delimiter.
+	 *
 	 * @param delimiter separator string, e.g. ", " or "<br>"
 	 * @return the error message string
 	 */

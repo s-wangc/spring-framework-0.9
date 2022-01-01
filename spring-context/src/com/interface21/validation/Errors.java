@@ -38,17 +38,19 @@ public interface Errors {
 
 	/**
 	 * Reject the current object, using the given error description.
-	 * @param errorCode error code, interpretable as message key
-	 * @param errorArgs error arguments, for argument binding via MessageFormat
+	 *
+	 * @param errorCode      error code, interpretable as message key
+	 * @param errorArgs      error arguments, for argument binding via MessageFormat
 	 * @param defaultMessage fallback default message
 	 */
 	void reject(String errorCode, Object[] errorArgs, String defaultMessage);
 
 	/**
 	 * Reject the given field of the current object, using the given error description.
-	 * @param field field name
-	 * @param errorCode error code, interpretable as message key
-	 * @param errorArgs error arguments, for argument binding via MessageFormat
+	 *
+	 * @param field          field name
+	 * @param errorCode      error code, interpretable as message key
+	 * @param errorArgs      error arguments, for argument binding via MessageFormat
 	 * @param defaultMessage fallback default message
 	 */
 	void rejectValue(String field, String errorCode, Object[] errorArgs, String defaultMessage);
@@ -65,6 +67,7 @@ public interface Errors {
 
 	/**
 	 * Get all errors, both global and field ones.
+	 *
 	 * @return List of ObjectError instances
 	 */
 	List getAllErrors();
@@ -81,18 +84,21 @@ public interface Errors {
 
 	/**
 	 * Get all global errors.
+	 *
 	 * @return List of ObjectError instances
 	 */
 	List getGlobalErrors();
 
 	/**
 	 * Get the first global error, if any.
+	 *
 	 * @return the global error, or null
 	 */
 	ObjectError getGlobalError();
 
 	/**
 	 * Return if there are any errors associated with the given field.
+	 *
 	 * @param field field name
 	 * @return if there were any errors associated with the given field
 	 */
@@ -100,6 +106,7 @@ public interface Errors {
 
 	/**
 	 * Return the number of errors associated with the given field.
+	 *
 	 * @param field field name
 	 * @return the number of errors associated with the given field
 	 */
@@ -107,6 +114,7 @@ public interface Errors {
 
 	/**
 	 * Get all errors associated with the given field.
+	 *
 	 * @param field field name
 	 * @return List of FieldError instances
 	 */
@@ -114,6 +122,7 @@ public interface Errors {
 
 	/**
 	 * Get the first error associated with the given field, if any.
+	 *
 	 * @return the field-specific error, or null
 	 */
 	FieldError getFieldError(String field);
@@ -123,6 +132,7 @@ public interface Errors {
 	 * bean property value or a rejected update from the last binding.
 	 * Allows for convenient access to user-specified field values,
 	 * even if there were type mismatches.
+	 *
 	 * @param field field name
 	 * @return the current value of the given field
 	 */
@@ -134,8 +144,9 @@ public interface Errors {
 	 * path to the field names.
 	 * <p>For example, an address validator could validate the
 	 * subobject address of a customer object.
+	 *
 	 * @param nestedPath nested path within this object,
-	 * e.g. "address" (defaults to "", null is also acceptable)
+	 *                   e.g. "address" (defaults to "", null is also acceptable)
 	 */
 	void setNestedPath(String nestedPath);
 

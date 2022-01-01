@@ -1,14 +1,14 @@
 /*
- * Generic framework code included with 
+ * Generic framework code included with
  * <a href="http://www.amazon.com/exec/obidos/tg/detail/-/1861007841/">Expert One-On-One J2EE Design and Development</a>
- * by Rod Johnson (Wrox, 2002). 
+ * by Rod Johnson (Wrox, 2002).
  * This code is free to use and modify. However, please
  * acknowledge the source and include the above URL in each
- * class using or derived from this code. 
+ * class using or derived from this code.
  * Please contact <a href="mailto:rod.johnson@interface21.com">rod.johnson@interface21.com</a>
  * for commercial support.
  */
- 
+
 package com.interface21.web.servlet.view.velocity;
 
 import java.io.IOException;
@@ -31,6 +31,7 @@ import com.interface21.context.support.ApplicationObjectSupport;
  * By default it will be sought in the /WEB-INF directory, with the name velocity.properties.
  * <br>This bean exists purely to configure Velocity. It exposes no methods other than
  * initialization methods, and is not meant to be referenced by application components.
+ *
  * @author Rod Johnson
  */
 public class VelocityConfigurer extends ApplicationObjectSupport {
@@ -50,13 +51,13 @@ public class VelocityConfigurer extends ApplicationObjectSupport {
 	}
 
 	/**
-	 *  Initializes the Velocity runtime, first calling 
-	 *  loadConfiguration(ServletConfig) to get a
-	 *  java.util.Properties of configuration information
-	 *  and then calling Velocity.init().  Override this
-	 *  to do anything to the environment before the 
-	 *  initialization of the singelton takes place, or to 
-	 *  initialize the singleton in other ways.
+	 * Initializes the Velocity runtime, first calling
+	 * loadConfiguration(ServletConfig) to get a
+	 * java.util.Properties of configuration information
+	 * and then calling Velocity.init().  Override this
+	 * to do anything to the environment before the
+	 * initialization of the singelton takes place, or to
+	 * initialize the singleton in other ways.
 	 */
 	protected void initApplicationContext() throws ApplicationContextException {
 		try {
@@ -64,17 +65,14 @@ public class VelocityConfigurer extends ApplicationObjectSupport {
 			logger.info("Loading Velocity properties from [" + this.location + "]");
 			p.load(getApplicationContext().getResourceAsStream(this.location));
 			Velocity.init(p);
-		}
-		catch (ServletException e) {
+		} catch (ServletException e) {
 			throw new ApplicationContextException("Error loading Velocity config from [" + this.location + "]", e);
-		}
-		catch (IOException e) {
+		} catch (IOException e) {
 			throw new ApplicationContextException("Error loading Velocity config from [" + this.location + "]", e);
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			throw new ApplicationContextException(
-				"Error initializing Velocity from properties file (loaded OK) @[" + this.location + "]",
-				e);
+					"Error initializing Velocity from properties file (loaded OK) @[" + this.location + "]",
+					e);
 		}
 	}
 

@@ -30,8 +30,9 @@ public class StaticMessageSource extends AbstractNestingMessageSource {
 
 	/**
 	 * Associate the given message with the given code.
-	 * @param code lookup code
-   * @param locale locale message should be found within
+	 *
+	 * @param code    lookup code
+	 * @param locale  locale message should be found within
 	 * @param message message associated with this lookup code
 	 */
 	public void addMessage(String code, Locale locale, String message) {

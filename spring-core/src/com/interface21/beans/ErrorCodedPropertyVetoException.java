@@ -9,7 +9,8 @@ import com.interface21.core.HasRootCause;
 /**
  * Exception used by PropertyVetoException to wrap failures.
  * Clients can throw these.
- * @author  Rod Johnson
+ *
+ * @author Rod Johnson
  * @version $Id: ErrorCodedPropertyVetoException.java,v 1.3 2003/03/21 14:32:21 jhoeller Exp $
  */
 public class ErrorCodedPropertyVetoException extends PropertyVetoException implements ErrorCoded, HasRootCause {
@@ -29,10 +30,10 @@ public class ErrorCodedPropertyVetoException extends PropertyVetoException imple
 	 * they are calling us with that or if they want to use the ErrorCoded
 	 * ability of this exception.
 	 * NOTE:  Mesg passed in will already have been "resolved".
-	 *        We will take the string passed in literally as is.
-	 *        This means that the caller of this method either created a literal string
-	 *        and passed it to us, OR the caller looked up the string value
-	 *        for a mesg themself in a msgCat BEFORE calling us.
+	 * We will take the string passed in literally as is.
+	 * This means that the caller of this method either created a literal string
+	 * and passed it to us, OR the caller looked up the string value
+	 * for a mesg themself in a msgCat BEFORE calling us.
 	 */
 	public ErrorCodedPropertyVetoException(String mesg, PropertyChangeEvent e, String errorCode) {
 		super(mesg, e);
@@ -79,16 +80,20 @@ public class ErrorCodedPropertyVetoException extends PropertyVetoException imple
 		errorCode = ex.getErrorCode();
 	}
 
-	/** Implementation of ErrorCoded interface.
+	/**
+	 * Implementation of ErrorCoded interface.
 	 * Return the error code associated with this failure.
 	 * The GUI can render this anyway it pleases, allowing for Int8ln etc.
+	 *
 	 * @return a String error code associated with this failure
 	 */
 	public String getErrorCode() {
 		return errorCode;
 	}
 
-	/** Implementation of HasRootCause */
+	/**
+	 * Implementation of HasRootCause
+	 */
 	public Throwable getRootCause() {
 		return rootCause;
 	}

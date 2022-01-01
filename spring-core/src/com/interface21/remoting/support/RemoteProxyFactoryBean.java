@@ -16,8 +16,8 @@ import com.interface21.remoting.RemoteAccessException;
  * using the properties of the factory instance.
  *
  * @author Juergen Hoeller
- * @since 13.05.2003
  * @see #createProxy
+ * @since 13.05.2003
  */
 public abstract class RemoteProxyFactoryBean implements FactoryBean, InitializingBean {
 
@@ -55,6 +55,7 @@ public abstract class RemoteProxyFactoryBean implements FactoryBean, Initializin
 	/**
 	 * Creates and validates the proxy, and keeps the reference.
 	 * Delegates to createProxy.
+	 *
 	 * @see #createProxy
 	 */
 	public void afterPropertiesSet() throws MalformedURLException, RemoteAccessException {
@@ -68,6 +69,7 @@ public abstract class RemoteProxyFactoryBean implements FactoryBean, Initializin
 	 * Create the proxy instance. Can use the properties of this factory,
 	 * although the actually used settings will vary.
 	 * For example, certain protocols do not support authentication.
+	 *
 	 * @return the new proxy instance
 	 */
 	protected abstract Object createProxy() throws MalformedURLException, RemoteAccessException;

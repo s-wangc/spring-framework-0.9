@@ -3,20 +3,20 @@ package org.aopalliance;
 import java.lang.reflect.Method;
 
 public interface MethodInvocation extends Invocation {
-    Method getMethod();
+	Method getMethod();
 
-    Object setResource(String key, Object resource);
+	Object setResource(String key, Object resource);
 
-    int getArgumentCount();
+	int getArgumentCount();
 
-    int getCurrentInterceptorIndex();
+	int getCurrentInterceptorIndex();
 
-    Interceptor getInterceptor(int index);
+	Interceptor getInterceptor(int index);
 
-    int getInterceptorCount();
+	int getInterceptorCount();
 
-    Class getTargetInterface();
+	Class getTargetInterface();
 
-    Object getArgument(int i);
+	Object getArgument(int i);
 
 }

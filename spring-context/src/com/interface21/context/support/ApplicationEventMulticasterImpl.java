@@ -23,55 +23,60 @@ import com.interface21.context.ApplicationListener;
  * overhead.
  * <br/>An alternative implementation could be more sophisticated in both
  * these respects.
+ *
  * @author Rod Johnson
  */
 public class ApplicationEventMulticasterImpl implements ApplicationEventMulticaster {
 
-    //---------------------------------------------------------------------
+	//---------------------------------------------------------------------
 	// Instance data
-    //---------------------------------------------------------------------
-    /**
-     * Set of listeners
-     */
-    private Set   eventListeners = new HashSet();
+	//---------------------------------------------------------------------
+	/**
+	 * Set of listeners
+	 */
+	private Set eventListeners = new HashSet();
 
 
-    //---------------------------------------------------------------------
-    // Constructors
-    //---------------------------------------------------------------------
-    /** Creates new ApplicationEventMulticasterImpl */
+	//---------------------------------------------------------------------
+	// Constructors
+	//---------------------------------------------------------------------
+
+	/**
+	 * Creates new ApplicationEventMulticasterImpl
+	 */
 	public ApplicationEventMulticasterImpl() {
-    }
+	}
 
 
-    //---------------------------------------------------------------------
+	//---------------------------------------------------------------------
 	// Implementation of ApplicationEventMulticaster
 	//---------------------------------------------------------------------
+
 	/**
 	 * @see ApplicationEventMulticaster#addApplicationListener(ApplicationListener)
 	 */
-    public void addApplicationListener(ApplicationListener l) {
-        eventListeners.add(l);
-    }
+	public void addApplicationListener(ApplicationListener l) {
+		eventListeners.add(l);
+	}
 
 	/**
 	 * @see ApplicationEventMulticaster#removeApplicationListener(ApplicationListener)
 	 */
-    public void removeApplicationListener(ApplicationListener l) {
-        eventListeners.remove(l);
-    }
+	public void removeApplicationListener(ApplicationListener l) {
+		eventListeners.remove(l);
+	}
 
 
 	/**
 	 * @see ApplicationListener#onApplicationEvent(ApplicationEvent)
 	 */
-    public void onApplicationEvent(ApplicationEvent e) {
-       Iterator i = eventListeners.iterator();
-       while (i.hasNext()) {
-           ApplicationListener l = (ApplicationListener) i.next();
-           l.onApplicationEvent(e);
-       }
-    }
+	public void onApplicationEvent(ApplicationEvent e) {
+		Iterator i = eventListeners.iterator();
+		while (i.hasNext()) {
+			ApplicationListener l = (ApplicationListener) i.next();
+			l.onApplicationEvent(e);
+		}
+	}
 
 	/**
 	 * @see ApplicationEventMulticaster#removeAllListeners()
@@ -80,4 +85,4 @@ public class ApplicationEventMulticasterImpl implements ApplicationEventMulticas
 		eventListeners.clear();
 	}
 
-}	// class ApplicationEventMulticasterImpl
+}    // class ApplicationEventMulticasterImpl

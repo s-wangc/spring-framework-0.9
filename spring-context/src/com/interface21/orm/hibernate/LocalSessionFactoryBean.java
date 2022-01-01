@@ -22,10 +22,10 @@ import com.interface21.dao.DataAccessResourceFailureException;
  * using HibernateTransactionManager for transaction demarcation.
  *
  * @author Juergen Hoeller
- * @since 05.05.2003
  * @see HibernateTemplate
  * @see HibernateTransactionManager
  * @see com.interface21.jndi.JndiObjectFactoryBean
+ * @since 05.05.2003
  */
 public class LocalSessionFactoryBean implements FactoryBean, InitializingBean {
 
@@ -44,6 +44,7 @@ public class LocalSessionFactoryBean implements FactoryBean, InitializingBean {
 
 	/**
 	 * Initialize the SessionFactory for the given or the default location.
+	 *
 	 * @throws DataAccessResourceFailureException in case of initialization errors
 	 */
 	public void afterPropertiesSet() throws DataAccessResourceFailureException {

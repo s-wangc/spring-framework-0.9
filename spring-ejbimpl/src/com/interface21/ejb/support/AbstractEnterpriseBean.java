@@ -11,7 +11,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 
-/** 
+/**
  * Superclass for all EJBs.
  * Provides logging support.
  * As javax.ejb.EnterpriseBean is a tag interface, there
@@ -21,12 +21,13 @@ import org.apache.commons.logging.LogFactory;
  * of their JNDI environment variables. However, as they may
  * also choose to use another BeanFactory strategy (or not require
  * a bean factory) this class no longer creates a BeanFactory.
- * @see JndiEnvironmentBeanFactory
+ *
  * @author Rod Johnson
  * @version $Id: AbstractEnterpriseBean.java,v 1.3 2003/05/28 16:39:13 jhoeller Exp $
+ * @see JndiEnvironmentBeanFactory
  */
 public abstract class AbstractEnterpriseBean implements EnterpriseBean {
-	
+
 	/**
 	 * Logger, available to subclasses
 	 */

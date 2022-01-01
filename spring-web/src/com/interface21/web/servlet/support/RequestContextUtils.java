@@ -26,6 +26,7 @@ public abstract class RequestContextUtils {
 	/**
 	 * Look for the WebApplicationContext associated with the controller servlet that has
 	 * initiated request processing.
+	 *
 	 * @param request current HTTP request
 	 * @return the request-specific web application context
 	 */
@@ -38,14 +39,15 @@ public abstract class RequestContextUtils {
 	 * initiated request processing, and for the global context if none was found associated
 	 * with the current request. This method is useful to allow components outside our framework,
 	 * such as JSP tag handlers, to access the most specific application context available.
-	 * @param request current HTTP request
+	 *
+	 * @param request        current HTTP request
 	 * @param servletContext current servlet context
 	 * @return the request-specific or global web application context if no request-specific
 	 * context has been set
 	 * @throws ServletException if neither a servlet-specific nor global context has been found
 	 */
 	public static WebApplicationContext getWebApplicationContext(ServletRequest request, ServletContext servletContext)
-	    throws ServletException {
+			throws ServletException {
 		WebApplicationContext webApplicationContext = (WebApplicationContext) request.getAttribute(
 				DispatcherServlet.WEB_APPLICATION_CONTEXT_ATTRIBUTE);
 		if (webApplicationContext == null) {
@@ -62,6 +64,7 @@ public abstract class RequestContextUtils {
 
 	/**
 	 * Return the LocaleResolver that has been bound to the request by the DispatcherServlet.
+	 *
 	 * @param request current HTTP request
 	 * @return the current LocaleResolver
 	 * @throws ServletException if no LocaleResolver has been found
@@ -77,6 +80,7 @@ public abstract class RequestContextUtils {
 	/**
 	 * Retrieves the current locale from the given request,
 	 * using the LocaleResolver bound to the request by the DispatcherServlet.
+	 *
 	 * @param request current HTTP request
 	 * @return the current locale
 	 * @throws ServletException if no LocaleResolver has been found
@@ -87,6 +91,7 @@ public abstract class RequestContextUtils {
 
 	/**
 	 * Return the ThemeResolver that has been bound to the request by the DispatcherServlet.
+	 *
 	 * @param request current HTTP request
 	 * @return the current ThemeResolver
 	 * @throws ServletException if no ThemeResolver has been found
@@ -103,6 +108,7 @@ public abstract class RequestContextUtils {
 	 * Retrieves the current theme from the given request,
 	 * using the ThemeResolver bound to the request by the DispatcherServlet,
 	 * and the current WebApplicationContext.
+	 *
 	 * @param request current HTTP request
 	 * @return the current theme
 	 * @throws ServletException if no ThemeResolver has been found

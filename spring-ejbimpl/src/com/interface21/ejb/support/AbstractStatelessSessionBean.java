@@ -1,8 +1,8 @@
 /**
- * Generic framework code included with 
+ * Generic framework code included with
  * <a href="http://www.amazon.com/exec/obidos/tg/detail/-/1861007841/">Expert One-On-One J2EE Design and Development</a>
- * by Rod Johnson (Wrox, 2002). 
- * This code is free to use and modify. 
+ * by Rod Johnson (Wrox, 2002).
+ * This code is free to use and modify.
  * Please contact <a href="mailto:rod.johnson@interface21.com">rod.johnson@interface21.com</a>
  * for commercial support.
  */
@@ -27,14 +27,14 @@ import javax.ejb.EJBException;
  */
 public abstract class AbstractStatelessSessionBean extends AbstractSessionBean {
 
-	/** 
+	/**
 	 * This is declared abstract to ensure that subclasses implement this method. 
 	 * Otherwise it isn't required by the compiler, but will
 	 * fail on deployment. This is a common cause of errors in implementing SLSBs.
 	 * <br/>The BeanFactory is available at this point
 	 */
 	public abstract void ejbCreate() throws CreateException;
-	
+
 	/**
 	 * @see javax.ejb.SessionBean#ejbActivate(). This method always throws an exception, as
 	 * it should not be invoked by the EJB container.

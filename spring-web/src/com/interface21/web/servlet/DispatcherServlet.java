@@ -62,15 +62,15 @@ import com.interface21.web.util.WebUtils;
  * Each servlet will operate in its own namespace. Only the default name space,
  * and any config objects set for the application as a whole, will be shared.
  *
+ * @author Rod Johnson
+ * @author Juergen Hoeller
+ * @version $Revision: 1.3 $
  * @see HandlerMapping
  * @see HandlerAdapter
  * @see ViewResolver
  * @see LocaleResolver
  * @see com.interface21.web.context.WebApplicationContext
  * @see com.interface21.web.context.ContextLoaderListener
- * @author Rod Johnson
- * @author Juergen Hoeller
- * @version $Revision: 1.3 $
  */
 public class DispatcherServlet extends FrameworkServlet {
 
@@ -101,29 +101,41 @@ public class DispatcherServlet extends FrameworkServlet {
 
 	/**
 	 * Request attribute to hold current locale, retrievable by views.
+	 *
 	 * @see com.interface21.web.servlet.support.RequestContext
 	 */
 	public static final String LOCALE_RESOLVER_ATTRIBUTE = DispatcherServlet.class.getName() + ".LOCALE";
 
 	/**
 	 * Request attribute to hold current theme, retrievable by views.
+	 *
 	 * @see com.interface21.web.servlet.support.RequestContext
 	 */
 	public static final String THEME_RESOLVER_ATTRIBUTE = DispatcherServlet.class.getName() + ".THEME";
 
-	/** LocaleResolver used by this servlet */
+	/**
+	 * LocaleResolver used by this servlet
+	 */
 	private LocaleResolver localeResolver;
 
-	/** ThemeResolver used by this servlet */
+	/**
+	 * ThemeResolver used by this servlet
+	 */
 	private ThemeResolver themeResolver;
 
-	/** List of HandlerMappings */
+	/**
+	 * List of HandlerMappings
+	 */
 	private List handlerMappings;
 
-	/** List of HandlerAdapters */
+	/**
+	 * List of HandlerAdapters
+	 */
 	private List handlerAdapters;
 
-	/** ViewResolver used by this servlet */
+	/**
+	 * ViewResolver used by this servlet
+	 */
 	private ViewResolver viewResolver;
 
 	/**
@@ -149,13 +161,11 @@ public class DispatcherServlet extends FrameworkServlet {
 		try {
 			this.localeResolver = (LocaleResolver) getWebApplicationContext().getBean(LOCALE_RESOLVER_BEAN_NAME);
 			logger.info("Loaded locale resolver [" + this.localeResolver + "]");
-		}
-		catch (NoSuchBeanDefinitionException ex) {
+		} catch (NoSuchBeanDefinitionException ex) {
 			// We need to use the default
 			this.localeResolver = new AcceptHeaderLocaleResolver();
 			logger.info("Unable to load locale resolver with name '" + LOCALE_RESOLVER_BEAN_NAME + "': using default [" + this.localeResolver + "]");
-		}
-		catch (BeansException ex) {
+		} catch (BeansException ex) {
 			// We tried and failed to load the LocaleResolver specified by a bean
 			throw new ServletException("Fatal error loading locale resolver with name '" + LOCALE_RESOLVER_BEAN_NAME + "': using default", ex);
 		}
@@ -171,13 +181,11 @@ public class DispatcherServlet extends FrameworkServlet {
 		try {
 			this.themeResolver = (ThemeResolver) getWebApplicationContext().getBean(THEME_RESOLVER_BEAN_NAME);
 			logger.info("Loaded theme resolver [" + this.themeResolver + "]");
-		}
-		catch (NoSuchBeanDefinitionException ex) {
+		} catch (NoSuchBeanDefinitionException ex) {
 			// We need to use the default
 			this.themeResolver = new FixedThemeResolver();
 			logger.info("Unable to load theme resolver with name '" + THEME_RESOLVER_BEAN_NAME + "': using default [" + this.themeResolver + "]");
-		}
-		catch (BeansException ex) {
+		} catch (BeansException ex) {
 			// We tried and failed to load the ThemeResolver specified by a bean
 			throw new ServletException("Fatal error loading theme resolver with name '" + THEME_RESOLVER_BEAN_NAME + "': using default", ex);
 		}
@@ -203,8 +211,7 @@ public class DispatcherServlet extends FrameworkServlet {
 		if (this.handlerMappings.isEmpty()) {
 			initDefaultHandlerMapping();
 			logger.info("No HandlerMappings found in servlet '" + getServletName() + "': using default");
-		}
-		else {
+		} else {
 			// We keep HandlerMappings in sorted order
 			Collections.sort(this.handlerMappings, new OrderComparator());
 		}
@@ -213,14 +220,14 @@ public class DispatcherServlet extends FrameworkServlet {
 
 	/**
 	 * Initialize the given HandlerMapping object.
+	 *
 	 * @param beanName bean beanName in the current web application context
 	 */
 	private void initHandlerMapping(String beanName) throws ServletException {
 		try {
 			HandlerMapping hm = (HandlerMapping) getWebApplicationContext().getBean(beanName);
 			this.handlerMappings.add(hm);
-		}
-		catch (ApplicationContextException ex) {
+		} catch (ApplicationContextException ex) {
 			// We don't need to catch NoSuchBeanDefinitionException:
 			// we got the name from the bean factory.
 			throw new ServletException("Error initializing HandlerMapping bean '" + beanName + "': " + ex.getMessage(), ex);
@@ -236,8 +243,7 @@ public class DispatcherServlet extends FrameworkServlet {
 			HandlerMapping hm = new BeanNameUrlHandlerMapping();
 			hm.setApplicationContext(getWebApplicationContext());
 			this.handlerMappings.add(hm);
-		}
-		catch (ApplicationContextException ex) {
+		} catch (ApplicationContextException ex) {
 			throw new ServletException("Error initializing default HandlerMapping: " + ex.getMessage(), ex);
 		}
 	}
@@ -261,8 +267,7 @@ public class DispatcherServlet extends FrameworkServlet {
 		if (this.handlerAdapters.isEmpty()) {
 			initDefaultHandlerAdapter();
 			logger.info("No HandlerAdapters found in servlet '" + getServletName() + "': using default");
-		}
-		else {
+		} else {
 			// We keep HandlerAdapters in sorted order
 			Collections.sort(this.handlerAdapters, new OrderComparator());
 		}
@@ -271,6 +276,7 @@ public class DispatcherServlet extends FrameworkServlet {
 
 	/**
 	 * Initialize the handler bean with the given name in the bean factory.
+	 *
 	 * @param beanName bean name in the current web application context
 	 * @throws ServletException if there is an error trying to instantiate and initialize the handler bean
 	 */
@@ -278,8 +284,7 @@ public class DispatcherServlet extends FrameworkServlet {
 		try {
 			HandlerAdapter ha = (HandlerAdapter) getWebApplicationContext().getBean(beanName);
 			this.handlerAdapters.add(ha);
-		}
-		catch (BeansException ex) {
+		} catch (BeansException ex) {
 			// We don't need to catch NoSuchBeanDefinitionException:
 			// we got the name from the bean factory.
 			throw new ServletException("Error initializing HandlerAdapter bean '" + beanName + "': " + ex.getMessage(), ex);
@@ -296,8 +301,7 @@ public class DispatcherServlet extends FrameworkServlet {
 			HandlerAdapter ha = new SimpleControllerHandlerAdapter();
 			ha.setApplicationContext(getWebApplicationContext());
 			this.handlerAdapters.add(ha);
-		}
-		catch (ApplicationContextException ex) {
+		} catch (ApplicationContextException ex) {
 			throw new ServletException("Error initializing default HandlerAdapter: " + ex.getMessage(), ex);
 		}
 	}
@@ -312,8 +316,7 @@ public class DispatcherServlet extends FrameworkServlet {
 		try {
 			this.viewResolver = (ViewResolver) getWebApplicationContext().getBean(VIEW_RESOLVER_BEAN_NAME);
 			logger.info("Loaded viewResolver [" + viewResolver + "]");
-		}
-		catch (NoSuchBeanDefinitionException ex) {
+		} catch (NoSuchBeanDefinitionException ex) {
 			// We need to use the default
 			// NOW: now InternalResourceViewResolver without prefix or suffix -> direct resource url
 			// WAS: ResourceBundleViewResolver -> need for mappings in views.properties file
@@ -324,10 +327,9 @@ public class DispatcherServlet extends FrameworkServlet {
 			} catch (ApplicationContextException ex2) {
 				throw new ServletException("Fatal error initializing default ViewResolver");
 			}
-		}
-		catch (BeansException ex) {
+		} catch (BeansException ex) {
 			// We tried and failed to load the ViewResolver specified by a bean
-			throw new ServletException("Fatal error loading view resolver: bean with name '" + VIEW_RESOLVER_BEAN_NAME + "' is required in servlet '" + getServletName()  + "': using default", ex);
+			throw new ServletException("Fatal error loading view resolver: bean with name '" + VIEW_RESOLVER_BEAN_NAME + "' is required in servlet '" + getServletName() + "': using default", ex);
 		}
 	}
 
@@ -341,7 +343,7 @@ public class DispatcherServlet extends FrameworkServlet {
 	 * It's up to HandlerAdapters to decide which methods are acceptable.
 	 */
 	protected void doService(HttpServletRequest request, HttpServletResponse response)
-	    throws ServletException, IOException {
+			throws ServletException, IOException {
 
 		logger.debug("DispatcherServlet with name '" + getServletName() + "' received request for [" + request.getRequestURI() + "]");
 
@@ -385,8 +387,7 @@ public class DispatcherServlet extends FrameworkServlet {
 			Locale locale = this.localeResolver.resolveLocale(request);
 			response.setLocale(locale);
 			render(mv, request, response, locale);
-		}
-		else {
+		} else {
 			logger.debug("Null ModelAndView returned to DispatcherServlet with name '" + getServletName() + "': assuming HandlerAdapter completed request handling");
 		}
 	}
@@ -398,7 +399,7 @@ public class DispatcherServlet extends FrameworkServlet {
 	 * In this case we can return.
 	 */
 	private boolean wasRevalidated(HttpServletRequest request, HttpServletResponse response,
-	                               HandlerAdapter ha, Object mappedHandler) {
+								   HandlerAdapter ha, Object mappedHandler) {
 		// Based on code from javax.servlet.HttpServlet from Apache Servlet API
 		// HttpServlet checks getLastModified() before calling doGet(), so we need to
 		// leave the default implementation of getLastModified() to return -1, before
@@ -419,17 +420,16 @@ public class DispatcherServlet extends FrameworkServlet {
 			// lastModified was -1, indicating it wasn't understood,
 			// or was earlier than the servlet mod date.
 			// We need to regenerate content.
-			logger.debug("GET request: " + WebUtils.HEADER_IFMODSINCE + " request header contains an earlier date than lastModified date. Will regenerate content and reset lastModified header." );
+			logger.debug("GET request: " + WebUtils.HEADER_IFMODSINCE + " request header contains an earlier date than lastModified date. Will regenerate content and reset lastModified header.");
 			setLastModifiedIfNecessary(response, lastModified);
 			return false;
-		}
-		else {
+		} else {
 			// If mod header present and shows a later date than last modified date on the resource
 			logger.debug("GET request: " + WebUtils.HEADER_IFMODSINCE + " request header contains a later date than lastModified date, or revalidation isn't supported. Indicating unmodified.");
 			response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
 			return true;
 		}
-	}	// wasRevalidated
+	}    // wasRevalidated
 
 
 	/*
@@ -449,13 +449,14 @@ public class DispatcherServlet extends FrameworkServlet {
 	/**
 	 * Return the handler for this request.
 	 * Try all handler mappings in order.
+	 *
 	 * @return the handelr, or null if no handler could be found
 	 */
 	private HandlerExecutionChain getHandler(HttpServletRequest request) throws ServletException {
 		Iterator itr = this.handlerMappings.iterator();
 		while (itr.hasNext()) {
 			HandlerMapping hm = (HandlerMapping) itr.next();
-			logger.debug("Testing handler map [" + hm  + "] in DispatcherServlet with name '" + getServletName() + "'");
+			logger.debug("Testing handler map [" + hm + "] in DispatcherServlet with name '" + getServletName() + "'");
 			HandlerExecutionChain handler = hm.getHandler(request);
 			if (handler != null)
 				return handler;
@@ -466,8 +467,9 @@ public class DispatcherServlet extends FrameworkServlet {
 
 	/**
 	 * Return the HandlerAdapter for this handler class.
+	 *
 	 * @throws ServletException if no HandlerAdapter can be found for the handler.
-	 * This is a fatal error.
+	 *                          This is a fatal error.
 	 */
 	private HandlerAdapter getHandlerAdapter(Object handler) throws ServletException {
 		Iterator itr = this.handlerAdapters.iterator();
@@ -485,17 +487,17 @@ public class DispatcherServlet extends FrameworkServlet {
 	/**
 	 * Render the given ModelAndView. This is the last stage in handling a request.
 	 * It may involve resolving the view by name.
-	 * @throws IOException if there's a problem rendering the view
+	 *
+	 * @throws IOException      if there's a problem rendering the view
 	 * @throws ServletException if the view cannot be resolved.
 	 */
 	private void render(ModelAndView mv, HttpServletRequest request, HttpServletResponse response, Locale locale)
-	    throws ServletException, IOException {
+			throws ServletException, IOException {
 		View v = null;
 		if (mv.isReference()) {
 			// We need to resolve this view name
 			v = this.viewResolver.resolveViewName(mv.getViewName(), locale);
-		}
-		else {
+		} else {
 			// No need to lookup: the ModelAndView object contains the actual view
 			v = mv.getView();
 		}

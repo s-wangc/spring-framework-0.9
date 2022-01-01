@@ -30,7 +30,7 @@ import javax.servlet.http.HttpServletResponse;
  * prohibiting the execution of the handler itself. Filters are more powerful,
  * for example they allow for exchanging the request and response objects that
  * are handed down the chain, and for custom postprocessing. Note that a filter
- * gets configured in web.xml, a HandlerInterceptor in the application context. 
+ * gets configured in web.xml, a HandlerInterceptor in the application context.
  *
  * <p>As a basic guideline, fine-grained handler-related preprocessing tasks are
  * candidates for HandlerInterceptor implementations, especially factored-out
@@ -40,13 +40,13 @@ import javax.servlet.http.HttpServletResponse;
  * filter to certain content types (e.g. images), or to all requests.
  *
  * @author Juergen Hoeller
- * @since 20.06.2003
  * @see HandlerExecutionChain#getInterceptors
  * @see com.interface21.web.servlet.handler.AbstractHandlerMapping#setInterceptors
  * @see com.interface21.web.servlet.support.UserRoleAuthorizationInterceptor
  * @see com.interface21.web.servlet.i18n.LocaleChangeInterceptor
  * @see com.interface21.web.servlet.theme.ThemeChangeInterceptor
  * @see javax.servlet.Filter
+ * @since 20.06.2003
  */
 public interface HandlerInterceptor {
 
@@ -57,16 +57,17 @@ public interface HandlerInterceptor {
 	 * of any number of interceptors, with the handler itself at the end.
 	 * Each interceptor can decide to abort the execution chain, typically sending
 	 * a HTTP error or writing a custom response.
-	 * @param request current HTTP request
+	 *
+	 * @param request  current HTTP request
 	 * @param response current HTTP response
-	 * @param handler chosen handler to execute, for type and/or instance evaluation
+	 * @param handler  chosen handler to execute, for type and/or instance evaluation
 	 * @return if the execution chain should proceed with the next interceptor resp.
 	 * the handler itself, else DispatcherServlet assumes that this interceptor has
 	 * already dealed with the response
 	 * @throws ServletException if there is an internal error
-	 * @throws IOException in case of an I/O error when writing the response
+	 * @throws IOException      in case of an I/O error when writing the response
 	 */
 	boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
-	    throws ServletException, IOException;
+			throws ServletException, IOException;
 
 }

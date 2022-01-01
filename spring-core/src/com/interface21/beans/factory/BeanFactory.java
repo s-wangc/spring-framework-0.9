@@ -1,8 +1,8 @@
 /**
- * Generic framework code included with 
+ * Generic framework code included with
  * <a href="http://www.amazon.com/exec/obidos/tg/detail/-/1861007841/">Expert One-On-One J2EE Design and Development</a>
- * by Rod Johnson (Wrox, 2002). 
- * This code is free to use and modify. 
+ * by Rod Johnson (Wrox, 2002).
+ * This code is free to use and modify.
  * Please contact <a href="mailto:rod.johnson@interface21.com">rod.johnson@interface21.com</a>
  * for commercial support.
  */
@@ -32,13 +32,13 @@ import com.interface21.beans.BeansException;
  * There are no constraints on how the definitions could be stored: LDAP, RDBMS, XML,
  * properties file etc. Implementations are encouraged to support
  * references amongst beans, to either Singlet5ons or Prototypes.
- * @author  Rod Johnson
+ * @author Rod Johnson
  * @since 13 April 2001
  * @version $RevisionId$
  */
 public interface BeanFactory {
 
-	/** 
+	/**
 	 * Return an instance (possibly shared or independent) of the given bean name.
 	 * This method allows a bean factory to be used as a replacement for
 	 * the Singleton or Prototype design pattern.
@@ -49,9 +49,9 @@ public interface BeanFactory {
 	 * @return the instance of the bean
 	 * @throws NoSuchBeanDefinitionException if there's no such bean definition
 	 */
-    Object getBean(String name) throws BeansException;
-	
-	/** 
+	Object getBean(String name) throws BeansException;
+
+	/**
 	 * Return an instance (possibly shared or independent) of the given bean name.
 	 * Provides a measure of type safety by throwing an exception if the bean is not
 	 * of the required type.
@@ -68,14 +68,14 @@ public interface BeanFactory {
 	 * @throws BeanNotOfRequiredTypeException if the bean is not of the required type
 	 * @throws NoSuchBeanDefinitionException if there's no such bean definition
 	 */
-	Object getBean(String name, Class requiredType) throws BeansException; 		 
-	
+	Object getBean(String name, Class requiredType) throws BeansException;
+
 	/**
 	 * Is this bean a singleton? That is, will getBean() always return the same object?
 	 * @param name name of the bean to query
 	 * @throws NoSuchBeanDefinitionException if there is no bean with the given name
 	 * @return is this bean a singleton
-	*/
+	 */
 	boolean isSingleton(String name) throws NoSuchBeanDefinitionException;
 
 	/**

@@ -21,9 +21,9 @@ import javax.jdo.PersistenceManager;
  * have to be copied to a freshly loaded active instance on reassociation.
  *
  * @author Juergen Hoeller
- * @since 03.06.2003
  * @see JdoTemplate
  * @see com.interface21.orm.hibernate.HibernateCallback
+ * @since 03.06.2003
  */
 public interface JdoCallback {
 
@@ -45,8 +45,8 @@ public interface JdoCallback {
 	 * @param pm active PersistenceManager
 	 * @return a result object, or null if none
 	 * @throws javax.jdo.JDOException in case of JDO errors
-	 * @throws RuntimeException in case of an application exception,
-	 * propagating the exception to the caller
+	 * @throws RuntimeException       in case of an application exception,
+	 *                                propagating the exception to the caller
 	 * @see JdoTemplate#execute
 	 * @see JdoTransactionManager
 	 */

@@ -32,46 +32,46 @@ import com.interface21.util.StringUtils;
  * or as a superclass for custom bean factories.
  *
  * @author Rod Johnson
- * @since 16 April 2001
  * @version $Id: ListableBeanFactoryImpl.java,v 1.8 2003/06/20 20:28:43 jhoeller Exp $
+ * @since 16 April 2001
  */
 public class ListableBeanFactoryImpl extends AbstractBeanFactory implements ListableBeanFactory {
-	
+
 	/**
 	 * Prefix for bean definition keys in Maps.
 	 */
 	public static final String DEFAULT_PREFIX = "beans.";
-	
+
 	/**
 	 * Prefix for the class property of a root bean definition.
 	 */
 	public static final String CLASS_KEY = "class";
-	
-	/** 
+
+	/**
 	 * Special string added to distinguish owner.(singleton)=true
 	 * Default is true.
 	 */
 	public static final String SINGLETON_KEY = "(singleton)";
-	
+
 	/**
 	 * Reserved "property" to indicate the parent of a child bean definition.
 	 */
 	public static final String PARENT_KEY = "parent";
-	
+
 	/**
 	 * Separator between bean name and property name.
 	 * We follow normal Java conventions.
 	 */
 	public static final String SEPARATOR = ".";
-	
-	/** 
+
+	/**
 	 * Property suffix for references to other beans in the current
 	 * BeanFactory: e.g. owner.dog(ref)=fido.
 	 * Whether this is a reference to a singleton or a prototype
 	 * will depend on the definition of the target bean.
 	 */
 	public static final String REF_SUFFIX = "(ref)";
-	
+
 	/**
 	 * Prefix before values referencing other beans
 	 */
@@ -92,12 +92,16 @@ public class ListableBeanFactoryImpl extends AbstractBeanFactory implements List
 	// Constructors
 	//---------------------------------------------------------------------
 
-	/** Creates a new ListableBeanFactoryImpl */
+	/**
+	 * Creates a new ListableBeanFactoryImpl
+	 */
 	public ListableBeanFactoryImpl() {
 		super();
 	}
-	
-	/** Creates a new ListableBeanFactoryImpl with the given parent */
+
+	/**
+	 * Creates a new ListableBeanFactoryImpl with the given parent
+	 */
 	public ListableBeanFactoryImpl(BeanFactory parentBeanFactory) {
 		super(parentBeanFactory);
 	}
@@ -147,8 +151,8 @@ public class ListableBeanFactoryImpl extends AbstractBeanFactory implements List
 		}
 		return names;
 	}
-	
-	
+
+
 	/**
 	 * Note that this method is slow. Don't invoke it too often:
 	 * it's best used only in application initialization.
@@ -166,8 +170,8 @@ public class ListableBeanFactoryImpl extends AbstractBeanFactory implements List
 		}
 		return (String[]) matches.toArray(new String[matches.size()]);
 	}
-	
-	
+
+
 	//---------------------------------------------------------------------
 	// Public methods
 	//---------------------------------------------------------------------
@@ -177,14 +181,15 @@ public class ListableBeanFactoryImpl extends AbstractBeanFactory implements List
 	 * with this class. All other registration methods in this class use this method.
 	 * <br/>This method isn't guaranteed to be threadsafe. It should be called
 	 * before any bean instances are accessed.
-	 * @param prototypeName name of the bean instance to register
+	 *
+	 * @param prototypeName  name of the bean instance to register
 	 * @param beanDefinition definition of the bean instance to register
 	 */
 	public final void registerBeanDefinition(String prototypeName, AbstractBeanDefinition beanDefinition) throws BeansException {
 		beanDefinitionHash.put(prototypeName, beanDefinition);
 	}
-	
-	
+
+
 	/**
 	 * Ensure that even potentially unreferenced singletons are instantiated
 	 * Subclasses or callers should invoke this if they want this behavior.
@@ -196,43 +201,44 @@ public class ListableBeanFactoryImpl extends AbstractBeanFactory implements List
 			AbstractBeanDefinition bd = getBeanDefinition(beanNames[i]);
 			if (bd.isSingleton()) {
 				Object singleton = getBean(beanNames[i]);
-	 			logger.debug("Instantiated singleton: " + singleton);
+				logger.debug("Instantiated singleton: " + singleton);
 			}
 		}
 	}
-	
-	
-	/** 
+
+
+	/**
 	 * Register valid bean definitions in a properties file.
 	 * Ignore ineligible properties
-	 * @param m Map name -> property (String or Object). Property values
-	 * will be strings if coming from a Properties file etc. Property names
-	 * (keys) <b>must</b> be strings. Class keys must be Strings.
-	 * <code>
-	 * employee.class=MyClass              // special property
-	 * //employee.abstract=true              // this prototype can't be instantiated directly
-	 * employee.group=Insurance Services   // real property
-	 * employee.usesDialUp=false           // default unless overriden
 	 *
-	 * employee.manager(ref)=tony		   // reference to another prototype defined in the same file
-	 *									   // cyclic and unresolved references will be detected
-	 * salesrep.parent=employee
-	 * salesrep.department=Sales and Marketing
-	 *
-	 * techie.parent=employee
-	 * techie.department=Software Engineering
-	 * techie.usesDialUp=true              // overridden property
-	 * </code>
+	 * @param m      Map name -> property (String or Object). Property values
+	 *               will be strings if coming from a Properties file etc. Property names
+	 *               (keys) <b>must</b> be strings. Class keys must be Strings.
+	 *               <code>
+	 *               employee.class=MyClass              // special property
+	 *               //employee.abstract=true              // this prototype can't be instantiated directly
+	 *               employee.group=Insurance Services   // real property
+	 *               employee.usesDialUp=false           // default unless overriden
+	 *               <p>
+	 *               employee.manager(ref)=tony		   // reference to another prototype defined in the same file
+	 *               // cyclic and unresolved references will be detected
+	 *               salesrep.parent=employee
+	 *               salesrep.department=Sales and Marketing
+	 *               <p>
+	 *               techie.parent=employee
+	 *               techie.department=Software Engineering
+	 *               techie.usesDialUp=true              // overridden property
+	 *               </code>
 	 * @param prefix The match or filter within the keys
-	 * in the map: e.g. 'beans.'
+	 *               in the map: e.g. 'beans.'
 	 * @return the number of bean definitions found
 	 * @throws BeansException if there is an error trying to register a definition
 	 */
 	public final int registerBeanDefinitions(Map m, String prefix) throws BeansException {
 		if (prefix == null)
-			prefix = "";		
-		int beanCount = 0;				
-		
+			prefix = "";
+		int beanCount = 0;
+
 		Set keys = m.keySet();
 		Iterator itr = keys.iterator();
 		while (itr.hasNext()) {
@@ -249,31 +255,31 @@ public class ListableBeanFactoryImpl extends AbstractBeanFactory implements List
 						registerBeanDefinition(beanName, m, prefix + beanName);
 						++beanCount;
 					}
-				}
-				else {
+				} else {
 					// Ignore it: it wasn't a valid bean name and property,
 					// although it did start with the required prefix
 					logger.debug("invalid name and property '" + nameAndProperty + "'");
 				}
-			}	// if the key started with the prefix we're looking for
-		}	// while there are more keys
-		
+			}    // if the key started with the prefix we're looking for
+		}    // while there are more keys
+
 		return beanCount;
 	}
-	
-	
+
+
 	/**
 	 * Get all property values, given a prefix (which will be stripped)
 	 * and add the bean they define to the factory with the given name
+	 *
 	 * @param beanName name of the bean to define
-	 * @param m Map containing string pairs
-	 * @param prefix prefix of each entry, which will be stripped
+	 * @param m        Map containing string pairs
+	 * @param prefix   prefix of each entry, which will be stripped
 	 */
 	private void registerBeanDefinition(String beanName, Map m, String prefix) throws BeansException {
 		String className = null;
 		String parent = null;
 		boolean singleton = true;
-		
+
 		MutablePropertyValues pvs = new MutablePropertyValues();
 		Set keys = m.keySet();
 		Iterator itr = keys.iterator();
@@ -283,27 +289,23 @@ public class ListableBeanFactoryImpl extends AbstractBeanFactory implements List
 				String property = key.substring(prefix.length() + SEPARATOR.length());
 				if (property.equals(CLASS_KEY)) {
 					className = (String) m.get(key);
-				}
-				else if (property.equals(SINGLETON_KEY)) {
+				} else if (property.equals(SINGLETON_KEY)) {
 					String val = (String) m.get(key);
 					singleton = val == null || !val.toUpperCase().equals("FALSE");
-				}
-				else if (property.equals(PARENT_KEY)) {
+				} else if (property.equals(PARENT_KEY)) {
 					parent = (String) m.get(key);
-				}
-				else if (property.endsWith(REF_SUFFIX)) {
+				} else if (property.endsWith(REF_SUFFIX)) {
 					// This isn't a real property, but a reference to another prototype
 					// Extract property name: property is of form dog(ref)
 					property = property.substring(0, property.length() - REF_SUFFIX.length());
-					String ref = (String) m.get(key);					
-					
+					String ref = (String) m.get(key);
+
 					// It doesn't matter if the referenced bean hasn't yet been registered:
 					// this will ensure that the reference is resolved at rungime
 					// Default is not to use singleton
 					Object val = new RuntimeBeanReference(ref);
 					pvs.addPropertyValue(new PropertyValue(property, val));
-				}
-				else{
+				} else {
 					// Normal bean property
 					Object val = m.get(key);
 					if (val instanceof String) {
@@ -314,13 +316,12 @@ public class ListableBeanFactoryImpl extends AbstractBeanFactory implements List
 							String targetName = ((String) val).substring(1);
 							if (sval.startsWith("**")) {
 								val = targetName;
-							}
-							else {
+							} else {
 								val = new RuntimeBeanReference(targetName);
 							}
 						}
 					}
-					
+
 					pvs.addPropertyValue(new PropertyValue(property, val));
 				}
 			}
@@ -332,28 +333,26 @@ public class ListableBeanFactoryImpl extends AbstractBeanFactory implements List
 
 		if (className == null && parent == null)
 			throw new FatalBeanException("Invalid bean definition. Classname or parent must be supplied for bean with name '" + beanName + "'", null);
-		
+
 		try {
-			
+
 			AbstractBeanDefinition beanDefinition = null;
 			if (className != null) {
 				// Load the class using a special class loader if one is available.
 				// Otherwise rely on the thread context classloader.
 				Class clazz = Class.forName(className, true, Thread.currentThread().getContextClassLoader());
 				beanDefinition = new RootBeanDefinition(clazz, pvs, singleton);
-			}
-			else {
+			} else {
 				beanDefinition = new ChildBeanDefinition(parent, pvs, singleton);
 			}
 			registerBeanDefinition(beanName, beanDefinition);
-		}
-		catch (ClassNotFoundException ex) {
+		} catch (ClassNotFoundException ex) {
 			throw new FatalBeanException("Cannot find class '" + className + "' for bean with name '" + beanName + "'", ex);
 		}
 	}
-	
-	
-	/** 
+
+
+	/**
 	 * Register bean definitions in a ResourceBundle. Similar syntax
 	 * as for a Map. This method is useful to enable standard
 	 * Java internationalization support.
@@ -366,11 +365,11 @@ public class ListableBeanFactoryImpl extends AbstractBeanFactory implements List
 			String key = (String) keys.nextElement();
 			m.put(key, rb.getObject(key));
 		}
-		
+
 		return registerBeanDefinitions(m, prefix);
 	}
-	 
-	
+
+
 	//---------------------------------------------------------------------
 	// Implementation of superclass protected abstract methods
 	//---------------------------------------------------------------------
@@ -384,10 +383,10 @@ public class ListableBeanFactoryImpl extends AbstractBeanFactory implements List
 			throw new NoSuchBeanDefinitionException(prototypeName, toString());
 		return bd;
 	}
-	
-	
+
+
 	public String toString() {
 		return getClass() + ": defined beans [" + StringUtils.arrayToDelimitedString(getBeanDefinitionNames(), ",") + "]";
 	}
-	
+
 }

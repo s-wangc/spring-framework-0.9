@@ -1,14 +1,14 @@
 /*
- * Generic framework code included with 
+ * Generic framework code included with
  * <a href="http://www.amazon.com/exec/obidos/tg/detail/-/1861007841/">Expert One-On-One J2EE Design and Development</a>
- * by Rod Johnson (Wrox, 2002). 
+ * by Rod Johnson (Wrox, 2002).
  * This code is free to use and modify. However, please
  * acknowledge the source and include the above URL in each
- * class using or derived from this code. 
+ * class using or derived from this code.
  * Please contact <a href="mailto:rod.johnson@interface21.com">rod.johnson@interface21.com</a>
  * for commercial support.
  */
- 
+
 package com.interface21.web.servlet.view;
 
 import java.util.HashMap;
@@ -42,14 +42,18 @@ import com.interface21.web.servlet.View;
  */
 public class ResourceBundleViewResolver extends AbstractCachingViewResolver {
 
-	/** Default if no other basename is supplied */
+	/**
+	 * Default if no other basename is supplied
+	 */
 	public final static String DEFAULT_BASENAME = "views";
 
 	private String basename = DEFAULT_BASENAME;
 
 	private String defaultParentView;
 
-	/** Locale -> BeanFactory */
+	/**
+	 * Locale -> BeanFactory
+	 */
 	private Map cachedFactories = new HashMap();
 
 	/**
@@ -57,6 +61,7 @@ public class ResourceBundleViewResolver extends AbstractCachingViewResolver {
 	 * ResourceBundle supports different suffixes. For example, a base name of
 	 * "views" might map to ResourceBundle files "views", "views_en_au" and "views_de".
 	 * <p>The default is "views".
+	 *
 	 * @param basename the ResourceBundle base name
 	 * @see java.util.ResourceBundle
 	 */
@@ -71,6 +76,7 @@ public class ResourceBundleViewResolver extends AbstractCachingViewResolver {
 	 * The parent will typically define the view class and common attributes.
 	 * Concrete views might simply consist of an URL definition then:
 	 * a la "yyy1.url=/my.jsp", "yyy2.url=/your.jsp".
+	 *
 	 * @param defaultParentView the default parent view
 	 */
 	public void setDefaultParentView(String defaultParentView) {
@@ -84,15 +90,12 @@ public class ResourceBundleViewResolver extends AbstractCachingViewResolver {
 				throw new ServletException("Bean with name '" + viewName + "' in resource bundle with basename '" + this.basename + "' must be of type View");
 			}
 			return (View) o;
-		}
-		catch (MissingResourceException ex) {
+		} catch (MissingResourceException ex) {
 			throw new ServletException("Cannot load resource bundle with basename '" + this.basename + "' trying to resolve view with name '" + viewName + "'", ex);
-		}
-		catch (NoSuchBeanDefinitionException ex) {
+		} catch (NoSuchBeanDefinitionException ex) {
 			// Let superclass handle this
 			return null;
-		}
-		catch (BeansException ex) {
+		} catch (BeansException ex) {
 			throw new ServletException("Error initializing view bean with name '" + viewName + "' in resource bundle with basename '" + this.basename + "'", ex);
 		}
 	}
@@ -108,7 +111,7 @@ public class ResourceBundleViewResolver extends AbstractCachingViewResolver {
 		}
 
 		ResourceBundle bundle = ResourceBundle.getBundle(this.basename, locale,
-																										 Thread.currentThread().getContextClassLoader());
+				Thread.currentThread().getContextClassLoader());
 		ListableBeanFactoryImpl lbf = new ListableBeanFactoryImpl();
 		lbf.setDefaultParentBean(this.defaultParentView);
 		lbf.registerBeanDefinitions(bundle, null);

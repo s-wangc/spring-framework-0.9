@@ -7,7 +7,7 @@ import java.sql.SQLException;
 /**
  * Implementation of SmartDataSource that configures a plain old JDBC Driver
  * via bean properties, and returns a new connection every time.
- * 
+ *
  * <p>Useful for test or standalone environments outside of a J2EE container, either
  * as a DataSource bean in a respective ApplicationContext, or in conjunction with a
  * mock JNDI InitialContext. Pool-assuming Connection.close() calls will simply
@@ -25,10 +25,10 @@ import java.sql.SQLException;
  * an instance of this class just by exchanging the class name of the bean definition.
  *
  * @author Juergen Hoeller
- * @since 14.03.2003
  * @version $Id: DriverManagerDataSource.java,v 1.4 2003/05/28 11:21:35 jhoeller Exp $
  * @see com.interface21.jndi.mock.MockInitialContextFactoryBuilder
  * @see com.interface21.jndi.JndiObjectFactoryBean
+ * @since 14.03.2003
  */
 public class DriverManagerDataSource extends AbstractDataSource implements SmartDataSource {
 
@@ -44,7 +44,7 @@ public class DriverManagerDataSource extends AbstractDataSource implements Smart
 	}
 
 	public DriverManagerDataSource(String driverName, String url, String user, String password)
-	    throws CannotGetJdbcConnectionException {
+			throws CannotGetJdbcConnectionException {
 		setDriverClassName(driverName);
 		setUrl(url);
 		setUsername(user);
@@ -56,8 +56,7 @@ public class DriverManagerDataSource extends AbstractDataSource implements Smart
 		try {
 			Class.forName(this.driverClassName);
 			logger.info("Loaded JDBC driver: " + this.driverClassName);
-		}
-		catch (ClassNotFoundException ex) {
+		} catch (ClassNotFoundException ex) {
 			throw new CannotGetJdbcConnectionException("Cannot load JDBC driver class '" + this.driverClassName + "'", ex);
 		}
 	}

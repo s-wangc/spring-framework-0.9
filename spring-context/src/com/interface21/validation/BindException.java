@@ -45,8 +45,9 @@ public class BindException extends Exception implements Errors {
 
 	/**
 	 * Create a new BindException instance.
+	 *
 	 * @param target target object to bind onto
-	 * @param name name of the target object
+	 * @param name   name of the target object
 	 */
 	public BindException(Object target, String name) {
 		this.beanWrapper = new BeanWrapperImpl(target);
@@ -121,7 +122,7 @@ public class BindException extends Exception implements Errors {
 
 	public List getGlobalErrors() {
 		List result = new ArrayList();
-		for (Iterator it = this.errors.iterator(); it.hasNext();) {
+		for (Iterator it = this.errors.iterator(); it.hasNext(); ) {
 			ObjectError fe = (ObjectError) it.next();
 			if (!(fe instanceof FieldError))
 				result.add(fe);
@@ -130,7 +131,7 @@ public class BindException extends Exception implements Errors {
 	}
 
 	public ObjectError getGlobalError() {
-		for (Iterator it = this.errors.iterator(); it.hasNext();) {
+		for (Iterator it = this.errors.iterator(); it.hasNext(); ) {
 			ObjectError fe = (ObjectError) it.next();
 			if (!(fe instanceof FieldError))
 				return fe;
@@ -149,7 +150,7 @@ public class BindException extends Exception implements Errors {
 	public List getFieldErrors(String field) {
 		List result = new ArrayList();
 		field = fixedField(field);
-		for (Iterator it = this.errors.iterator(); it.hasNext();) {
+		for (Iterator it = this.errors.iterator(); it.hasNext(); ) {
 			ObjectError fe = (ObjectError) it.next();
 			if (fe instanceof FieldError && field.equals(((FieldError) fe).getField()))
 				result.add(fe);
@@ -159,7 +160,7 @@ public class BindException extends Exception implements Errors {
 
 	public FieldError getFieldError(String field) {
 		field = fixedField(field);
-		for (Iterator it = errors.iterator(); it.hasNext();) {
+		for (Iterator it = errors.iterator(); it.hasNext(); ) {
 			ObjectError fe = (ObjectError) it.next();
 			if (fe instanceof FieldError && field.equals(((FieldError) fe).getField()))
 				return (FieldError) fe;
@@ -187,6 +188,7 @@ public class BindException extends Exception implements Errors {
 	/**
 	 * Return a model Map for the contained state, exposing an Errors
 	 * instance as ERROR_KEY_PREFIX + object name, and the object itself.
+	 *
 	 * @see #ERROR_KEY_PREFIX
 	 */
 	public final Map getModel() {

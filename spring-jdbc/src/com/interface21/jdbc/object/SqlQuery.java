@@ -1,10 +1,10 @@
 /**
- * Generic framework code included with 
+ * Generic framework code included with
  * <a href="http://www.amazon.com/exec/obidos/tg/detail/-/1861007841/">Expert One-On-One J2EE Design and Development</a>
- * by Rod Johnson (Wrox, 2002). 
+ * by Rod Johnson (Wrox, 2002).
  * This code is free to use and modify. However, please
  * acknowledge the source and include the above URL in each
- * class using or derived from this code. 
+ * class using or derived from this code.
  * Please contact <a href="mailto:rod.johnson@interface21.com">rod.johnson@interface21.com</a>
  * for commercial support.
  */
@@ -31,33 +31,34 @@ import com.interface21.jdbc.core.ResultReader;
  * custom execution methods, with meaningful names and typed parameters. Each
  * custom query method will invoke one of this class's untype query methods.
  * @author Rod Johnson
-   @version $Id: SqlQuery.java,v 1.2 2003/04/08 11:24:41 isabellem Exp $
+ @version $Id: SqlQuery.java,v 1.2 2003/04/08 11:24:41 isabellem Exp $
  */
 public abstract class SqlQuery extends SqlOperation {
-	
+
 	//-------------------------------------------------------------------------
 	// Instance data
 	//-------------------------------------------------------------------------
-	/** 
+	/**
 	 * Number of rows to expect. If 0, unknown.
-	*/
- 	private int rowsExpected;
- 	
- 	/** 
- 	 * Object used to create PreparedStatementCreators each time this query is executed
- 	 * given SQL and declared parameters
- 	 */
- 	private PreparedStatementCreatorFactory preparedStatementFactory;
+	 */
+	private int rowsExpected;
+
+	/**
+	 * Object used to create PreparedStatementCreators each time this query is executed
+	 * given SQL and declared parameters
+	 */
+	private PreparedStatementCreatorFactory preparedStatementFactory;
 
 	//-------------------------------------------------------------------------
 	// Constructors
 	//-------------------------------------------------------------------------
+
 	/**
 	 * Allow use as a bean
 	 */
 	public SqlQuery() {
 	}
-	
+
 	/**
 	 * Convenient constructor.
 	 * @param ds DataSource to use to get connections
@@ -73,6 +74,7 @@ public abstract class SqlQuery extends SqlOperation {
 	//-------------------------------------------------------------------------
 	// Bean properties
 	//-------------------------------------------------------------------------
+
 	/**
 	 * Gets the number of rows expected. This can be used to ensure
 	 * efficient storage of results. The default behavior
@@ -90,10 +92,11 @@ public abstract class SqlQuery extends SqlOperation {
 	public void setRowsExpected(int rowsExpected) {
 		this.rowsExpected = rowsExpected;
 	}
-	
+
 	//-------------------------------------------------------------------------
 	// Execute methods
 	//-------------------------------------------------------------------------
+
 	/**
 	 * Subclasses must implement this method to save a List of objects
 	 * returned by the execute() method.
@@ -106,7 +109,7 @@ public abstract class SqlQuery extends SqlOperation {
 	 */
 	protected abstract ResultReader newResultReader(int rowsExpected, Object[] parameters);
 
-	/** 
+	/**
 	 * All execution goes through this method
 	 * @param parameters parameters, as to JDO queries. Primitive parameters must
 	 * be represented by their Object wrapper type. The ordering of parameters is
@@ -121,37 +124,37 @@ public abstract class SqlQuery extends SqlOperation {
 		getJdbcTemplate().query(newPreparedStatementCreator(parameters), rr);
 		return rr.getResults();
 	}
-	
-	/** 
+
+	/**
 	 * Convenient method to execute without parameters
 	 */
 	public final List execute() throws DataAccessException {
-		return execute( (Object[]) null);
+		return execute((Object[]) null);
 	}
-	
-	/** 
+
+	/**
 	 * Convenient method to execute with a single int parameter
 	 * @param p1 single int parameter
 	 */
 	public final List execute(int p1) throws DataAccessException {
-		return execute(new Object[] { new Integer(p1) });
+		return execute(new Object[]{new Integer(p1)});
 	}
-	
-	/** 
+
+	/**
 	 * Convenient method to execute with two int parameters
 	 */
 	public final List execute(int p1, int p2) throws DataAccessException {
-		return execute(new Object[] { new Integer(p1), new Integer(p2) });
+		return execute(new Object[]{new Integer(p1), new Integer(p2)});
 	}
-	
-	/** 
+
+	/**
 	 * Convenient method to execute with a single String parameter
 	 */
 	public final List execute(String p1) throws DataAccessException {
-		return execute(new Object[] { p1 });
+		return execute(new Object[]{p1});
 	}
 
-	/** 
+	/**
 	 * Generic findObject method, used by all other findObject() methods. 
 	 * findObject() methods are like EJB entity bean finders, in that it is
 	 * considered an error if they return more than one result.
@@ -166,29 +169,29 @@ public abstract class SqlQuery extends SqlOperation {
 			throw new InvalidDataAccessApiUsageException("Result is not unique. Found " + l.size());
 		return l.get(0);
 	}
-	
-	/** 
+
+	/**
 	 * Convenience method to find a single object given a single int parameter
 	 */
 	public final Object findObject(int p1) throws DataAccessException {
-		return findObject(new Object[] { new Integer(p1) });
+		return findObject(new Object[]{new Integer(p1)});
 	}
-	
-	/** 
+
+	/**
 	 * Convenience method to find a single object given two int parameters
 	 */
 	public final Object findObject(int p1, int p2) throws DataAccessException {
-		return findObject(new Object[] { new Integer(p1), new Integer(p2) });
+		return findObject(new Object[]{new Integer(p1), new Integer(p2)});
 	}
-	
-	/** 
+
+	/**
 	 * Convenience method to find a single object given a single String parameter
 	 */
 	public final Object findObject(String p1) throws DataAccessException {
-		return findObject(new Object[] { p1 });
-	}	
+		return findObject(new Object[]{p1});
+	}
 
-	
+
 	/**
 	 * Subclasses can override this method to implement custom behavior on 
 	 * compilation. This implementation does nothing.

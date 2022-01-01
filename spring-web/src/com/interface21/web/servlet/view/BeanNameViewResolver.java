@@ -25,9 +25,9 @@ import com.interface21.web.servlet.ViewResolver;
  * different view resources per locale.
  *
  * @author Juergen Hoeller
- * @since 18.06.2003
  * @see XmlViewResolver
  * @see ResourceBundleViewResolver
+ * @since 18.06.2003
  */
 public class BeanNameViewResolver extends ApplicationObjectSupport implements ViewResolver {
 

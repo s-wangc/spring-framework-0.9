@@ -12,25 +12,27 @@ import javax.sql.DataSource;
  * be closed after a given operation. This can sometimes be
  * useful for efficiency, if we know that we want to reuse
  * a connection.
- * @author  Rod Johnson
+ *
+ * @author Rod Johnson
  * @version $Id: SmartDataSource.java,v 1.1 2003/05/06 12:24:03 jhoeller Exp $
  */
 public interface SmartDataSource extends DataSource {
-		
-	/** 
+
+	/**
 	 * Should we close this connection, obtained from this factory?
 	 * Code that uses connections from the factory should always
-	 * use code like 
+	 * use code like
 	 * <code>
-	 * if (factory.shouldClose(conn)) 
-	 * 	con.close()
+	 * if (factory.shouldClose(conn))
+	 * con.close()
 	 * </code>
 	 * in a finally block.
 	 * However, the JdbcTemplate class in this package should
 	 * take care of closing JDBC connections, freeing
 	 * application code of this responsibility.
+	 *
 	 * @param conn connection, which should have been obtained
-	 * from this data source, to check closure status of
+	 *             from this data source, to check closure status of
 	 */
 	boolean shouldClose(Connection conn);
 

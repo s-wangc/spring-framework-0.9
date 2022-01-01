@@ -15,14 +15,18 @@ import com.interface21.beans.PropertyValues;
  * PropertyValues implementation created from ServetConfig parameters.
  * <br/>This class is immutable once initialized. Used by
  * the XmlBeanFactory.
+ *
  * @author Rod Johnson
  */
 class XmlSubelementPropertyValues implements PropertyValues {
 
-	/** Logger instance shared by all instances */
+	/**
+	 * Logger instance shared by all instances
+	 */
 	private static Log logger = LogFactory.getLog(XmlSubelementPropertyValues.class);
 
-	/** PropertyValues delegate. We use delegation rather than simply subclass
+	/**
+	 * PropertyValues delegate. We use delegation rather than simply subclass
 	 * MutablePropertyValues as we don't want to expose MutablePropertyValues's
 	 * update methods. This class is immutable once initialized.
 	 */

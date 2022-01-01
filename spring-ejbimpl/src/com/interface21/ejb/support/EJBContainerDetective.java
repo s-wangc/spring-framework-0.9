@@ -8,7 +8,7 @@ import javax.ejb.EJBException;
  * IT DOES NOT FORM PART OF THE FRAMEWORK PROPER.
  * IT SHOWS HOW TO AUTO-DETECT THE EJB CONTAINER,
  * ENABLING CONDITIONAL EXECUTION AT RUNTIME
- * 
+ *
  * <BR>
  * Singleton to auto-detect EJB container.
  * Does not use read-write static fields, so doesn't violate
@@ -20,14 +20,19 @@ import javax.ejb.EJBException;
  * <li>JBoss (tested with JBoss 3.0 - "Rabbit Hole")
  * <li>Orion (tested with 1.5.2)
  * </ul>
+ *
  * @author Rod Johnson
  */
 public class EJBContainerDetective {
 
-	/** Singleton instance */
+	/**
+	 * Singleton instance
+	 */
 	private static EJBContainerDetective Instance;
 
-	/** Code for JBoss */
+	/**
+	 * Code for JBoss
+	 */
 	public static final int JBOSS = 0;
 
 	public static final int ORION = 1;
@@ -40,15 +45,15 @@ public class EJBContainerDetective {
 
 	/**
 	 * Test classes.
-	 * Add to this array to define new servers. 
-	 * One string per code. 
+	 * Add to this array to define new servers.
+	 * One string per code.
 	 * Format is server friendly name/test class
 	 */
-	private static String[] SERVER_INFO = new String[] { 
-		"JBoss/org.jboss.Main", 							// Tested with JBoss 3.0 (Rabbit Hole)
-		"Orion/com.evermind.server.ejb.SessionContainer", 	// Tested with Orion 1.5.2
-		"WebLogic/weblogic.Server" 							// Tested with WebLogic 7.0 beta
-		};
+	private static String[] SERVER_INFO = new String[]{
+			"JBoss/org.jboss.Main",                            // Tested with JBoss 3.0 (Rabbit Hole)
+			"Orion/com.evermind.server.ejb.SessionContainer",    // Tested with Orion 1.5.2
+			"WebLogic/weblogic.Server"                            // Tested with WebLogic 7.0 beta
+	};
 
 	// Initialize singleton isntance
 	// Must be below constants! Statics are evaluated in order.
@@ -66,7 +71,9 @@ public class EJBContainerDetective {
 	/** Could use server detect here also? */
 	//private LogAdapter logAdapter;
 
-	/** One of the constants in this class */
+	/**
+	 * One of the constants in this class
+	 */
 	private int detected = UNKNOWN;
 
 	/**
@@ -95,27 +102,26 @@ public class EJBContainerDetective {
 		int delimIndex = SERVER_INFO[id].indexOf(DELIM);
 		if (delimIndex == 0) {
 			throw new EJBException(
-				"Server information string '"
-					+ SERVER_INFO[id]
-					+ "' is in a bad format. No "
-					+ DELIM
-					+ " separating friendly name from class");
+					"Server information string '"
+							+ SERVER_INFO[id]
+							+ "' is in a bad format. No "
+							+ DELIM
+							+ " separating friendly name from class");
 		}
 		String serverName = SERVER_INFO[id].substring(0, delimIndex);
 		String testClass = SERVER_INFO[id].substring(delimIndex + 1);
 		if (testClass == null) {
 			throw new EJBException(
-				"Server information string '"
-					+ SERVER_INFO[id]
-					+ "' is in a bad format. No server class specified after delimiter "
-					+ DELIM);
+					"Server information string '"
+							+ SERVER_INFO[id]
+							+ "' is in a bad format. No server class specified after delimiter "
+							+ DELIM);
 		}
 		try {
 			Class.forName(testClass);
 			//logAdapter.info("Identified server " + serverName + " from class '" + testClass + "'");
 			return true;
-		}
-		catch (ClassNotFoundException ex) {
+		} catch (ClassNotFoundException ex) {
 			//logAdapter.info("NOT server " + serverName + "; class '" + testClass + "' not found");
 			return false;
 		}
@@ -123,6 +129,7 @@ public class EJBContainerDetective {
 
 	/**
 	 * Return the code for the detected server
+	 *
 	 * @return the server id code (one of the constants
 	 * defined in this class)
 	 */

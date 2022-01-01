@@ -2,7 +2,7 @@
  * The Spring Framework is published under the terms
  * of the Apache Software License.
  */
- 
+
 package com.interface21.aop.framework;
 
 import java.util.ArrayList;
@@ -21,31 +21,36 @@ import org.apache.commons.logging.LogFactory;
 
 import com.interface21.beans.factory.InitializingBean;
 
-/** 
-* Superclass for AOP Proxy configuration objects.
-* Subclasses are normally factories from which AOP proxy instances
-* are obtained directly.
-* Implements InitializingBean interface. If using outside
-* a BeanFactory (which will call this lifecycle method automatically)
-* check subclass documentation as to whether it's necessary to call
-* a method such as afterPropertiesSet() to complete initialization after
-* all JavaBean properties has been set.
-* <br>
-* This class frees subclasses of the housekeeping of interceptors and pointcuts,
-* but doesn't actually create AOP proxies.
-* @author Rod Johnson
-* @version $Id: DefaultProxyConfig.java,v 1.7 2003/05/28 16:39:11 jhoeller Exp $
-*/
+/**
+ * Superclass for AOP Proxy configuration objects.
+ * Subclasses are normally factories from which AOP proxy instances
+ * are obtained directly.
+ * Implements InitializingBean interface. If using outside
+ * a BeanFactory (which will call this lifecycle method automatically)
+ * check subclass documentation as to whether it's necessary to call
+ * a method such as afterPropertiesSet() to complete initialization after
+ * all JavaBean properties has been set.
+ * <br>
+ * This class frees subclasses of the housekeeping of interceptors and pointcuts,
+ * but doesn't actually create AOP proxies.
+ *
+ * @author Rod Johnson
+ * @version $Id: DefaultProxyConfig.java,v 1.7 2003/05/28 16:39:11 jhoeller Exp $
+ */
 public class DefaultProxyConfig implements ProxyConfig, InitializingBean {
 
 	protected final Log logger = LogFactory.getLog(getClass());
 
 	private AttributeRegistry attributeRegistry;
 
-	/** List of MethodPointcut */
+	/**
+	 * List of MethodPointcut
+	 */
 	private List pointcuts = new LinkedList();
-	
-	/** Interfaces to be implemented by the proxy */
+
+	/**
+	 * Interfaces to be implemented by the proxy
+	 */
 	private Set interfaces = new HashSet();
 
 	/**
@@ -60,23 +65,23 @@ public class DefaultProxyConfig implements ProxyConfig, InitializingBean {
 	 * impair performance.
 	 */
 	private boolean exposeInvocation;
-	
+
 	/**
-	 *  No arg constructor to allow use as a Java bean
-	 *
+	 * No arg constructor to allow use as a Java bean
 	 */
 	public DefaultProxyConfig() {
 	}
-	
+
 	public DefaultProxyConfig(Class[] intfs, boolean exposeInvocation, AttributeRegistry attributeRegistry) {
 		setInterfaces(intfs);
 		setExposeInvocation(exposeInvocation);
 		setAttributeRegistry(attributeRegistry);
 	}
 
-	
+
 	/**
 	 * Gets the exposeInvocation.
+	 *
 	 * @return Returns a boolean
 	 */
 	public boolean getExposeInvocation() {
@@ -87,6 +92,7 @@ public class DefaultProxyConfig implements ProxyConfig, InitializingBean {
 	 * Sets the exposeInvocation property, governing
 	 * whether the AopContext class will be usable
 	 * by target objects.
+	 *
 	 * @param exposeInvocation The exposeInvocation to set
 	 */
 	public final void setExposeInvocation(boolean exposeInvocation) {
@@ -94,17 +100,18 @@ public class DefaultProxyConfig implements ProxyConfig, InitializingBean {
 	}
 
 
-	/** 
+	/**
 	 * @see com.interface21.aop.framework.ProxyConfig#addInterceptor(org.aopalliance.Interceptor)
 	 */
 	public void addInterceptor(Interceptor interceptor) {
 		int pos = (this.pointcuts != null) ? this.pointcuts.size() : 0;
 		addInterceptor(pos, interceptor);
 	}
-	
+
 	/**
 	 * Convenient method to convert array to
 	 * a list for easier manipulation
+	 *
 	 * @return List
 	 */
 	private List arrayToList(Object[] array) {
@@ -114,11 +121,12 @@ public class DefaultProxyConfig implements ProxyConfig, InitializingBean {
 			l.add(array[i]);
 		return l;
 	}
-	
+
 	/**
 	 * New interfaces will only be available when a new proxy is obtained
 	 * through getObject().
 	 * The same goes for removing interfaces.
+	 *
 	 * @see com.interface21.aop.framework.ProxyConfig#addInterceptor(int, org.aopalliance.Interceptor)
 	 */
 	public final void addInterceptor(int pos, Interceptor interceptor) {
@@ -130,46 +138,47 @@ public class DefaultProxyConfig implements ProxyConfig, InitializingBean {
 	/**
 	 * We're going to add the given interceptor. Add any aspect interfaces it
 	 * means we'll additionally proxy.
+	 *
 	 * @param interceptor
 	 */
 	private void addAspectInterfacesIfNecessary(Interceptor interceptor) {
-		 if (interceptor instanceof IntroductionInterceptor) {
-		 	System.out.println("Added new aspect interface");
-			 IntroductionInterceptor aii = (IntroductionInterceptor) interceptor;
-			 for (int i = 0; i < aii.getIntroducedInterfaces().length; i++) {
-				 addInterface(aii.getIntroducedInterfaces()[i]);
-			 }
-		 }
-	}	
-	
-	
-	
+		if (interceptor instanceof IntroductionInterceptor) {
+			System.out.println("Added new aspect interface");
+			IntroductionInterceptor aii = (IntroductionInterceptor) interceptor;
+			for (int i = 0; i < aii.getIntroducedInterfaces().length; i++) {
+				addInterface(aii.getIntroducedInterfaces()[i]);
+			}
+		}
+	}
+
+
 	/**
 	 * Work out target from list of interceptors
+	 *
 	 * @param interceptorList list of interceptors
 	 * @throws AopConfigException if the chain is invalid
 	 */
 	private void computeTargetAndCheckValidity() throws AopConfigException {
 		this.target = null;
-		
+
 		for (int i = 0; i < this.pointcuts.size(); i++) {
 			MethodPointcut pc = (MethodPointcut) this.pointcuts.get(i);
 			if (pc.getInterceptor() instanceof ProxyInterceptor) {
-				if (i < pointcuts.size() -1) {
+				if (i < pointcuts.size() - 1) {
 					//System.out.println("HaCK: commented out");
 					throw new AopConfigException("Can only have ProxyInterceptor at end of list: had " + i + " and " + pointcuts.size());
-				}
-				else {
+				} else {
 					// Interceptor is at end of list
 					this.target = ((ProxyInterceptor) pc.getInterceptor()).getTarget();
 					logger.info("Detected target when adding ProxyInterceptor to end of interceptor array");
 				}
 			}
 		}
-	}	// computeTargetAndCheckValidity
-	
+	}    // computeTargetAndCheckValidity
+
 	/**
 	 * Remove the given interceptor
+	 *
 	 * @see com.interface21.aop.framework.ProxyConfig#removeInterceptor(org.aopalliance.Interceptor)
 	 */
 	public final boolean removeInterceptor(Interceptor interceptor) {
@@ -181,33 +190,35 @@ public class DefaultProxyConfig implements ProxyConfig, InitializingBean {
 				removed = true;
 			}
 		}
-	
+
 		if (removed) {
 			//	We may need to remove interfaces if it was an AspectInterceptor
-			 if (interceptor instanceof IntroductionInterceptor) {
-				 IntroductionInterceptor aii = (IntroductionInterceptor) interceptor;
-				 for (int i = 0; i < aii.getIntroducedInterfaces().length; i++) {
-					 removeInterface(aii.getIntroducedInterfaces()[i]);
-				 }
-			 }
+			if (interceptor instanceof IntroductionInterceptor) {
+				IntroductionInterceptor aii = (IntroductionInterceptor) interceptor;
+				for (int i = 0; i < aii.getIntroducedInterfaces().length; i++) {
+					removeInterface(aii.getIntroducedInterfaces()[i]);
+				}
+			}
 			computeTargetAndCheckValidity();
 		}
-		
+
 		return removed;
-	}	// removeInterceptor
-	
+	}    // removeInterceptor
+
 	/**
 	 * Add a new proxied interface.
+	 *
 	 * @param newInterface additional interface to proxy.
 	 */
 	protected final void addInterface(Class newInterface) {
 		this.interfaces.add(newInterface);
 	}
-	
-	
+
+
 	/**
 	 * Remove a proxied interface.
 	 * Does nothing if it isn't proxied.
+	 *
 	 * @param intf
 	 * @return boolean
 	 */
@@ -222,13 +233,13 @@ public class DefaultProxyConfig implements ProxyConfig, InitializingBean {
 		//return (Class[]) this.interfaces.toArray();
 		Class[] classes = new Class[this.interfaces.size()];
 		int i = 0;
-		for (Iterator itr = this.interfaces.iterator(); itr.hasNext() ;) {
+		for (Iterator itr = this.interfaces.iterator(); itr.hasNext(); ) {
 			Class clazz = (Class) itr.next();
-			classes[i++] = clazz; 
+			classes[i++] = clazz;
 		}
 		return classes;
 	}
-	
+
 
 	/**
 	 * @see com.interface21.aop.framework.ProxyConfig#getAttributeRegistry()
@@ -239,6 +250,7 @@ public class DefaultProxyConfig implements ProxyConfig, InitializingBean {
 
 	/**
 	 * Sets the attributeRegistry.
+	 *
 	 * @param attributeRegistry The attributeRegistry to set
 	 */
 	public void setAttributeRegistry(AttributeRegistry attributeRegistry) {
@@ -247,6 +259,7 @@ public class DefaultProxyConfig implements ProxyConfig, InitializingBean {
 
 	/**
 	 * Sets the interfaces to be proxied.
+	 *
 	 * @param interfaces The interfaces to set
 	 */
 	protected void setInterfaces(Class[] interfaces) {
@@ -259,6 +272,7 @@ public class DefaultProxyConfig implements ProxyConfig, InitializingBean {
 	/**
 	 * Lifecycle method. This implementation merely checks
 	 * that configuration is complete: it doesn't do anything.
+	 *
 	 * @see com.interface21.beans.factory.InitializingBean#afterPropertiesSet()
 	 */
 	public void afterPropertiesSet() throws Exception {
@@ -283,14 +297,13 @@ public class DefaultProxyConfig implements ProxyConfig, InitializingBean {
 			computeTargetAndCheckValidity();
 
 			addAspectInterfacesIfNecessary(pc.getInterceptor());
-		}
-		catch (AopConfigException ex) {
+		} catch (AopConfigException ex) {
 			// rollback the change. bit of a hack
 			this.pointcuts.remove(pc);
 			throw ex;
 		}
-	} 
-	
+	}
+
 	/**
 	 * @see com.interface21.aop.framework.ProxyConfig#addMethodPointcut(com.interface21.aop.framework.MethodPointcut)
 	 */
@@ -306,9 +319,10 @@ public class DefaultProxyConfig implements ProxyConfig, InitializingBean {
 		// TODO make this list unmodifiable?
 		return this.pointcuts;
 	}
-	
+
 	/**
 	 * Replace the given pointcut
+	 *
 	 * @param pc1 pointcut to replace
 	 * @param pc2 pointcut to replace it with
 	 * @return boolean whether it was replaced. If the pointcut
@@ -321,9 +335,10 @@ public class DefaultProxyConfig implements ProxyConfig, InitializingBean {
 		this.pointcuts.set(this.pointcuts.indexOf(pc1), pc2);
 		return true;
 	}
-	
+
 	/**
 	 * Is this interceptor included in any pointcut?
+	 *
 	 * @param mi interceptor to check inclusion of
 	 * @return boolean whether this interceptor instance could be
 	 * run in an invocation.
@@ -333,14 +348,15 @@ public class DefaultProxyConfig implements ProxyConfig, InitializingBean {
 			return false;
 		for (int i = 0; i < this.pointcuts.size(); i++) {
 			MethodPointcut pc = (MethodPointcut) this.pointcuts.get(i);
-			if (pc.getInterceptor() == mi) 
+			if (pc.getInterceptor() == mi)
 				return true;
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Count interceptors of the given class
+	 *
 	 * @param interceptorClass class of the interceptor to check
 	 * @return int the count of the interceptors of this class or
 	 * subclasses
@@ -351,10 +367,10 @@ public class DefaultProxyConfig implements ProxyConfig, InitializingBean {
 		int count = 0;
 		for (int i = 0; i < this.pointcuts.size(); i++) {
 			MethodPointcut pc = (MethodPointcut) this.pointcuts.get(i);
-			if (interceptorClass.isAssignableFrom(pc.getInterceptor().getClass())) 
+			if (interceptorClass.isAssignableFrom(pc.getInterceptor().getClass()))
 				++count;
 		}
 		return count;
 	}
-	
-}	// DefaultProxyConfig
+
+}    // DefaultProxyConfig

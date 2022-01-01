@@ -27,12 +27,12 @@ import com.interface21.transaction.jta.JtaTransactionManager;
  * PlatformTransactionManager interface will associate an object
  * with a transaction.
  * <br>Uses JTA as the default transaction infrastructure.
- *  
- * @version $Id: TransactionInterceptor.java,v 1.1 2003/06/13 13:40:39 jhoeller Exp $
+ *
  * @author Rod Johnson
+ * @version $Id: TransactionInterceptor.java,v 1.1 2003/06/13 13:40:39 jhoeller Exp $
  */
 public class TransactionInterceptor implements MethodInterceptor {
-	
+
 	/**
 	 * Name of transaction attribute in Invocation.
 	 * Target classes can use this to find TransactionStatus.
@@ -47,7 +47,7 @@ public class TransactionInterceptor implements MethodInterceptor {
 	 * Delegate used to create, commit and rollback transactions
 	 */
 	private PlatformTransactionManager transactionManager;
-	
+
 	/**
 	 * Helper used to find transaction attributes.
 	 */
@@ -58,7 +58,7 @@ public class TransactionInterceptor implements MethodInterceptor {
 		this.transactionAttributeSource = new AttributeRegistryTransactionAttributeSource();
 		this.transactionManager = new JtaTransactionManager();
 	}
-	
+
 	/**
 	 * @return PlatformTransactionManager helper
 	 */
@@ -70,14 +70,15 @@ public class TransactionInterceptor implements MethodInterceptor {
 	 * Sets the platformTxManager. This will perform actual
 	 * transaction management: this class is just a way of
 	 * invoking it.
+	 *
 	 * @param platformTxManager The platformTxManager to set
 	 */
 	public void setTransactionManager(PlatformTransactionManager platformTxManager) {
 		this.transactionManager = platformTxManager;
 	}
-	
+
 	/**
-	 * @return TransactionAttributeSource helper 
+	 * @return TransactionAttributeSource helper
 	 */
 	public TransactionAttributeSource getTransactionAttributeSource() {
 		return transactionAttributeSource;
@@ -87,6 +88,7 @@ public class TransactionInterceptor implements MethodInterceptor {
 	 * Sets the transactionAttributeSource helper, which is used to
 	 * find transaction attributes. The default implementation looks
 	 * at the metadata attributes associated with the current invocation.
+	 *
 	 * @param transactionAttributeSource The transactionAttributeSource to set
 	 */
 	public void setTransactionAttributeSource(TransactionAttributeSource transactionAttributeSource) {
@@ -100,26 +102,25 @@ public class TransactionInterceptor implements MethodInterceptor {
 		// If this is null, the method is non-transactional
 		TransactionAttribute transAtt = this.transactionAttributeSource.getTransactionAttribute(invocation);
 		TransactionStatus status = null;
-		
+
 		// Create transaction if necessary
 		if (transAtt != null) {
 			// We need a transaction for this method
-			
+
 			logger.info("Creating transaction for method '" + invocation.getMethod().getName() + "'");
-			
+
 			// The PlatformTransactionManager will flag an error if an incompatible tx already exists
 			status = this.transactionManager.getTransaction(transAtt);
-			
+
 			// Make the TransactionStatus available to callees
 			invocation.setResource(TRANSACTION_STATUS_ATTACHMENT_NAME, status);
-		}
-		else {
+		} else {
 			// It isn't a transactional method
 			if (logger.isDebugEnabled())
 				logger.debug(
-				"Don't need to create transaction for method '"
-					+ invocation.getMethod().getName()
-					+ "': this method isn't transactional");
+						"Don't need to create transaction for method '"
+								+ invocation.getMethod().getName()
+								+ "': this method isn't transactional");
 		}
 
 		// Invoke the next interceptor in the chain.
@@ -131,24 +132,20 @@ public class TransactionInterceptor implements MethodInterceptor {
 				this.transactionManager.commit(status);
 			}
 			return retVal;
-		}
-		catch (TransactionException ex) {
+		} catch (TransactionException ex) {
 			// Our own infrastructure exception
 			// Just bail out, as we can't handle it
 			throw ex;
-		}
-		catch (Throwable t) {
+		} catch (Throwable t) {
 			// Target invocation
 			if (status != null) {
 				onThrowable(invocation, transAtt, status, t);
-			}
-			else if (status != null && transAtt.rollBackOn(t)) {
+			} else if (status != null && transAtt.rollBackOn(t)) {
 				// Rollback existing transaction
 				status.setRollbackOnly();
 			}
 			throw t;
-		}
-		finally {
+		} finally {
 			if (transAtt != null) {
 				invocation.setResource(TRANSACTION_STATUS_ATTACHMENT_NAME, null);
 			}
@@ -162,20 +159,19 @@ public class TransactionInterceptor implements MethodInterceptor {
 	private void onThrowable(MethodInvocation invocation, TransactionAttribute txAtt, TransactionStatus status, Throwable t) {
 		if (txAtt.rollBackOn(t)) {
 			logger.error(
-				"ROLLING BACK transaction on method '"
-					+ invocation.getMethod().getName()
-					+ "' due to throwable: "
-					+ t.getMessage());
+					"ROLLING BACK transaction on method '"
+							+ invocation.getMethod().getName()
+							+ "' due to throwable: "
+							+ t.getMessage());
 			this.transactionManager.rollback(status);
-		}
-		else {
+		} else {
 			if (logger.isDebugEnabled())
 				logger.debug(
-				"Method '"
-					+ invocation.getMethod().getName()
-					+ "' threw throwable {"
-					+ t.getMessage()
-					+ "} but this does not force transaction rollback");
+						"Method '"
+								+ invocation.getMethod().getName()
+								+ "' threw throwable {"
+								+ t.getMessage()
+								+ "} but this does not force transaction rollback");
 			// Will still roll back if rollbackOnly is true
 			this.transactionManager.commit(status);
 		}

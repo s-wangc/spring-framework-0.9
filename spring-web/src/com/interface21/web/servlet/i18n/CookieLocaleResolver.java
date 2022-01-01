@@ -98,8 +98,7 @@ public class CookieLocaleResolver implements LocaleResolver {
 			request.setAttribute(LOCALE_REQUEST_ATTRIBUTE_NAME, locale);
 			cookie = new Cookie(getCookieName(), locale.getLanguage() + " " + locale.getCountry() + " " + locale.getVariant());
 			cookie.setMaxAge(getCookieMaxAge());
-		}
-		else {
+		} else {
 			// set request attribute to fallback locale and remove cookie
 			request.setAttribute(LOCALE_REQUEST_ATTRIBUTE_NAME, request.getLocale());
 			cookie = new Cookie(getCookieName(), "");

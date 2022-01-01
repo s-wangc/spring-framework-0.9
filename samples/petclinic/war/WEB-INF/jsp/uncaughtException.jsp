@@ -3,7 +3,7 @@
 <H2>Internal error</H2>
 <P>
 
-<% 
+        <%
 try {
 	// The Servlet spec guarantees this attribute will be available
 	Exception exception = (Exception) request.getAttribute("javax.servlet.error.exception"); 
@@ -42,7 +42,7 @@ try {
 %>
 
 <P>
-<BR>
-<A href="<c:url value="welcome.htm"/>">Home</A>
+    <BR>
+    <A href="<c:url value="welcome.htm"/>">Home</A>
 
 

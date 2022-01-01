@@ -2,7 +2,7 @@
  * The Spring Framework is published under the terms
  * of the Apache Software License.
  */
- 
+
 package com.interface21.jdbc.datasource;
 
 import java.io.PrintWriter;
@@ -16,10 +16,11 @@ import org.apache.commons.logging.LogFactory;
 /**
  * Abstract base class for Spring's DataSource implementations,
  * taking care of the "uninteresting" glue.
+ *
  * @author Juergen Hoeller
- * @since 07.05.2003
- * @see DriverManagerDataSource
  * @version $Id: AbstractDataSource.java,v 1.3 2003/05/28 16:39:14 jhoeller Exp $
+ * @see DriverManagerDataSource
+ * @since 07.05.2003
  */
 public abstract class AbstractDataSource implements DataSource {
 

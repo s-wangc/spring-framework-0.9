@@ -1,8 +1,8 @@
 /**
- * Generic framework code included with 
+ * Generic framework code included with
  * <a href="http://www.amazon.com/exec/obidos/tg/detail/-/1861007841/">Expert One-On-One J2EE Design and Development</a>
- * by Rod Johnson (Wrox, 2002). 
- * This code is free to use and modify. 
+ * by Rod Johnson (Wrox, 2002).
+ * This code is free to use and modify.
  * Please contact <a href="mailto:rod.johnson@interface21.com">rod.johnson@interface21.com</a>
  * for commercial support.
  */
@@ -21,7 +21,7 @@ import java.sql.SQLException;
  * for callback handlers that actually do something, and will benefit
  * from the dimension information it provides.
  * Can only be used once
- * @author  Rod Johnson
+ * @author Rod Johnson
  * @since May 3, 2001
  * @version $Id: RowCountCallbackHandler.java,v 1.2 2003/04/08 11:23:52 isabellem Exp $
  */
@@ -40,13 +40,14 @@ public class RowCountCallbackHandler implements RowCallbackHandler {
 	 * as returned by ResultSetMetaData object
 	 */
 	private int[] columnTypes;
-	
+
 	private String[] columnNames;
 
 	//---------------------------------------------------------------------
 	// Public methods
 	//---------------------------------------------------------------------
-	/** 
+
+	/**
 	 * Implementation of ResultSetCallbackHandler.
 	 * Work out column size if this is the first row,
 	 * otherwise just count rows.
@@ -69,7 +70,7 @@ public class RowCountCallbackHandler implements RowCallbackHandler {
 	}
 
 
-	/** 
+	/**
 	 * Subclasses may override this to perform custom extraction
 	 * or processing. This class's implementation does nothing.
 	 * @param rs ResultSet to extract data from. This method is
@@ -82,7 +83,7 @@ public class RowCountCallbackHandler implements RowCallbackHandler {
 	}
 
 
-	/** 
+	/**
 	 * Return the types of the columns as java.sql.Types constants
 	 * Valid after processRow is invoked the first time.
 	 * @return the types of the columns as java.sql.Types constants.
@@ -91,8 +92,8 @@ public class RowCountCallbackHandler implements RowCallbackHandler {
 	public final int[] getColumnTypes() {
 		return columnTypes;
 	}
-	
-	/** 
+
+	/**
 	 * Return the names of the columns.
 	 * Valid after processRow is invoked the first time.
 	 * @return the names of the columns.
@@ -102,7 +103,7 @@ public class RowCountCallbackHandler implements RowCallbackHandler {
 		return columnNames;
 	}
 
-	/** 
+	/**
 	 * Return the row count of this ResultSet
 	 * Only valid after processing is complete
 	 * @return the number of rows in this ResultSet
@@ -112,7 +113,7 @@ public class RowCountCallbackHandler implements RowCallbackHandler {
 	}
 
 
-	/** 
+	/**
 	 * Return the number of columns in this result set.
 	 * Valid once we've seen the first row,
 	 * so subclasses can use it during processing
@@ -122,4 +123,4 @@ public class RowCountCallbackHandler implements RowCallbackHandler {
 		return columnCount;
 	}
 
-}	// class RowCountCallbackHandler
+}    // class RowCountCallbackHandler

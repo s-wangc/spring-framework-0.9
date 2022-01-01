@@ -32,9 +32,9 @@ import com.interface21.util.Log4jConfigurer;
  * context-param at all) without worrying.
  *
  * @author Juergen Hoeller
- * @since 13.03.2003
  * @see com.interface21.util.Log4jConfigurer
  * @see WebAppRootListener
+ * @since 13.03.2003
  */
 public class Log4jConfigListener implements ServletContextListener {
 
@@ -77,8 +77,7 @@ public class Log4jConfigListener implements ServletContextListener {
 			// perform actual Log4J initialization
 			try {
 				Log4jConfigurer.initLogging(location, refreshInterval);
-			}
-			catch (FileNotFoundException ex) {
+			} catch (FileNotFoundException ex) {
 				throw new IllegalArgumentException("Invalid log4jConfigLocation parameter: " + ex.getMessage());
 			}
 		}

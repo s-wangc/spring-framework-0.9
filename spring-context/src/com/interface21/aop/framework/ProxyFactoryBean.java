@@ -2,7 +2,7 @@
  * The Spring Framework is published under the terms
  * of the Apache Software License.
  */
- 
+
 package com.interface21.aop.framework;
 
 import java.util.ArrayList;
@@ -23,7 +23,7 @@ import com.interface21.beans.factory.Lifecycle;
 import com.interface21.beans.factory.ListableBeanFactory;
 import com.interface21.core.OrderComparator;
 
-/** 
+/**
  * FactoryBean implementation for use to source AOP proxies from a Spring BeanFactory.
  *
  * <p>Interceptors are identified by a list of bean names in the current bean factory.
@@ -50,27 +50,27 @@ public class ProxyFactoryBean extends DefaultProxyConfig implements FactoryBean,
 	public static final String GLOBAL_SUFFIX = "*";
 
 	private boolean singleton = true;
-	
+
 	/**
 	 * Owning bean factory, which cannot be changed after this
 	 * object is initialized.
 	 */
 	private BeanFactory beanFactory;
-	
+
 	/**
 	 * Singleton instance if we're using a singleton
 	 */
 	private Object singletonInstance;
-	
-	/** 
+
+	/**
 	 * Map from PointCut or interceptor to bean name or null,
 	 * depending on where it was sourced from. If it's sourced
 	 * from a bean name, it will need to be refreshed each time a
 	 * new prototype instance is created.
 	 */
 	private Map sourceMap = new HashMap();
-	
-	/** 
+
+	/**
 	 * Names of interceptor and pointcut beans in the factory.
 	 * Default is for globals expansion only.
 	 */
@@ -98,17 +98,17 @@ public class ProxyFactoryBean extends DefaultProxyConfig implements FactoryBean,
 	public void setInterceptorNames(String[] interceptorNames) {
 		this.interceptorNames = interceptorNames;
 	}
-	
+
 	/**
 	 * @see com.interface21.beans.factory.Lifecycle#setBeanFactory(com.interface21.beans.factory.BeanFactory)
 	 */
-	public void setBeanFactory(BeanFactory beanFactory) {	
-		
+	public void setBeanFactory(BeanFactory beanFactory) {
+
 		this.beanFactory = beanFactory;
-			
+
 		logger.info("Set BeanFactory. Will configure interceptor beans...");
 		createInterceptorChain();
-		
+
 		// Eagerly create singleton proxy instance if necessary
 		if (isSingleton()) {
 			this.singletonInstance = createInstance();
@@ -124,10 +124,10 @@ public class ProxyFactoryBean extends DefaultProxyConfig implements FactoryBean,
 	 * unaffected by such changes.
 	 */
 	private void createInterceptorChain() throws AopConfigException, BeansException {
-		
+
 		if (this.interceptorNames == null || this.interceptorNames.length == 0)
 			throw new AopConfigException("Interceptor names are required");
-			
+
 		// Globals can't be last
 		if (this.interceptorNames[this.interceptorNames.length - 1].endsWith(GLOBAL_SUFFIX)) {
 			throw new AopConfigException("Target required after globals");
@@ -137,17 +137,15 @@ public class ProxyFactoryBean extends DefaultProxyConfig implements FactoryBean,
 		for (int i = 0; i < this.interceptorNames.length; i++) {
 			String name = this.interceptorNames[i];
 			logger.debug("Configuring interceptor '" + name + "'");
-			
+
 			if (name.endsWith(GLOBAL_SUFFIX)) {
 				if (!(this.beanFactory instanceof ListableBeanFactory)) {
 					throw new AopConfigException("Can only use global pointcuts or interceptors with a ListableBeanFactory");
-				}
-				else {
+				} else {
 					addGlobalInterceptorsAndPointcuts((ListableBeanFactory) this.beanFactory,
-					                                  name.substring(0, name.length() - GLOBAL_SUFFIX.length()));
+							name.substring(0, name.length() - GLOBAL_SUFFIX.length()));
 				}
-			}
-			else {
+			} else {
 				// Add a named interceptor
 				addPointcutOrInterceptor(this.beanFactory.getBean(this.interceptorNames[i]), this.interceptorNames[i]);
 			}
@@ -162,19 +160,18 @@ public class ProxyFactoryBean extends DefaultProxyConfig implements FactoryBean,
 	 */
 	private void refreshInterceptorChain() {
 		List pointcuts = getMethodPointcuts();
-		for (Iterator iter = pointcuts.iterator(); iter.hasNext();) {
+		for (Iterator iter = pointcuts.iterator(); iter.hasNext(); ) {
 			MethodPointcut pc = (MethodPointcut) iter.next();
 			String beanName = (String) this.sourceMap.get(pc);
 			if (beanName != null) {
 				logger.info("Refreshing bean named '" + beanName + "'");
-			
+
 				Object bean = this.beanFactory.getBean(beanName);
 				MethodPointcut pc2 = null;
 				// Bean may be a MethodPointcut or a target to wrap
 				if (bean instanceof MethodPointcut) {
 					pc2 = (MethodPointcut) bean;
-				}
-				else {
+				} else {
 					// The special case when the object was a target
 					// object, not an invoker or pointcut.
 					// We need to create a fresh invoker interceptor wrapping
@@ -182,7 +179,7 @@ public class ProxyFactoryBean extends DefaultProxyConfig implements FactoryBean,
 					InvokerInterceptor ii = new InvokerInterceptor(bean);
 					pc2 = new AlwaysInvoked(ii);
 				}
-				
+
 				// What about aspect interfaces!? we're only updating
 				replaceMethodPointcut(pc, pc2);
 			}
@@ -210,7 +207,7 @@ public class ProxyFactoryBean extends DefaultProxyConfig implements FactoryBean,
 			names.put(bean, name);
 		}
 		Collections.sort(beans, new OrderComparator());
-		for (Iterator it = beans.iterator(); it.hasNext();) {
+		for (Iterator it = beans.iterator(); it.hasNext(); ) {
 			Object bean = it.next();
 			String name = (String) names.get(bean);
 			if (name.startsWith(prefix)) {
@@ -224,19 +221,18 @@ public class ProxyFactoryBean extends DefaultProxyConfig implements FactoryBean,
 	 * Add the given interceptor, pointcut or object to the interceptor list.
 	 * Because of these three possibilities, we can't type the signature
 	 * more strongly.
-	 * @param next interceptor, pointcut or target object. 
+	 *
+	 * @param next interceptor, pointcut or target object.
 	 * @param name bean name from which we obtained this object in our owning
-	 * bean factory.
+	 *             bean factory.
 	 */
 	private void addPointcutOrInterceptor(Object next, String name) {
 		logger.debug("Adding pointcut or interceptor [" + next + "] with name [" + name + "]");
 		if (next instanceof MethodPointcut) {
 			addMethodPointcut((MethodPointcut) next);
-		}
-		else if (next instanceof Interceptor) {
+		} else if (next instanceof Interceptor) {
 			addInterceptor((Interceptor) next);
-		}
-		else {
+		} else {
 			// It's not a pointcut or interceptor.
 			// It's a bean that needs an invoker around it.
 			// TODO how do these get refreshed
@@ -244,7 +240,7 @@ public class ProxyFactoryBean extends DefaultProxyConfig implements FactoryBean,
 			addInterceptor(ii);
 			//throw new AopConfigException("Illegal type: bean '" + name + "' must be of type MethodPointcut or Interceptor");
 		}
-		
+
 		// Record the ultimate object as descended from the given bean name.
 		// This tells us how to refresh the interceptor list, which we'll need to
 		// do if we have to create a new prototype instance. Otherwise the new
@@ -256,24 +252,25 @@ public class ProxyFactoryBean extends DefaultProxyConfig implements FactoryBean,
 	/**
 	 * Return a proxy. Invoked when clients obtain beans
 	 * from this factory bean.
+	 *
 	 * @see com.interface21.beans.factory.FactoryBean#getObject()
 	 */
 	public Object getObject() throws BeansException {
 		if (this.singleton) {
 			// Return singleton
 			return this.singletonInstance;
-		}
-		else {
+		} else {
 			// Create new interface
 			return createInstance();
 		}
 	}
-	
-	
+
+
 	/**
-	 * Create an instance of the AOP proxy to be returned by this factory. 
-	 * The instance will be cached for a singleton, and create on each call to 
+	 * Create an instance of the AOP proxy to be returned by this factory.
+	 * The instance will be cached for a singleton, and create on each call to
 	 * getObject() for a proxy.
+	 *
 	 * @return Object a fresh AOP proxy reflecting the current
 	 * state of this factory
 	 */
@@ -285,6 +282,7 @@ public class ProxyFactoryBean extends DefaultProxyConfig implements FactoryBean,
 
 	/**
 	 * This factory doesn't support pass through properties.
+	 *
 	 * @see com.interface21.beans.factory.FactoryBean#getPropertyValues()
 	 */
 	public PropertyValues getPropertyValues() {
@@ -297,7 +295,7 @@ public class ProxyFactoryBean extends DefaultProxyConfig implements FactoryBean,
 	public boolean isSingleton() {
 		return this.singleton;
 	}
-	
+
 	/**
 	 * Set the value of the singleton property. Governs whether this factory
 	 * should always return the same proxy instance (which implies the same target)
@@ -305,10 +303,11 @@ public class ProxyFactoryBean extends DefaultProxyConfig implements FactoryBean,
 	 * the target and interceptors may be new instances also, if they are obtained
 	 * from prototype bean definitions.
 	 * This allows for fine control of independence/uniqueness in the object graph.
+	 *
 	 * @param singleton
 	 */
 	public void setSingleton(boolean singleton) {
 		this.singleton = singleton;
 	}
-	
+
 }

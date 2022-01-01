@@ -3,9 +3,10 @@ package com.interface21.beans;
 /**
  * Mutable implementation of SortDefinition.
  * Supports toggling the ascending value on setting the same property again.
+ *
  * @author Juergen Hoeller
- * @since 26.05.2003
  * @see #setToggleAscendingOnProperty
+ * @since 26.05.2003
  */
 public class MutableSortDefinition implements SortDefinition {
 
@@ -38,14 +39,12 @@ public class MutableSortDefinition implements SortDefinition {
 	public void setProperty(String property) {
 		if (property == null || "".equals(property)) {
 			this.property = "";
-		}
-		else {
+		} else {
 			// implicit toggling of ascending?
 			if (this.toggleAscendingOnProperty) {
 				if (property.equals(this.property)) {
 					ascending = !ascending;
-				}
-				else {
+				} else {
 					this.ascending = true;
 				}
 			}
@@ -87,7 +86,7 @@ public class MutableSortDefinition implements SortDefinition {
 		}
 		SortDefinition sd = (SortDefinition) obj;
 		return (getProperty().equals(sd.getProperty()) &&
-		    isAscending() == sd.isAscending() && isIgnoreCase() == sd.isIgnoreCase());
+				isAscending() == sd.isAscending() && isIgnoreCase() == sd.isIgnoreCase());
 	}
 
 	public int hashCode() {

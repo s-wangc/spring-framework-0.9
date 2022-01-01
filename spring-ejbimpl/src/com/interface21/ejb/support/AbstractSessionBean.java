@@ -22,6 +22,7 @@ import javax.ejb.SessionContext;
  * variable and provides a NOP implementation of the ejbRemove() lifecycle method.
  * <br>NB: We cannot use final for our implementation of EJB lifecycle methods,
  * as this violates the EJB specification.
+ *
  * @author Rod Johnson
  */
 public abstract class AbstractSessionBean extends AbstractEnterpriseBean implements SessionBean {
@@ -29,17 +30,21 @@ public abstract class AbstractSessionBean extends AbstractEnterpriseBean impleme
 	//-------------------------------------------------------------------------
 	// Instance data
 	//-------------------------------------------------------------------------
-	/** The SessionContext passed to this object */
-	private SessionContext	sessionContext;
+	/**
+	 * The SessionContext passed to this object
+	 */
+	private SessionContext sessionContext;
 
 
 	//-------------------------------------------------------------------------
 	// EJB lifecycle methods
 	//-------------------------------------------------------------------------
+
 	/**
 	 * Sets the session context.
 	 * <br><b>If overriding this method, be sure to invoke this form of it
 	 * first.</b>
+	 *
 	 * @param sessionContext SessionContext Context for session
 	 */
 	public void setSessionContext(SessionContext sessionContext) {
@@ -63,6 +68,7 @@ public abstract class AbstractSessionBean extends AbstractEnterpriseBean impleme
 	/**
 	 * Convenience method for subclasses. Return the EJB context saved on
 	 * initialization.
+	 *
 	 * @return the SessionContext saved on initialization by this class's
 	 * implementation of the setSessionContext() method.
 	 */
@@ -70,4 +76,4 @@ public abstract class AbstractSessionBean extends AbstractEnterpriseBean impleme
 		return sessionContext;
 	}
 
-} 	// class AbstractSessionBean
+}    // class AbstractSessionBean

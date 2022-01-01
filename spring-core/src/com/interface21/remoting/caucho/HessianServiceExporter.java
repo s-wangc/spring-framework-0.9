@@ -25,8 +25,8 @@ import com.interface21.web.servlet.mvc.Controller;
  * any Hessian client, as there isn't any special handling involved.
  *
  * @author Juergen Hoeller
- * @since 13.05.2003
  * @see HessianProxyFactoryBean
+ * @since 13.05.2003
  */
 public class HessianServiceExporter implements Controller {
 
@@ -47,9 +47,9 @@ public class HessianServiceExporter implements Controller {
 		HessianInput in = new HessianInput(request.getInputStream());
 		HessianOutput out = new HessianOutput(response.getOutputStream());
 		try {
-		  this.skeleton.invoke(in, out);
+			this.skeleton.invoke(in, out);
 		} catch (Throwable e) {
-		  throw new ServletException(e);
+			throw new ServletException(e);
 		}
 		return null;
 	}

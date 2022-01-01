@@ -2,6 +2,7 @@ package com.interface21.transaction;
 
 /**
  * Exception thrown when a general transaction system error is encountered.
+ *
  * @author Juergen Hoeller
  * @since 24.03.2003
  */

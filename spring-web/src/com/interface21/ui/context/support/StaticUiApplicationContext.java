@@ -9,6 +9,7 @@ import com.interface21.ui.context.ThemeSource;
 
 /**
  * Adds theme capabilities for UI contexts.
+ *
  * @author Jean-Pierre Pawlak
  */
 public class StaticUiApplicationContext extends StaticApplicationContext implements ThemeSource {
@@ -18,7 +19,7 @@ public class StaticUiApplicationContext extends StaticApplicationContext impleme
 	/**
 	 * Standard constructor.
 	 */
-	public StaticUiApplicationContext()	throws BeansException, ApplicationContextException {
+	public StaticUiApplicationContext() throws BeansException, ApplicationContextException {
 		super();
 	}
 

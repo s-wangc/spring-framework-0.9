@@ -10,7 +10,7 @@ import java.util.List;
 public class NodeCountVisitor implements Visitor {
 
 	private int nodeCount;
-	
+
 	private List visited = new LinkedList();
 
 	/**
@@ -20,7 +20,7 @@ public class NodeCountVisitor implements Visitor {
 		recordVisit(host);
 		return true;
 	}
-	
+
 	protected void recordVisit(Visitable host) {
 		if (visited.contains(host))
 			throw new RuntimeException("Node [" + host + "] visited twice");
@@ -40,7 +40,7 @@ public class NodeCountVisitor implements Visitor {
 	public void visitLeaf(Visitable host, int depth) {
 		recordVisit(host);
 	}
-	
+
 	public int getNodeCount() {
 		return nodeCount;
 	}

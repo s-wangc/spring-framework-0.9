@@ -1,8 +1,8 @@
 /**
- * Generic framework code included with 
+ * Generic framework code included with
  * <a href="http://www.amazon.com/exec/obidos/tg/detail/-/1861007841/">Expert One-On-One J2EE Design and Development</a>
- * by Rod Johnson (Wrox, 2002). 
- * This code is free to use and modify. 
+ * by Rod Johnson (Wrox, 2002).
+ * This code is free to use and modify.
  * Please contact <a href="mailto:rod.johnson@interface21.com">rod.johnson@interface21.com</a>
  * for commercial support.
  */
@@ -14,7 +14,7 @@ import java.io.IOException;
 
 import com.interface21.beans.factory.ListableBeanFactory;
 
-/** 
+/**
  * Interface to provide configuration for an application. This is
  * read-only while the application is running, but may be reloaded if the
  * implementation supports this.
@@ -39,18 +39,18 @@ import com.interface21.beans.factory.ListableBeanFactory;
  * @version $Revision: 1.8 $
  */
 public interface ApplicationContext extends MessageSource, ListableBeanFactory {
-	
+
 	/**
 	 * Return the parent context, or null if there is no parent,
 	 * and this is the root of the context hierarchy.
 	 * @return the parent context, or null if there is no parent
 	 */
 	ApplicationContext getParent();
-	
+
 	/**
 	 * Return a friendly name for this context.
 	 * @return a display name for this context
-	*/
+	 */
 	String getDisplayName();
 
 	/**
@@ -120,20 +120,20 @@ public interface ApplicationContext extends MessageSource, ListableBeanFactory {
 	 * @param o object to put
 	 */
 	void shareObject(String key, Object o);
-	
+
 	/**
 	 * Retrieve a shared object added with a call to shareObject().
 	 * @return the object, or null if no object is known under
 	 * this name (this is not an error).
 	 */
 	Object sharedObject(String key);
-	
-	/** 
+
+	/**
 	 * Remove a shared object added with a call to shareObject().
 	 * Does nothing if the object was null.
 	 * @param key the object was added with
 	 * @return the object if it was found, or null.
 	 */
 	Object removeSharedObject(String key);
-		
+
 }

@@ -11,9 +11,10 @@ import com.interface21.web.servlet.support.RequestContextUtils;
 /**
  * Interceptor that allows for changing the current theme on every request,
  * via a configurable request parameter.
+ *
  * @author Juergen Hoeller
- * @since 20.06.2003
  * @see com.interface21.web.servlet.ThemeResolver
+ * @since 20.06.2003
  */
 public class ThemeChangeInterceptor implements HandlerInterceptor {
 

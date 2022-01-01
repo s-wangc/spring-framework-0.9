@@ -9,9 +9,9 @@ package com.interface21.orm.hibernate;
  * bound SessionHolder internally.
  *
  * @author Juergen Hoeller
- * @since 02.05.2003
  * @see HibernateTransactionManager
  * @see SessionHolder
+ * @since 02.05.2003
  */
 public class HibernateTransactionObject {
 

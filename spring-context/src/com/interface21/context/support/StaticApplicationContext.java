@@ -17,6 +17,7 @@ import com.interface21.context.ApplicationContextException;
  * ApplicationContext to allow concrete registration of Java objects
  * in code, rather than from external configuration sources.
  * Mainly useful for testing.
+ *
  * @author Rod Johnson
  * @version $RevisionId$
  */
@@ -24,7 +25,9 @@ public class StaticApplicationContext extends AbstractApplicationContext {
 
 	ListableBeanFactoryImpl defaultBeanFactory;
 
-	/** Namespace --> name */
+	/**
+	 * Namespace --> name
+	 */
 	private Map beanFactoryHash = new HashMap();
 
 	public StaticApplicationContext() throws BeansException, ApplicationContextException {
@@ -39,7 +42,7 @@ public class StaticApplicationContext extends AbstractApplicationContext {
 
 		// Register the message source bean
 		defaultBeanFactory.registerBeanDefinition(MESSAGE_SOURCE_BEAN_NAME,
-			new RootBeanDefinition(StaticMessageSource.class, null, true));
+				new RootBeanDefinition(StaticMessageSource.class, null, true));
 
 		//refresh();
 	}
@@ -77,18 +80,19 @@ public class StaticApplicationContext extends AbstractApplicationContext {
 	 */
 	public void registerSingleton(String name, Class clazz, PropertyValues pvs) throws BeansException {
 		defaultBeanFactory.registerBeanDefinition(name,
-			new RootBeanDefinition(clazz, pvs, true));
+				new RootBeanDefinition(clazz, pvs, true));
 	}
 
 	public void registerPrototype(String name, Class clazz, PropertyValues pvs) throws BeansException {
 		defaultBeanFactory.registerBeanDefinition(name,
-			new RootBeanDefinition(clazz, pvs, false));
+				new RootBeanDefinition(clazz, pvs, false));
 	}
 
 	/**
 	 * Associate the given message with the given code.
-	 * @param code lookup code
-	 * @param locale locale message should be found within
+	 *
+	 * @param code           lookup code
+	 * @param locale         locale message should be found within
 	 * @param defaultMessage message associated with this lookup code
 	 */
 	public void addMessage(String code, Locale locale, String defaultMessage) {

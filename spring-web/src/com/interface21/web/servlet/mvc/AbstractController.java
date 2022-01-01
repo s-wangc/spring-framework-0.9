@@ -1,10 +1,10 @@
 /**
- * Generic framework code included with 
+ * Generic framework code included with
  * <a href="http://www.amazon.com/exec/obidos/tg/detail/-/1861007841/">Expert One-On-One J2EE Design and Development</a>
- * by Rod Johnson (Wrox, 2002). 
+ * by Rod Johnson (Wrox, 2002).
  * This code is free to use and modify. However, please
  * acknowledge the source and include the above URL in each
- * class using or derived from this code. 
+ * class using or derived from this code.
  * Please contact <a href="mailto:rod.johnson@interface21.com">rod.johnson@interface21.com</a>
  * for commercial support.
  */
@@ -39,16 +39,16 @@ import com.interface21.web.servlet.ModelAndView;
  * @author Rod Johnson
  */
 public abstract class AbstractController extends WebContentGenerator implements Controller {
-	
+
 	/**
 	 * Set of supported methods (GET/POST etc.). GET and POST by default.
 	 */
-	private Set	supportedMethods;
-	
+	private Set supportedMethods;
+
 	private boolean requireSession;
-	
+
 	private int cacheSeconds = -1;
-	
+
 	/**
 	 * Create a new Controller supporting GET and POST methods.
 	 */
@@ -57,7 +57,7 @@ public abstract class AbstractController extends WebContentGenerator implements 
 		this.supportedMethods.add("GET");
 		this.supportedMethods.add("POST");
 	}
-	
+
 	/**
 	 * Set supported methods as CSV.
 	 * The String[] property editor will get the type right.
@@ -71,7 +71,7 @@ public abstract class AbstractController extends WebContentGenerator implements 
 			logger.info("Supported request method '" + supportedMethodsArray[i] + "'");
 		}
 	}
-	
+
 	/**
 	 * Is a session required to handle requests?
 	 */
@@ -79,7 +79,7 @@ public abstract class AbstractController extends WebContentGenerator implements 
 		this.requireSession = requireSession;
 		logger.info("Requires session set to " + requireSession);
 	}
-	
+
 	/**
 	 * If 0 disable caching, default is no caching header generation.
 	 * Only if this is set to 0 (no cache) or a positive value (cache for this many
@@ -89,41 +89,40 @@ public abstract class AbstractController extends WebContentGenerator implements 
 	public final void setCacheSeconds(int seconds) {
 		this.cacheSeconds = seconds;
 	}
-	
+
 	public final ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response)
-		throws ServletException, IOException {
-		
+			throws ServletException, IOException {
+
 		// Check whether we should support the request method
 		String method = request.getMethod();
 		if (!this.supportedMethods.contains(method)) {
 			logger.info("Disallowed '" + method + "' request");
 			throw new ServletException("This resource does not support request method '" + method + "'");
 		}
-		
+
 		// Check whether session was required
 		if (this.requireSession) {
 			// Don't create a session if none exists
 			HttpSession session = request.getSession(false);
 			if (session == null) {
-				throw new ServletException("This resource requires a pre-existing HttpSession: none was found"); 
+				throw new ServletException("This resource requires a pre-existing HttpSession: none was found");
 			}
 		}
-		
+
 		// Do declarative cache control
 		if (this.cacheSeconds == 0) {
 			preventCaching(response);
-		}
-		else if (this.cacheSeconds > 0) {
+		} else if (this.cacheSeconds > 0) {
 			// Revalidate only if we understand last modification
 			boolean revalidate = this instanceof LastModified;
 			cacheForSeconds(response, this.cacheSeconds, revalidate);
 		}
 		// Leave caching to the client otherwise
-		
+
 		// If everything's OK, leave subclass to do the business
 		return handleRequestInternal(request, response);
 	}
-	
+
 	/**
 	 * Template method. Subclasses must implement this.
 	 * The contract is the same as for handleRequest.

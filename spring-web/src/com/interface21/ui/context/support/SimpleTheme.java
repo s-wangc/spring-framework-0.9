@@ -6,6 +6,7 @@ import com.interface21.context.MessageSource;
 /**
  * Default Theme implementation, wrapping a name and an
  * underlying MessageSource.
+ *
  * @author Juergen Hoeller
  * @since 17.06.2003
  */

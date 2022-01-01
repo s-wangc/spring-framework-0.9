@@ -34,13 +34,14 @@ public class CustomNumberEditor extends PropertyEditorSupport {
 	 * <p>The allowEmpty parameter states if an empty String should
 	 * be allowed for parsing, i.e. get interpreted as null value.
 	 * Else, an IllegalArgumentException gets thrown in that case.
-	 * @param numberClass Number subclass to generate
+	 *
+	 * @param numberClass  Number subclass to generate
 	 * @param numberFormat NumberFormat to use for parsing and rendering
-	 * @param allowEmpty if empty strings should be allowed
+	 * @param allowEmpty   if empty strings should be allowed
 	 * @throws IllegalArgumentException if an invalid numberClass has been specified
 	 */
 	public CustomNumberEditor(Class numberClass, NumberFormat numberFormat, boolean allowEmpty)
-	    throws IllegalArgumentException {
+			throws IllegalArgumentException {
 		if (!Number.class.isAssignableFrom(numberClass)) {
 			throw new IllegalArgumentException("Property class must be a subclass of Number");
 		}
@@ -52,30 +53,23 @@ public class CustomNumberEditor extends PropertyEditorSupport {
 	public void setAsText(String text) throws IllegalArgumentException {
 		if (this.allowEmpty && text.trim().equals("")) {
 			setValue(null);
-		}
-		else {
+		} else {
 			try {
 				Number number = this.numberFormat.parse(text);
 				if (this.numberClass.isInstance(number)) {
 					setValue(number);
-				}
-				else if (this.numberClass.equals(Long.class)) {
+				} else if (this.numberClass.equals(Long.class)) {
 					setValue(new Long(number.longValue()));
-				}
-				else if (this.numberClass.equals(Integer.class)) {
+				} else if (this.numberClass.equals(Integer.class)) {
 					setValue(new Integer(number.intValue()));
-				}
-				else if (this.numberClass.equals(Double.class)) {
+				} else if (this.numberClass.equals(Double.class)) {
 					setValue(new Double(number.doubleValue()));
-				}
-				else if (this.numberClass.equals(Float.class)) {
+				} else if (this.numberClass.equals(Float.class)) {
 					setValue(new Float(number.floatValue()));
-				}
-				else {
+				} else {
 					throw new IllegalArgumentException("Cannot convert [" + text + "] to [" + this.numberClass + "]");
 				}
-			}
-			catch (ParseException ex) {
+			} catch (ParseException ex) {
 				throw new IllegalArgumentException("Cannot parse number: " + ex.getMessage());
 			}
 		}

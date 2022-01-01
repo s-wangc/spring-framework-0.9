@@ -6,17 +6,18 @@ import org.aopalliance.MethodInvocation;
 
 /**
  * Trivial interceptor that can be introduced in a chain to display it.
- * 
+ * <p>
  * (c) Rod Johnson, 2003
+ *
  * @author Rod Johnson
  */
 public class DebugInterceptor implements MethodInterceptor {
-	
+
 	// TODO learning interceptor?
 	// AI? learns usage pattern?
 	// code metrics
 	// param values, etc?
-	
+
 	private int count;
 
 	/**
@@ -25,12 +26,12 @@ public class DebugInterceptor implements MethodInterceptor {
 	public Object invoke(MethodInvocation invocation) throws Throwable {
 		++count;
 		System.out.println("Debug interceptor: count=" + count +
-			" invocation=[" + invocation + "]");
+				" invocation=[" + invocation + "]");
 		Object rval = invocation.invokeNext();
 		System.out.println("Debug interceptor: next returned");
 		return rval;
 	}
-	
+
 	public int getCount() {
 		return this.count;
 	}

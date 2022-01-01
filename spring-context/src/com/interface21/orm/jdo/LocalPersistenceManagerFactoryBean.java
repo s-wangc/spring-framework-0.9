@@ -42,6 +42,7 @@ public class LocalPersistenceManagerFactoryBean implements FactoryBean, Initiali
 
 	/**
 	 * Initialize the PersistenceManagerFactory for the given location.
+	 *
 	 * @throws DataAccessResourceFailureException in case of initialization errors
 	 */
 	public void afterPropertiesSet() throws DataAccessResourceFailureException {

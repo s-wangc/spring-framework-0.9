@@ -2,7 +2,7 @@
  * The Spring Framework is published under the terms
  * of the Apache Software License.
  */
- 
+
 package com.interface21.transaction;
 
 /**
@@ -11,9 +11,10 @@ package com.interface21.transaction;
  * rollback status) and there is no existing transaction.
  * This represents an illegal usage of the transaction
  * API.
+ *
  * @author Rod Johnson
- * @since 17-Mar-2003
  * @version $Revision: 1.1 $
+ * @since 17-Mar-2003
  */
 public class NoTransactionException extends TransactionUsageException {
 

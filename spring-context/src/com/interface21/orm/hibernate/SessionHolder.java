@@ -11,10 +11,10 @@ import net.sf.hibernate.Transaction;
  * to the thread, for a given SessionFactory.
  *
  * @author Juergen Hoeller
- * @since 06.05.2003
  * @see HibernateTransactionManager
  * @see HibernateTransactionObject
  * @see SessionFactoryUtils
+ * @since 06.05.2003
  */
 public class SessionHolder {
 

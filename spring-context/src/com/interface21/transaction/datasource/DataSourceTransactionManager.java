@@ -37,10 +37,10 @@ import com.interface21.transaction.support.AbstractPlatformTransactionManager;
  * if you stick to the required connection lookup pattern.
  *
  * @author Juergen Hoeller
- * @since 02.05.2003
  * @see com.interface21.jdbc.datasource.DataSourceUtils#getConnection
  * @see com.interface21.jdbc.datasource.SingleConnectionDataSource
  * @see com.interface21.util.ThreadObjectManager
+ * @since 02.05.2003
  */
 public class DataSourceTransactionManager extends AbstractPlatformTransactionManager implements InitializingBean {
 
@@ -49,6 +49,7 @@ public class DataSourceTransactionManager extends AbstractPlatformTransactionMan
 	/**
 	 * Create a new DataSourceTransactionManager instance.
 	 * A DataSource has to be set to be able to use it.
+	 *
 	 * @see #setDataSource
 	 */
 	public DataSourceTransactionManager() {
@@ -56,6 +57,7 @@ public class DataSourceTransactionManager extends AbstractPlatformTransactionMan
 
 	/**
 	 * Create a new DataSourceTransactionManager instance.
+	 *
 	 * @param dataSource DataSource to manage transactions for
 	 */
 	public DataSourceTransactionManager(DataSource dataSource) {
@@ -116,8 +118,7 @@ public class DataSourceTransactionManager extends AbstractPlatformTransactionMan
 				con.setTransactionIsolation(isolationLevel);
 			}
 			con.setAutoCommit(false);
-		}
-		catch (SQLException ex) {
+		} catch (SQLException ex) {
 			throw new CannotCreateTransactionException("Cannot configure connection", ex);
 		}
 		DataSourceUtils.getThreadObjectManager().bindThreadObject(this.dataSource, txObject.getConnectionHolder());
@@ -128,16 +129,13 @@ public class DataSourceTransactionManager extends AbstractPlatformTransactionMan
 		if (txObject.getConnectionHolder().isRollbackOnly()) {
 			// nested JDBC transaction demanded rollback-only
 			rollback(status);
-		}
-		else {
+		} else {
 			logger.debug("Committing JDBC transaction [" + txObject.getConnectionHolder().getConnection() + "]");
 			try {
 				txObject.getConnectionHolder().getConnection().commit();
-			}
-			catch (SQLException ex) {
+			} catch (SQLException ex) {
 				throw new UnexpectedRollbackException("Cannot commit", ex);
-			}
-			finally {
+			} finally {
 				closeConnection(txObject);
 			}
 		}
@@ -148,11 +146,9 @@ public class DataSourceTransactionManager extends AbstractPlatformTransactionMan
 		logger.debug("Rolling back JDBC transaction [" + txObject.getConnectionHolder().getConnection() + "]");
 		try {
 			txObject.getConnectionHolder().getConnection().rollback();
-		}
-		catch (SQLException ex) {
+		} catch (SQLException ex) {
 			throw new TransactionSystemException("Cannot rollback", ex);
-		}
-		finally {
+		} finally {
 			closeConnection(txObject);
 		}
 	}
@@ -176,15 +172,12 @@ public class DataSourceTransactionManager extends AbstractPlatformTransactionMan
 				logger.debug("Resetting isolation level to " + txObject.getPreviousIsolationLevel());
 				con.setTransactionIsolation(txObject.getPreviousIsolationLevel().intValue());
 			}
-		}
-		catch (SQLException ex) {
+		} catch (SQLException ex) {
 			logger.warn("Could not reset JDBC connection [" + con + "]", ex);
-		}
-		finally {
+		} finally {
 			try {
 				DataSourceUtils.closeConnectionIfNecessary(con, this.dataSource);
-			}
-			catch (CleanupFailureDataAccessException ex) {
+			} catch (CleanupFailureDataAccessException ex) {
 				// just log it, to keep a transaction-related exception
 				logger.error("Cannot close connection after transaction", ex);
 			}

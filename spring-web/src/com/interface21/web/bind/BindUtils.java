@@ -17,8 +17,9 @@ public abstract class BindUtils {
 
 	/**
 	 * Bind the parameters from the given request to the given object.
-	 * @param request request containing the parameters
-	 * @param object object to bind the parameters to
+	 *
+	 * @param request    request containing the parameters
+	 * @param object     object to bind the parameters to
 	 * @param objectName name of the bind object
 	 * @return the binder used (can be treated as DataBinder or Errors instance)
 	 */
@@ -31,10 +32,11 @@ public abstract class BindUtils {
 	/**
 	 * Bind the parameters from the given request to the given object,
 	 * invoking the given validator.
-	 * @param request request containing the parameters
-	 * @param object object to bind the parameters to
+	 *
+	 * @param request    request containing the parameters
+	 * @param object     object to bind the parameters to
 	 * @param objectName name of the bind object
-	 * @param validator validator to be invoked, or null if no validation
+	 * @param validator  validator to be invoked, or null if no validation
 	 * @return the binder used (can be treated as Errors instance)
 	 */
 	public static BindException bindAndValidate(ServletRequest request, Object object, String objectName, Validator validator) {

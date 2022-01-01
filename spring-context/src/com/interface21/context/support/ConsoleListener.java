@@ -16,7 +16,7 @@ import com.interface21.context.ApplicationListener;
  * @since January 21, 2001
  */
 public class ConsoleListener implements ApplicationListener {
-	
+
 	public void onApplicationEvent(ApplicationEvent e) {
 		System.out.println(e.toString());
 	}

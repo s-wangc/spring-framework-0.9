@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 /**
  * Miscellaneous utilities for web applications.
  * Also used by various framework classes.
+ *
  * @author Rod Johnson
  * @author Juergen Hoeller
  */
@@ -28,13 +29,19 @@ public abstract class WebUtils {
 	 */
 	public static final String DEFAULT_WEB_APP_ROOT_KEY = "webapp.root";
 
-	/** HTTP header value */
+	/**
+	 * HTTP header value
+	 */
 	public static final String HEADER_IFMODSINCE = "If-Modified-Since";
 
-	/** HTTP header value */
+	/**
+	 * HTTP header value
+	 */
 	public static final String HEADER_LASTMOD = "Last-Modified";
 
-	/** Name suffix in case of image buttons */
+	/**
+	 * Name suffix in case of image buttons
+	 */
 	public static final String SUBMIT_IMAGE_SUFFIX = ".x";
 
 	/**
@@ -57,7 +64,7 @@ public abstract class WebUtils {
 		String key = (param != null ? param : DEFAULT_WEB_APP_ROOT_KEY);
 		String oldValue = System.getProperty(key);
 		if (oldValue != null) {
-			servletContext.log("WARNING: Web app root system property already set: "  + key + " = " + oldValue);
+			servletContext.log("WARNING: Web app root system property already set: " + key + " = " + oldValue);
 			servletContext.log("WARNING: Choose unique webAppRootKey values in your web.xml files!");
 		} else {
 			String root = servletContext.getRealPath("/");
@@ -70,8 +77,9 @@ public abstract class WebUtils {
 	 * Check the given request for a session attribute of the given name.
 	 * Returns null if there is no session or if the session has no such attribute.
 	 * Does not create a new session if none has existed before!
+	 *
 	 * @param request current HTTP request
-	 * @param name the name of the session attribute
+	 * @param name    the name of the session attribute
 	 * @return the value of the session attribute, or null if not found
 	 */
 	public static Object getSessionAttribute(HttpServletRequest request, String name) {
@@ -83,14 +91,14 @@ public abstract class WebUtils {
 	 * Set the session attribute with the given name to the given value.
 	 * Removes the session attribute if value is null, if a session existed at all.
 	 * Does not create a new session on remove if none has existed before!
+	 *
 	 * @param request current HTTP request
-	 * @param name the name of the session attribute
+	 * @param name    the name of the session attribute
 	 */
 	public static void setSessionAttribute(HttpServletRequest request, String name, Object value) {
 		if (value != null) {
 			request.getSession().setAttribute(name, value);
-		}
-		else {
+		} else {
 			HttpSession session = request.getSession(false);
 			if (session != null) {
 				session.removeAttribute(name);
@@ -102,6 +110,7 @@ public abstract class WebUtils {
 	 * Retrieve the first cookie with the given name.
 	 * Note that multiple cookies can have the same name
 	 * but different paths or domains.
+	 *
 	 * @param name cookie name
 	 * @return the first cookie with the given name, or null if none is found
 	 */
@@ -118,6 +127,7 @@ public abstract class WebUtils {
 
 	/**
 	 * Return the URL of the root of the current application.
+	 *
 	 * @param request current HTTP request
 	 */
 	public static String getUrlToApplication(HttpServletRequest request) {
@@ -126,6 +136,7 @@ public abstract class WebUtils {
 
 	/**
 	 * Return the path within the web application for the given request.
+	 *
 	 * @param request current HTTP request
 	 * @return the path within the web application
 	 */
@@ -140,6 +151,7 @@ public abstract class WebUtils {
 	 * <p>E.g.: servlet mapping = "/test/*"; request URI = "/test/a" -> "/a".
 	 * <p>E.g.: servlet mapping = "/test"; request URI = "/test" -> "".
 	 * <p>E.g.: servlet mapping = "/*.test"; request URI = "/a.test" -> "".
+	 *
 	 * @param request current HTTP request
 	 * @return the path within the servlet mapping, or ""
 	 */
@@ -152,9 +164,10 @@ public abstract class WebUtils {
 	 * Return the mapping lookup path for the given request,
 	 * within the current servlet mapping if applicable,
 	 * else within the web application context.
-	 * @param request current HTTP request
+	 *
+	 * @param request           current HTTP request
 	 * @param alwaysUseFullPath if the full path within the context
-	 * should be used in any case
+	 *                          should be used in any case
 	 * @return the lookup path
 	 */
 	public static String getLookupPathForRequest(HttpServletRequest request, boolean alwaysUseFullPath) {
@@ -186,9 +199,10 @@ public abstract class WebUtils {
 	 * Convenience method to return a map from un-prefixed property names
 	 * to values. E.g. with a prefix of price, price_1, price_2 produce
 	 * a properties object with mappings for 1, 2 to the same values.
+	 *
 	 * @param request HTTP request in which to look for parameters
-	 * @param base beginning of parameter name
-	 * (if this is null or the empty string, all parameters will match)
+	 * @param base    beginning of parameter name
+	 *                (if this is null or the empty string, all parameters will match)
 	 * @return properties mapping request parameters <b>without the prefix</b>
 	 */
 	public static Properties getParametersStartingWith(ServletRequest request, String base) {
@@ -210,8 +224,9 @@ public abstract class WebUtils {
 	/**
 	 * Check if a specific input type="submit" parameter was sent in the request,
 	 * either via a button (directly with name) or via an image (name + ".x").
+	 *
 	 * @param request current HTTP request
-	 * @param name name of the parameter
+	 * @param name    name of the parameter
 	 * @return if the parameter was sent
 	 * @see #SUBMIT_IMAGE_SUFFIX
 	 */

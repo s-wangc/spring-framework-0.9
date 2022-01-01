@@ -17,7 +17,7 @@ import com.interface21.web.util.WebUtils;
  *
  * <p>Note: This listener should be placed before ContextLoaderListener in web.xml,
  * at least when used for Log4J.
- * 
+ *
  * <p>Note: Log4jConfigListener sets the system property implicitly,
  * so there's no need for this listener in addition to it.
  *
@@ -28,9 +28,9 @@ import com.interface21.web.util.WebUtils;
  * context-param at all) without worrying.
  *
  * @author Juergen Hoeller
- * @since 18.04.2003
  * @see WebUtils#setWebAppRootSystemProperty
  * @see Log4jConfigListener
+ * @since 18.04.2003
  */
 public class WebAppRootListener implements ServletContextListener {
 

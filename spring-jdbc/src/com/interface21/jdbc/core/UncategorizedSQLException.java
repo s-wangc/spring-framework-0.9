@@ -1,8 +1,8 @@
 /**
- * Generic framework code included with 
+ * Generic framework code included with
  * <a href="http://www.amazon.com/exec/obidos/tg/detail/-/1861007841/">Expert One-On-One J2EE Design and Development</a>
- * by Rod Johnson (Wrox, 2002). 
- * This code is free to use and modify. 
+ * by Rod Johnson (Wrox, 2002).
+ * This code is free to use and modify.
  * Please contact <a href="mailto:rod.johnson@interface21.com">rod.johnson@interface21.com</a>
  * for commercial support.
  */
@@ -21,7 +21,7 @@ import com.interface21.dao.UncategorizedDataAccessException;
  * @version $Id: UncategorizedSQLException.java,v 1.1.1.1 2003/02/11 08:10:23 johnsonr Exp $
  */
 public class UncategorizedSQLException extends UncategorizedDataAccessException {
-	
+
 	/** SQL that led to the problem */
 	private final String sql;
 
@@ -35,7 +35,7 @@ public class UncategorizedSQLException extends UncategorizedDataAccessException 
 		super(mesg, ex);
 		this.sql = sql;
 	}
-	
+
 	/**
 	 * Return the underlying SQLException
 	 * @return the underlying SQLException
@@ -43,7 +43,7 @@ public class UncategorizedSQLException extends UncategorizedDataAccessException 
 	public SQLException getSQLException() {
 		return (SQLException) getRootCause();
 	}
-	
+
 	/**
 	 * Return the SQL that led to the problem
 	 * @return the SQL that led to the problem

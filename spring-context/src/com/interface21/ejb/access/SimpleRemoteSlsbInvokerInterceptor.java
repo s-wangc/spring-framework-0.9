@@ -14,18 +14,20 @@ import com.interface21.ejb.access.AbstractRemoteSlsbInvokerInterceptor;
 /**
  * Basic remote invoker for EJBs.
  * "Creates" a new EJB instance for each invocation.
+ *
  * @version $Revision: 1.1 $
  */
 public class SimpleRemoteSlsbInvokerInterceptor extends AbstractRemoteSlsbInvokerInterceptor {
-	
+
 	/**
 	 * JavaBean constructor
 	 */
-	public SimpleRemoteSlsbInvokerInterceptor() {		
+	public SimpleRemoteSlsbInvokerInterceptor() {
 	}
-	
+
 	/**
 	 * Convenient constructor for programmatic use.
+	 *
 	 * @param jndiName
 	 * @param inContainer
 	 * @throws org.aopalliance.AspectException
@@ -35,26 +37,24 @@ public class SimpleRemoteSlsbInvokerInterceptor extends AbstractRemoteSlsbInvoke
 		setInContainer(inContainer);
 		try {
 			afterPropertiesSet();
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			throw new AspectException("Failed to create EJB invoker interceptor", ex);
 		}
 	}
-	
+
 	/**
 	 * This is the last invoker in the chain
+	 *
 	 * @see org.aopalliance.MethodInterceptor#invoke(org.aopalliance.Invocation)
 	 */
 	public Object invoke(MethodInvocation invocation) throws Throwable {
 		EJBObject ejb = newSessionBeanInstance();
 		try {
 			return invocation.getMethod().invoke(ejb, AopUtils.getArguments(invocation));
-		}
-		catch (InvocationTargetException ex) {
+		} catch (InvocationTargetException ex) {
 			logger.warn(ex + " thrown invoking remote EJB method " + invocation.getMethod());
 			throw ex.getTargetException();
-		}
-		catch (Throwable t) {
+		} catch (Throwable t) {
 			throw new AspectException("Failed to invoke remote EJB", t);
 		}
 	}

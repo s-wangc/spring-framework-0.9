@@ -10,17 +10,21 @@ package com.interface21.core;
  * <br/>This interface is necessary because both runtime and checked
  * exceptions are useful, and they cannot share a common,
  * framework-specific, superclass.
- * @author  Rod Johnson
+ *
+ * @author Rod Johnson
  * @version $Id: ErrorCoded.java,v 1.1.1.1 2003/02/11 08:10:18 johnsonr Exp $
  */
 public interface ErrorCoded {
-	
-	/** Constant to indicate that this failure isn't coded */
+
+	/**
+	 * Constant to indicate that this failure isn't coded
+	 */
 	public static final String UNCODED = "uncoded";
-	
-	/** 
-	 * Return the error code associated with this failure. 
+
+	/**
+	 * Return the error code associated with this failure.
 	 * The GUI can render this anyway it pleases, allowing for Int8ln etc.
+	 *
 	 * @return a String error code associated with this failure
 	 */
 	String getErrorCode();

@@ -9,6 +9,7 @@ import org.xml.sax.InputSource;
 
 /**
  * EntityResolver implementation for the Spring beans DTD.
+ *
  * @author Juergen Hoeller
  * @since 04.06.2003
  */
@@ -32,12 +33,10 @@ public class BeansDtdResolver implements EntityResolver {
 				source.setPublicId(publicId);
 				source.setSystemId(systemId);
 				return source;
-			}
-			else {
+			} else {
 				log.debug("Could not resolve DTD [" + systemId + "]: not found in classpath");
 			}
-		}
-		else {
+		} else {
 			log.debug("Ignoring DTD [" + systemId + "]");
 		}
 		// use the default behaviour -> download from website

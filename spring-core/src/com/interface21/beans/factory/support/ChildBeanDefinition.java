@@ -14,6 +14,7 @@ import com.interface21.beans.PropertyValues;
  * defined by the parent will also be "inherited",
  * although it's possible to override them by redefining
  * them in the property values associated with the child.
+ *
  * @author Rod Johnson
  * @version $Revision: 1.2 $
  */
@@ -21,7 +22,9 @@ public class ChildBeanDefinition extends AbstractBeanDefinition {
 
 	private String parentName;
 
-	/** Creates new BeanDefinition */
+	/**
+	 * Creates new BeanDefinition
+	 */
 	public ChildBeanDefinition(String parentName, PropertyValues pvs, boolean singleton) {
 		super(pvs, singleton);
 		this.parentName = parentName;
@@ -30,13 +33,14 @@ public class ChildBeanDefinition extends AbstractBeanDefinition {
 	/**
 	 * Return the name of the parent bean definition in
 	 * the current bean factory.
+	 *
 	 * @return the name of the parent bean definition in
 	 * the current bean factory
 	 */
 	public String getParentName() {
 		return parentName;
 	}
-	
+
 	/**
 	 * @see Object#equals(Object)
 	 */

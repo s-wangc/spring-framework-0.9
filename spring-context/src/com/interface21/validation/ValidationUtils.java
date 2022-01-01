@@ -8,10 +8,10 @@ import org.apache.commons.logging.LogFactory;
  * Used by BindUtils' bindAndValidate method.
  *
  * @author Juergen Hoeller
- * @since 06.05.2003
  * @see Validator
  * @see Errors
  * @see com.interface21.web.bind.BindUtils#bindAndValidate
+ * @since 06.05.2003
  */
 public abstract class ValidationUtils {
 
@@ -19,9 +19,10 @@ public abstract class ValidationUtils {
 
 	/**
 	 * Invoke the given validator for the given object and Errors instance.
+	 *
 	 * @param validator validator to be invoked, or null if no validation
-	 * @param object object to bind the parameters to
-	 * @param errors Errors instance that should store the errors
+	 * @param object    object to bind the parameters to
+	 * @param errors    Errors instance that should store the errors
 	 */
 	public static void invokeValidator(Validator validator, Object object, Errors errors) {
 		if (validator != null) {

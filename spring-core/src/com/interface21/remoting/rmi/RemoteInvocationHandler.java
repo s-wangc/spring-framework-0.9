@@ -14,9 +14,10 @@ interface RemoteInvocationHandler extends Remote {
 	/**
 	 * Called by the StubInvocationHandler on each invocation.
 	 * Invokes the given method with the given parameters on the actual object.
+	 *
 	 * @param methodName the name of the invoked method
 	 * @param paramTypes the method's parameter types.
-	 * @param params the method's parameters
+	 * @param params     the method's parameters
 	 * @return the object returned from the invoked method, if any
 	 * @throws Exception in case of invocation or invocation target exceptions
 	 */

@@ -23,7 +23,7 @@ import com.interface21.context.ApplicationListener;
  * that override bean properties configured in the application context.
  *
  * <p>Expects configuration lines of the following form:<br>
- *   beanName.property=value
+ * beanName.property=value
  *
  * @author Juergen Hoeller
  * @since 12.03.2003
@@ -40,6 +40,7 @@ public class PropertyResourceConfigurer implements ApplicationListener {
 	/**
 	 * Set the location of the properties file. Allows for both a URL
 	 * and a (file) path, according to the respective ApplicationContext.
+	 *
 	 * @see com.interface21.context.ApplicationContext#getResourceAsStream
 	 */
 	public void setLocation(String location) {
@@ -54,7 +55,7 @@ public class PropertyResourceConfigurer implements ApplicationListener {
 				Properties prop = new Properties();
 				try {
 					prop.load(ctx.getResourceAsStream(this.location));
-					for (Iterator it = prop.keySet().iterator(); it.hasNext();) {
+					for (Iterator it = prop.keySet().iterator(); it.hasNext(); ) {
 						String key = (String) it.next();
 						processKey(ctx, key, prop.getProperty(key));
 					}
@@ -75,16 +76,14 @@ public class PropertyResourceConfigurer implements ApplicationListener {
 				return;
 			}
 			String beanName = key.substring(0, dotIndex);
-			String beanProperty = key.substring(dotIndex+1);
+			String beanProperty = key.substring(dotIndex + 1);
 			Object bean = factory.getBean(beanName);
 			BeanWrapper bw = new BeanWrapperImpl(bean);
 			bw.setPropertyValue(beanProperty, value);
 			logger.debug("Property " + key + " set to " + value);
-		}
-		catch (BeansException ex) {
+		} catch (BeansException ex) {
 			logWarning(key, value, ex.getMessage());
-		}
-		catch (PropertyVetoException ex) {
+		} catch (PropertyVetoException ex) {
 			logWarning(key, value, ex.getMessage());
 		}
 	}

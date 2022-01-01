@@ -11,8 +11,8 @@ import javax.servlet.ServletContextListener;
  * if the latter is used.
  *
  * @author Juergen Hoeller
- * @since 17.02.2003
  * @see com.interface21.web.util.Log4jConfigListener
+ * @since 17.02.2003
  */
 public class ContextLoaderListener implements ServletContextListener {
 

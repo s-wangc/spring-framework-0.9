@@ -12,8 +12,10 @@ import com.interface21.context.support.ApplicationObjectSupport;
  * @author Rod Johnson
  */
 public class WebContentGenerator extends ApplicationObjectSupport {
-	
-	/** Use HTTP 1.0 expires header? */
+
+	/**
+	 * Use HTTP 1.0 expires header?
+	 */
 	private boolean useExpiresHeader = true;
 
 	public WebContentGenerator() {
@@ -22,7 +24,7 @@ public class WebContentGenerator extends ApplicationObjectSupport {
 	public final void setUseExpiresHeader(boolean useExpiresHeader) {
 		this.useExpiresHeader = useExpiresHeader;
 	}
-	
+
 	/**
 	 * Prevent the response being cached.
 	 * See www.mnot.net.cache docs.
@@ -39,9 +41,10 @@ public class WebContentGenerator extends ApplicationObjectSupport {
 
 	/**
 	 * Set HTTP headers to allow caching for the given number of seconds.
+	 *
 	 * @param response HTTP response
-	 * @param seconds number of seconds into the future that the response should
-	 * be cacheable for
+	 * @param seconds  number of seconds into the future that the response should
+	 *                 be cacheable for
 	 */
 	protected final void cacheForSeconds(HttpServletResponse response, int seconds, boolean mustRevalidate) {
 		String hval = "max-age=" + seconds;

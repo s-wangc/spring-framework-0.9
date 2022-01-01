@@ -76,25 +76,21 @@ public class JdoInterceptor implements MethodInterceptor {
 			logger.debug("Using new PersistenceManager for JDO interceptor");
 			pmHolder = new PersistenceManagerHolder(PersistenceManagerFactoryUtils.getPersistenceManager(this.persistenceManagerFactory, true));
 			PersistenceManagerFactoryUtils.getThreadObjectManager().bindThreadObject(this.persistenceManagerFactory, pmHolder);
-		}
-		else {
+		} else {
 			logger.debug("Found thread-bound PersistenceManager for JDO interceptor");
 		}
 		try {
 			return methodInvocation.invokeNext();
-		}
-		finally {
+		} finally {
 			if (pmHolder != null) {
 				PersistenceManagerFactoryUtils.getThreadObjectManager().removeThreadObject(this.persistenceManagerFactory);
 				try {
 					PersistenceManagerFactoryUtils.closePersistenceManagerIfNecessary(pmHolder.getPersistenceManager(), this.persistenceManagerFactory);
-				}
-				catch (CleanupFailureDataAccessException ex) {
+				} catch (CleanupFailureDataAccessException ex) {
 					// just log it, to keep an invocation-related exception
 					logger.error("Cannot close JDO PersistenceManager after method interception", ex);
 				}
-			}
-			else {
+			} else {
 				logger.debug("Not closing pre-bound JDO PersistenceManager after interceptor");
 			}
 		}

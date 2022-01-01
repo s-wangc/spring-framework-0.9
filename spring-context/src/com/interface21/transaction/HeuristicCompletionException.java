@@ -2,15 +2,16 @@
  * The Spring Framework is published under the terms
  * of the Apache Software License.
  */
- 
+
 package com.interface21.transaction;
 
 /**
  * Exception that represents a transaction failure caused by heuristics.
+ *
  * @author Rod Johnson
  * @author Juergen Hoeller
- * @since 17-Mar-2003
  * @version $Revision: 1.3 $
+ * @since 17-Mar-2003
  */
 public class HeuristicCompletionException extends TransactionException {
 

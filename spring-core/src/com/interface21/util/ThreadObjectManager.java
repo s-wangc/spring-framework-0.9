@@ -15,9 +15,9 @@ import org.apache.commons.logging.LogFactory;
  * DataSource and thread. Does not need to be used by application developers.
  *
  * @author Juergen Hoeller
- * @since 02.05.2003
  * @see com.interface21.jdbc.datasource.DataSourceUtils#getConnection
  * @see com.interface21.transaction.datasource.DataSourceTransactionManager
+ * @since 02.05.2003
  */
 public class ThreadObjectManager {
 
@@ -35,6 +35,7 @@ public class ThreadObjectManager {
 
 	/**
 	 * Check if there is a value for the given key bound to the current thread.
+	 *
 	 * @param key key to check
 	 * @return if there is a value bound to the current thread
 	 */
@@ -44,6 +45,7 @@ public class ThreadObjectManager {
 
 	/**
 	 * Retrieve a value for the given key that is bound to the current thread.
+	 *
 	 * @param key key to check
 	 * @return a value bound to the current thread, or null if none
 	 */
@@ -57,7 +59,8 @@ public class ThreadObjectManager {
 
 	/**
 	 * Bind the given value for the given key to the current thread.
-	 * @param key key to bind the value to
+	 *
+	 * @param key   key to bind the value to
 	 * @param value value to bind
 	 * @throws java.lang.IllegalStateException if there is already a value bound to the thread
 	 */
@@ -74,6 +77,7 @@ public class ThreadObjectManager {
 
 	/**
 	 * Remove a value for the key from the current thread.
+	 *
 	 * @param key key to check
 	 * @throws java.lang.IllegalStateException if there is no value bound to the thread
 	 */

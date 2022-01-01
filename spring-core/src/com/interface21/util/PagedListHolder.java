@@ -33,10 +33,10 @@ import com.interface21.beans.SortDefinition;
  * consider RefreshablePagedListHolder.
  *
  * @author Juergen Hoeller
- * @since 19.05.2003
  * @see #getPageList
  * @see RefreshablePagedListHolder
  * @see com.interface21.beans.MutableSortDefinition
+ * @since 19.05.2003
  */
 public class PagedListHolder {
 
@@ -102,6 +102,7 @@ public class PagedListHolder {
 	/**
 	 * Set the sort definition for this holder.
 	 * Typically an instance of MutableSortDefinition.
+	 *
 	 * @see com.interface21.beans.MutableSortDefinition
 	 */
 	public void setSort(SortDefinition sort) {
@@ -180,14 +181,14 @@ public class PagedListHolder {
 	 */
 	public int getLastElementOnPage() {
 		int endIndex = this.pageSize * (this.page + 1);
-		return (endIndex > this.source.size() ? this.source.size() : endIndex) -1;
+		return (endIndex > this.source.size() ? this.source.size() : endIndex) - 1;
 	}
 
 	/**
 	 * Return a sub-list representing the current page.
 	 */
 	public List getPageList() {
-		return this.source.subList(getFirstElementOnPage(), getLastElementOnPage() +1);
+		return this.source.subList(getFirstElementOnPage(), getLastElementOnPage() + 1);
 	}
 
 	/**
@@ -208,14 +209,14 @@ public class PagedListHolder {
 	 * Return the first page to which create a link around the current page.
 	 */
 	public int getFirstLinkedPage() {
-		return Math.max(0, this.getPage() - (this.maxLinkedPages /2));
+		return Math.max(0, this.getPage() - (this.maxLinkedPages / 2));
 	}
 
 	/**
 	 * Return the first page to which create a link around the current page.
 	 */
 	public int getLastLinkedPage() {
-		return Math.min(getFirstLinkedPage() + this.maxLinkedPages -1, this.getNrOfPages() -1);
+		return Math.min(getFirstLinkedPage() + this.maxLinkedPages - 1, this.getNrOfPages() - 1);
 	}
 
 

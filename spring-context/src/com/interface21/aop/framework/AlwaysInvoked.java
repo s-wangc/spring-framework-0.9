@@ -2,7 +2,7 @@
  * The Spring Framework is published under the terms
  * of the Apache Software License.
  */
- 
+
 package com.interface21.aop.framework;
 
 import java.lang.reflect.Method;
@@ -13,17 +13,19 @@ import org.aopalliance.MethodInterceptor;
 /**
  * MethodPointcut implementation wrapping an
  * Interceptor that should always run.
+ *
  * @author Rod Johnson
- * @since 04-Apr-2003
  * @version $Revision: 1.2 $
+ * @since 04-Apr-2003
  */
 public class AlwaysInvoked implements MethodPointcut {
 
 	private final MethodInterceptor interceptor;
-	
+
 	public AlwaysInvoked(MethodInterceptor interceptor) {
 		this.interceptor = interceptor;
 	}
+
 	/**
 	 * @see com.interface21.aop.framework.MethodPointcut#getInterceptor()
 	 */

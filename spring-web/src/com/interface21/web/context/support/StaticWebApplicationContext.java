@@ -22,7 +22,7 @@ public class StaticWebApplicationContext extends StaticUiApplicationContext impl
 	}
 
 	public StaticWebApplicationContext(ApplicationContext parent, String namespace)
-	    throws BeansException, ApplicationContextException {
+			throws BeansException, ApplicationContextException {
 		super(parent);
 		this.namespace = namespace;
 	}
@@ -33,6 +33,7 @@ public class StaticWebApplicationContext extends StaticUiApplicationContext impl
 
 	/**
 	 * Normally this would cause loading, but this class doesn't rely on loading.
+	 *
 	 * @see WebApplicationContext#setServletContext(ServletContext)
 	 */
 	public void setServletContext(ServletContext servletContext) {
@@ -42,7 +43,7 @@ public class StaticWebApplicationContext extends StaticUiApplicationContext impl
 		// Expose as a ServletContext object
 		WebApplicationContextUtils.publishWebApplicationContext(this);
 	}
-	
+
 
 	public ServletContext getServletContext() {
 		return servletContext;

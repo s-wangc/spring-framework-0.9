@@ -35,7 +35,7 @@ import com.interface21.dao.DataAccessException;
  * HibernateInterceptor. The major advantage is its straightforwardness, the
  * major disadvantage that no checked application exceptions can get thrown
  * from within data access code. Respective checks and the actual throwing of
- * such exceptions can often be deferred to after callback execution, though. 
+ * such exceptions can often be deferred to after callback execution, though.
  *
  * <p>Note that even if HibernateTransactionManager is used for transaction
  * demarcation in higher-level services, all those services above the data
@@ -56,12 +56,12 @@ import com.interface21.dao.DataAccessException;
  * Hibernate 2.0 (initially developed with RC1).
  *
  * @author Juergen Hoeller
- * @since 02.05.2003
  * @see HibernateCallback
  * @see HibernateInterceptor
  * @see HibernateTransactionManager
  * @see LocalSessionFactoryBean
  * @see com.interface21.jndi.JndiObjectFactoryBean
+ * @since 02.05.2003
  */
 public class HibernateTemplate implements InitializingBean {
 
@@ -77,6 +77,7 @@ public class HibernateTemplate implements InitializingBean {
 
 	/**
 	 * Create a new HibernateTemplate instance.
+	 *
 	 * @param sessionFactory SessionFactory to create Sessions
 	 */
 	public HibernateTemplate(SessionFactory sessionFactory) {
@@ -129,11 +130,12 @@ public class HibernateTemplate implements InitializingBean {
 	 * Execute the specified action assuming that the result object is a List.
 	 * This is a convenience method for executing Hibernate find calls within
 	 * an action.
+	 *
 	 * @param action action object that specifies the Hibernate action
 	 * @return a result object returned by the action, or null
 	 * @throws DataAccessException in case of Hibernate errors
-	 * @throws RuntimeException in case of application exceptions thrown by
-	 * the action object
+	 * @throws RuntimeException    in case of application exceptions thrown by
+	 *                             the action object
 	 */
 	public List executeFind(HibernateCallback action) throws DataAccessException, RuntimeException {
 		return (List) execute(action);
@@ -153,11 +155,12 @@ public class HibernateTemplate implements InitializingBean {
 	 * collection of business objects.
 	 * <p>Note: Callback code is not supposed to handle transactions itself!
 	 * Use an appropriate transaction manager like HibernateTransactionManager.
+	 *
 	 * @param action action object that specifies the Hibernate action
 	 * @return a result object returned by the action, or null
 	 * @throws DataAccessException in case of Hibernate errors
-	 * @throws RuntimeException in case of application exceptions thrown by
-	 * the action object
+	 * @throws RuntimeException    in case of application exceptions thrown by
+	 *                             the action object
 	 * @see HibernateTransactionManager
 	 * @see com.interface21.dao
 	 * @see com.interface21.transaction
@@ -170,15 +173,12 @@ public class HibernateTemplate implements InitializingBean {
 				session.flush();
 			}
 			return result;
-		}
-		catch (HibernateException ex) {
+		} catch (HibernateException ex) {
 			throw SessionFactoryUtils.convertHibernateAccessException(ex);
-		}
-		catch (RuntimeException ex) {
+		} catch (RuntimeException ex) {
 			// callback code threw application exception
 			throw ex;
-		}
-		finally {
+		} finally {
 			SessionFactoryUtils.closeSessionIfNecessary(session, this.sessionFactory);
 		}
 	}

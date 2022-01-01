@@ -42,12 +42,12 @@ import com.interface21.transaction.support.AbstractPlatformTransactionManager;
  * custom isolation levels, though.
  *
  * @author Juergen Hoeller
- * @since 24.03.2003
  * @see #setAllowNonTransactionalExecution
  * @see #setTransactionSynchronization
  * @see #applyIsolationLevel
  * @see com.interface21.transaction.datasource.DataSourceTransactionManager
  * @see com.interface21.orm.hibernate.HibernateTransactionManager
+ * @since 24.03.2003
  */
 public class JtaTransactionManager extends AbstractPlatformTransactionManager {
 
@@ -75,6 +75,7 @@ public class JtaTransactionManager extends AbstractPlatformTransactionManager {
 	/**
 	 * Set the JNDI name of the UserTransaction.
 	 * The default one is used if not set.
+	 *
 	 * @see #DEFAULT_USER_TRANSACTION_NAME
 	 */
 	public void setUserTransactionName(String userTransactionName) {
@@ -84,9 +85,8 @@ public class JtaTransactionManager extends AbstractPlatformTransactionManager {
 	protected Object doGetTransaction() {
 		try {
 			return (UserTransaction) this.jndiTemplate.lookup(
-				this.userTransactionName != null ? this.userTransactionName : DEFAULT_USER_TRANSACTION_NAME);
-		}
-		catch (NamingException ex) {
+					this.userTransactionName != null ? this.userTransactionName : DEFAULT_USER_TRANSACTION_NAME);
+		} catch (NamingException ex) {
 			throw new CannotCreateTransactionException("JTA is not available", ex);
 		}
 	}
@@ -94,8 +94,7 @@ public class JtaTransactionManager extends AbstractPlatformTransactionManager {
 	protected boolean isExistingTransaction(Object transaction) {
 		try {
 			return (((UserTransaction) transaction).getStatus() != Status.STATUS_NO_TRANSACTION);
-		}
-		catch (SystemException ex) {
+		} catch (SystemException ex) {
 			throw new TransactionSystemException("JTA failure on getStatus", ex);
 		}
 	}
@@ -109,20 +108,17 @@ public class JtaTransactionManager extends AbstractPlatformTransactionManager {
 				ut.setTransactionTimeout(timeout);
 			}
 			ut.begin();
-		}
-		catch (NotSupportedException ex) {
+		} catch (NotSupportedException ex) {
 			// assume "nested transactions not supported"
 			throw new NestedTransactionNotPermittedException(
-				"JTA implementation does not support nested transactions",
-				ex);
-		}
-		catch (UnsupportedOperationException ex) {
+					"JTA implementation does not support nested transactions",
+					ex);
+		} catch (UnsupportedOperationException ex) {
 			// assume "nested transactions not supported"
 			throw new NestedTransactionNotPermittedException(
-				"JTA implementation does not support nested transactions",
-				ex);
-		}
-		catch (SystemException ex) {
+					"JTA implementation does not support nested transactions",
+					ex);
+		} catch (SystemException ex) {
 			throw new TransactionSystemException("JTA failure on begin", ex);
 		}
 	}
@@ -132,7 +128,8 @@ public class JtaTransactionManager extends AbstractPlatformTransactionManager {
 	 * <p>This standard JTA implementation simply ignores the isolation level.
 	 * To be overridden by server-specific subclasses that actually handle
 	 * the isolation level.
-	 * @param ut UserTransaction instance representing the JTA transaction
+	 *
+	 * @param ut             UserTransaction instance representing the JTA transaction
 	 * @param isolationLevel the isolation level to set
 	 */
 	protected void applyIsolationLevel(UserTransaction ut, int isolationLevel) {
@@ -145,17 +142,13 @@ public class JtaTransactionManager extends AbstractPlatformTransactionManager {
 		logger.debug("Committing JTA transaction");
 		try {
 			((UserTransaction) status.getTransaction()).commit();
-		}
-		catch (RollbackException ex) {
+		} catch (RollbackException ex) {
 			throw new UnexpectedRollbackException("JTA transaction rolled back", ex);
-		}
-		catch (HeuristicMixedException ex) {
+		} catch (HeuristicMixedException ex) {
 			throw new HeuristicCompletionException(HeuristicCompletionException.STATE_MIXED, ex);
-		}
-		catch (HeuristicRollbackException ex) {
+		} catch (HeuristicRollbackException ex) {
 			throw new HeuristicCompletionException(HeuristicCompletionException.STATE_ROLLED_BACK, ex);
-		}
-		catch (SystemException ex) {
+		} catch (SystemException ex) {
 			throw new TransactionSystemException("JTA failure on commit", ex);
 		}
 	}
@@ -164,8 +157,7 @@ public class JtaTransactionManager extends AbstractPlatformTransactionManager {
 		logger.debug("Rolling back JTA transaction");
 		try {
 			((UserTransaction) status.getTransaction()).rollback();
-		}
-		catch (SystemException ex) {
+		} catch (SystemException ex) {
 			throw new TransactionSystemException("JTA failure on rollback", ex);
 		}
 	}
@@ -174,11 +166,9 @@ public class JtaTransactionManager extends AbstractPlatformTransactionManager {
 		logger.debug("Setting JTA transaction rollback-only");
 		try {
 			((UserTransaction) status.getTransaction()).setRollbackOnly();
-		}
-		catch (IllegalStateException ex) {
+		} catch (IllegalStateException ex) {
 			throw new NoTransactionException("No active JTA transaction");
-		}
-		catch (SystemException ex) {
+		} catch (SystemException ex) {
 			throw new TransactionSystemException("JTA failure on setRollbackOnly", ex);
 		}
 	}

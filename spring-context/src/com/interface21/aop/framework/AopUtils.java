@@ -8,11 +8,12 @@ import org.aopalliance.Invocation;
 
 /**
  * Utility methods used by the AOP framework.
+ *
  * @author Rod Johnson
  * @version $Id: AopUtils.java,v 1.3 2003/05/15 17:16:55 johnsonr Exp $
  */
 public class AopUtils {
-	
+
 	/**
 	 * Return arguments
 	 */
@@ -23,6 +24,7 @@ public class AopUtils {
 
 	/**
 	 * Get all implemented interfaces, even those implemented by superclasses.
+	 *
 	 * @param clazz
 	 * @return Set
 	 */

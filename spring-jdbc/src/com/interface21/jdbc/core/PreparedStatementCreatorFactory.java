@@ -14,14 +14,16 @@ import com.interface21.dao.InvalidDataAccessApiUsageException;
  * Helper class that can efficiently create multiple
  * PreparedStatementCreator objects with different
  * parameters based on a SQL statement and a single set of parameter declarations.
+ *
  * @author Rod Johnson
  * @version $Id: PreparedStatementCreatorFactory.java,v 1.2 2003/03/08 20:44:12 trisberg Exp $
  */
-public class PreparedStatementCreatorFactory { 
+public class PreparedStatementCreatorFactory {
 
 	//---------------------------------------------------------------------
 	// Class methods
 	//---------------------------------------------------------------------
+
 	/**
 	 * Convenient method to return a PreparedStatementCreator that has no arguments
 	 */
@@ -38,7 +40,7 @@ public class PreparedStatementCreatorFactory {
 
 		};
 	}
-	
+
 	/**
 	 * Convenient method to declare variables and parameters in a single operation.
 	 * If issuing multiple statements with the same parameters, construct an instance of
@@ -48,7 +50,7 @@ public class PreparedStatementCreatorFactory {
 		PreparedStatementCreatorFactory pscf = new PreparedStatementCreatorFactory(sql, types);
 		return pscf.newPreparedStatementCreator(params);
 	}
-	
+
 	/**
 	 * Convert a list of JDBC types, as defined in the java.sql.Types class,
 	 * to a List of SqlParameter objects as used in this package
@@ -71,12 +73,15 @@ public class PreparedStatementCreatorFactory {
 	 */
 	private List declaredParameters = new LinkedList();
 
-	/** The Sql, which won't change when the parameters change. */
+	/**
+	 * The Sql, which won't change when the parameters change.
+	 */
 	private String sql;
 
 	//---------------------------------------------------------------------
 	// Constructors
 	//---------------------------------------------------------------------
+
 	/**
 	 * Create a new factory. Will need to add parameters
 	 * via the addParameter() method or have no parameters
@@ -87,16 +92,18 @@ public class PreparedStatementCreatorFactory {
 
 	/**
 	 * Create a new factory with sql and parameters with the given JDBC types
-	 * @param sql SQL to execute
+	 *
+	 * @param sql   SQL to execute
 	 * @param types int array of JDBC types
 	 */
 	public PreparedStatementCreatorFactory(String sql, int[] types) {
-		this(sql, sqlTypesToAnonymousParameterList(types) );
+		this(sql, sqlTypesToAnonymousParameterList(types));
 	}
 
 	/**
 	 * Create a new factory with sql and the given parameters
-	 * @param sql SQL
+	 *
+	 * @param sql                SQL
 	 * @param declaredParameters list of SqlParameter objects
 	 */
 	public PreparedStatementCreatorFactory(String sql, List declaredParameters) {
@@ -112,37 +119,41 @@ public class PreparedStatementCreatorFactory {
 	public void addParameter(SqlParameter p) {
 		declaredParameters.add(p);
 	}
-	
-	
+
+
 	//---------------------------------------------------------------------
 	// Factory methods
 	//---------------------------------------------------------------------
+
 	/**
 	 * Return a new PreparedStatementCreator given these parameters
+	 *
 	 * @param params parameter array. May be null.
 	 */
 	public PreparedStatementCreator newPreparedStatementCreator(Object[] params) {
 		return new PreparedStatementCreatorImpl((params != null) ? Arrays.asList(params) : new LinkedList());
 	}
-	
+
 	/**
 	 * Return a new PreparedStatementCreator instance given this parameters.
+	 *
 	 * @param params List of parameters. May be null.
 	 */
 	public PreparedStatementCreator newPreparedStatementCreator(List params) {
 		return new PreparedStatementCreatorImpl(params != null ? params : new LinkedList());
 	}
-	
+
 
 	//---------------------------------------------------------------------
 	// Inner classes
 	//---------------------------------------------------------------------
+
 	/**
 	 * PreparedStatementCreator implementation returned by this class
 	 */
 	private class PreparedStatementCreatorImpl implements PreparedStatementCreator {
 		private List parameters;
-		
+
 		/**
 		 * @param params list of SqlParameter objects. May not be null
 		 */
@@ -151,7 +162,7 @@ public class PreparedStatementCreatorFactory {
 			if (parameters.size() != declaredParameters.size())
 				throw new InvalidDataAccessApiUsageException("SQL='" + sql + "': given " + parameters.size() + " parameter but expected " + declaredParameters.size());
 		}
-		
+
 		public PreparedStatement createPreparedStatement(Connection conn) throws SQLException {
 			PreparedStatement ps = conn.prepareStatement(sql);
 
@@ -161,19 +172,18 @@ public class PreparedStatementCreatorFactory {
 				// We need SQL type to be able to set null
 				if (parameters.get(i) == null) {
 					ps.setNull(i + 1, declaredParameter.getSqlType());
-				}
-				else {
+				} else {
 					// Documentation?
-					
+
 					// PARAMETERIZE THIS TO A TYPE MAP INTERFACE?
 					switch (declaredParameter.getSqlType()) {
-						case Types.VARCHAR : 
+						case Types.VARCHAR:
 							ps.setString(i + 1, (String) parameters.get(i));
 							break;
 						//case Types. : 
 						//	ps.setString(i + 1, (String) parameters.get(i));
 						//	break;
-						default : 
+						default:
 							ps.setObject(i + 1, parameters.get(i), declaredParameter.getSqlType());
 							break;
 					}

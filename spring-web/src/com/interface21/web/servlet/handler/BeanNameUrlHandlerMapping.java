@@ -17,13 +17,15 @@ import com.interface21.util.StringUtils;
  * <p>Supports direct matches (given "/test" -> registered "/test")
  * and "*" matches (given "/test" -> registered "/t*").
  *
- @author Rod Johnson
+ * @author Rod Johnson
  * @author Juergen Hoeller
  * @see SimpleUrlHandlerMapping
  */
 public class BeanNameUrlHandlerMapping extends AbstractUrlHandlerMapping {
-	
-	/** Delimiter between multiple URLs in mappings */
+
+	/**
+	 * Delimiter between multiple URLs in mappings
+	 */
 	public static final String MULTI_URL_DELIMITER = " ";
 
 	public void initApplicationContext() {
@@ -42,8 +44,7 @@ public class BeanNameUrlHandlerMapping extends AbstractUrlHandlerMapping {
 				for (int j = 0; j < mappedUrls.length; j++) {
 					registerHandler(mappedUrls[j], handler);
 				}
-			}
-			else {
+			} else {
 				logger.debug("Rejected bean name '" + urlMaps[i] + "'");
 			}
 		}

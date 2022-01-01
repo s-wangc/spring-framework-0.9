@@ -82,8 +82,9 @@ import com.interface21.web.servlet.view.AbstractView;
  * <br>&lt;/servlet-mapping&gt;
  * </code>
  * <br>The use of this view is close to the AbstractPdfView
- * @see AbstractPdfView
+ *
  * @author <a href="mailto:jp.pawlak@tiscali.fr">Jean-Pierre Pawlak</a>
+ * @see AbstractPdfView
  */
 public abstract class AbstractExcelView extends AbstractView {
 
@@ -107,16 +108,16 @@ public abstract class AbstractExcelView extends AbstractView {
 
 	/**
 	 * Renders the view given the specified model.
+	 *
 	 * @see com.interface21.web.servlet.view.AbstractView#renderMergedOutputModel(java.util.Map, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
 	 */
 	protected final void renderMergedOutputModel(Map model,
-																							 HttpServletRequest request,
-																							 HttpServletResponse response)
+												 HttpServletRequest request,
+												 HttpServletResponse response)
 			throws ServletException, IOException {
 		if (null != url) {
 			wb = getTemplateSource(url, request);
-		}
-		else {
+		} else {
 			wb = new HSSFWorkbook();
 			logger.info("Excel WorkBook created from scratch");
 		}
@@ -132,7 +133,8 @@ public abstract class AbstractExcelView extends AbstractView {
 
 	/**
 	 * Creates the workBook from an existing .xls document.
-	 * @param url url of the Excle template without localization part nor extension
+	 *
+	 * @param url     url of the Excle template without localization part nor extension
 	 * @param request
 	 * @return HSSFWorkbook
 	 */
@@ -150,8 +152,7 @@ public abstract class AbstractExcelView extends AbstractView {
 			realPath = ((WebApplicationContext) getApplicationContext()).getServletContext().getRealPath(source);
 			try {
 				inputFile = new FileInputStream(realPath);
-			}
-			catch (FileNotFoundException e) {
+			} catch (FileNotFoundException e) {
 				// Nothing: at this stage, it is acceptable
 			}
 		}
@@ -161,8 +162,7 @@ public abstract class AbstractExcelView extends AbstractView {
 			realPath = ((WebApplicationContext) getApplicationContext()).getServletContext().getRealPath(source);
 			try {
 				inputFile = new FileInputStream(realPath);
-			}
-			catch (FileNotFoundException e) {
+			} catch (FileNotFoundException e) {
 				// Nothing: at this stage, it is acceptable
 			}
 		}
@@ -172,12 +172,11 @@ public abstract class AbstractExcelView extends AbstractView {
 			realPath = ((WebApplicationContext) getApplicationContext()).getServletContext().getRealPath(source);
 			try {
 				inputFile = new FileInputStream(realPath);
-			}
-			catch (FileNotFoundException e) {
+			} catch (FileNotFoundException e) {
 				throw new ApplicationContextException(
 						"Can't resolve real path for EXCEL template at '"
-						+ source
-						+ "'; probably results from container restriction: override ExcelView.getTemplateSource() to use an alternative approach to getRealPath()");
+								+ source
+								+ "'; probably results from container restriction: override ExcelView.getTemplateSource() to use an alternative approach to getRealPath()");
 			}
 		}
 		// Create the Excel document from source
@@ -186,8 +185,7 @@ public abstract class AbstractExcelView extends AbstractView {
 			HSSFWorkbook workBook = new HSSFWorkbook(fs);
 			logger.info("Loaded Excel workBook " + source);
 			return workBook;
-		}
-		catch (IOException e) {
+		} catch (IOException e) {
 			throw new ApplicationContextException("IOException with '" + source + "': " + e.getMessage());
 		}
 	}
@@ -195,21 +193,23 @@ public abstract class AbstractExcelView extends AbstractView {
 	/**
 	 * Subclasses must implement this method to create an Excel HSSFWorkbook document,
 	 * given the model.
+	 *
 	 * @param model
-	 * @param wb The Excel workBook to complete
-	 * @param request in case we need locale etc. Shouldn't look at attributes
+	 * @param wb       The Excel workBook to complete
+	 * @param request  in case we need locale etc. Shouldn't look at attributes
 	 * @param response in case we need to set cookies. Shouldn't write to it.
 	 */
 	protected abstract void buildExcelDocument(Map model,
-																						 HSSFWorkbook wb,
-																						 HttpServletRequest request,
-																						 HttpServletResponse response);
+											   HSSFWorkbook wb,
+											   HttpServletRequest request,
+											   HttpServletResponse response);
 
 	/**
 	 * Convenient method to obtain the cell in the given sheet, row and column
 	 * <br>Creating by the way the row and the cell if they still doesn't exist
 	 * <br>Thus, the column can be passed as an int, the method making the needed
 	 * downcasts.
+	 *
 	 * @param sheet A sheet Object. The first sheet is usually obtained by wb.getSheetAt(0)
 	 * @param row
 	 * @param col
@@ -229,6 +229,7 @@ public abstract class AbstractExcelView extends AbstractView {
 
 	/**
 	 * Convenient method to set a String as text content in a cell.
+	 *
 	 * @param cell The cell in which the text must be put
 	 * @param text The text to put in the cell
 	 */
@@ -239,6 +240,7 @@ public abstract class AbstractExcelView extends AbstractView {
 
 	/**
 	 * Sets the url.
+	 *
 	 * @param url The Excel workBook source without localization part nor extension
 	 */
 	public void setUrl(String url) {

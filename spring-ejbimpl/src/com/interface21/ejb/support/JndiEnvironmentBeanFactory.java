@@ -22,61 +22,64 @@ import com.interface21.beans.factory.support.ListableBeanFactoryImpl;
  * Such a bean factory might be used to parameterize EJBs.
  * <br>Only environment entries with names beginning with "beans."
  * are included.
+ *
  * @author Rod Johnson
  * @version $Id: JndiEnvironmentBeanFactory.java,v 1.1 2003/05/10 07:50:15 johnsonr Exp $
  */
 public class JndiEnvironmentBeanFactory extends ListableBeanFactoryImpl {
-	
-	/** Syntax is beans.name.class=Y */
+
+	/**
+	 * Syntax is beans.name.class=Y
+	 */
 	public static final String BEANS_PREFIX = "beans.";
-	
-	/** Delimiter for properties */
+
+	/**
+	 * Delimiter for properties
+	 */
 	public static final String DELIMITER = ".";
 
-	/** 
+	/**
 	 * Creates new JNDIBeanFactory
+	 *
 	 * @param root likely to be "java:comp/env"
 	 */
-    public JndiEnvironmentBeanFactory(String root) throws BeansException {
-		
+	public JndiEnvironmentBeanFactory(String root) throws BeansException {
+
 		// We'll take everything from the NamingContext and dump it in a
 		// Properties object, so that the superclass can efficiently manipulate it
 		// after we've closed the context.
 		HashMap m = new HashMap();
-		
-		Context initCtx = null;		
+
+		Context initCtx = null;
 		try {
 			initCtx = new InitialContext();
 			// Parameterize
 			NamingEnumeration enum = initCtx.listBindings(root);
-			
+
 			// Orion 1.5.2 doesn't seem to regard anything under a /
 			// as a true subcontext, so we need to search all bindings
 			// Not all that fast, but it doesn't matter				
 			while (enum.hasMore()) {
-				Binding binding = (Binding) enum.next();								
-				logger.debug("Name: " + binding.getName( ));
-				logger.debug("Type: " + binding.getClassName( ));
-				logger.debug("Value: " + binding.getObject());								
+				Binding binding = (Binding) enum.next();
+				logger.debug("Name: " + binding.getName());
+				logger.debug("Type: " + binding.getClassName());
+				logger.debug("Value: " + binding.getObject());
 				m.put(binding.getName(), binding.getObject());
 			}
 			enum.close();
-			
+
 			registerBeanDefinitions(m, BEANS_PREFIX);
-		}
-		catch (NamingException ex) {
+		} catch (NamingException ex) {
 			logger.debug("----- NO PROPERTIES FOUND " + ex);
-		}
-		finally {
+		} finally {
 			try {
 				if (initCtx != null) {
 					initCtx.close();
 				}
-			}
-			catch (NamingException ex) {
+			} catch (NamingException ex) {
 				// IGNORE OR THROW RTE?
 			}
 		}
-    }	// constructor
-	
-}	// class JndiBeanFactory
+	}    // constructor
+
+}    // class JndiBeanFactory

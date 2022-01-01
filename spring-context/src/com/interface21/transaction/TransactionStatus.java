@@ -8,9 +8,9 @@ package com.interface21.transaction;
  * an exception that causes an implicit rollback).
  *
  * @author Juergen Hoeller
- * @since 27.03.2003
  * @see PlatformTransactionManager
  * @see com.interface21.transaction.support.TransactionCallback
+ * @since 27.03.2003
  */
 public class TransactionStatus {
 
@@ -22,10 +22,11 @@ public class TransactionStatus {
 
 	/**
 	 * Create a new TransactionStatus instance.
-	 * @param transaction underlying transaction object,
-	 * e.g. a JTA UserTransaction
+	 *
+	 * @param transaction    underlying transaction object,
+	 *                       e.g. a JTA UserTransaction
 	 * @param newTransaction if the transaction is new,
-	 * else participating in a surrounding transaction
+	 *                       else participating in a surrounding transaction
 	 */
 	public TransactionStatus(Object transaction, boolean newTransaction) {
 		this.transaction = transaction;

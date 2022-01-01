@@ -13,9 +13,10 @@ import org.aopalliance.MethodInvocation;
 /**
  * Implementation of TransactionAttributeSource that uses
  * attributes from the AttributeRegistry.
+ *
  * @author Rod Johnson
- * @since 15-Apr-2003
  * @version $Revision: 1.1 $
+ * @since 15-Apr-2003
  */
 public class AttributeRegistryTransactionAttributeSource implements TransactionAttributeSource {
 
@@ -37,8 +38,9 @@ public class AttributeRegistryTransactionAttributeSource implements TransactionA
 	 * Protected rather than private as subclasses may want to customize
 	 * how this is done: for example, returning a TransactionAttribute
 	 * affected by the values of other attributes.
-	 * Return null if its not transactional. 
+	 * Return null if its not transactional.
 	 * TODO refactor into Attrib4j-specific class
+	 *
 	 * @param invocation
 	 * @return TransactionAttribute
 	 */

@@ -11,7 +11,7 @@ import com.interface21.web.servlet.ModelAndView;
  * Simple demonstration of how to implement a controller.
  */
 public class DemoController implements Controller {
-	
+
 	public static final String ENTER_NAME_VIEW = "enterNameView";
 	public static final String INVALID_NAME_VIEW = "invalidNameView";
 	public static final String VALID_NAME_VIEW = "validNameView";
@@ -23,12 +23,10 @@ public class DemoController implements Controller {
 		String name = request.getParameter("name");
 		if (name == null || "".equals(name)) {
 			return new ModelAndView(ENTER_NAME_VIEW);
-		}
-		else if (name.indexOf("-") != -1) {
+		} else if (name.indexOf("-") != -1) {
 			return new ModelAndView(INVALID_NAME_VIEW, "name", name);
-		}
-		else {
-			return new ModelAndView(VALID_NAME_VIEW, "name",  name);
+		} else {
+			return new ModelAndView(VALID_NAME_VIEW, "name", name);
 		}
 	}
 

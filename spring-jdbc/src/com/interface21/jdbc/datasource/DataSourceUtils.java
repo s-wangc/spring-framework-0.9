@@ -1,8 +1,8 @@
 /**
- * Generic framework code included with 
+ * Generic framework code included with
  * <a href="http://www.amazon.com/exec/obidos/tg/detail/-/1861007841/">Expert One-On-One J2EE Design and Development</a>
- * by Rod Johnson (Wrox, 2002). 
- * This code is free to use and modify. 
+ * by Rod Johnson (Wrox, 2002).
+ * This code is free to use and modify.
  * Please contact <a href="mailto:rod.johnson@interface21.com">rod.johnson@interface21.com</a>
  * for commercial support.
  */
@@ -23,7 +23,7 @@ import javax.sql.DataSource;
 import com.interface21.jndi.AbstractJndiLocator;
 import com.interface21.jndi.JndiTemplate;
 import com.interface21.util.ThreadObjectManager;
- 
+
 /**
  * Class containing static methods to obtain connections from JNDI and close
  * connections if necessary. Has support for thread-bound connections,
@@ -81,7 +81,7 @@ public abstract class DataSourceUtils {
 	 * @param jndiName jndiName of the DataSource
 	 * @return the DataSource
 	 * @throws CannotGetJdbcConnectionException if the data source cannot be located
-	 * @see #getDataSourceFromJndi(String,boolean)
+	 * @see #getDataSourceFromJndi(String, boolean)
 	 */
 	public static DataSource getDataSourceFromJndi(String jndiName) throws CannotGetJdbcConnectionException {
 		return getDataSourceFromJndi(jndiName, true);
@@ -106,8 +106,7 @@ public abstract class DataSourceUtils {
 		try {
 			// Perform JNDI lookup to obtain resource manager connection factory
 			return (DataSource) new JndiTemplate().lookup(jndiName);
-		}
-		catch (NamingException ex) {
+		} catch (NamingException ex) {
 			throw new CannotGetJdbcConnectionException("Naming exception looking up JNDI data source [" + jndiName + "]", ex);
 		}
 	}
@@ -131,8 +130,7 @@ public abstract class DataSourceUtils {
 		} else {
 			try {
 				return ds.getConnection();
-			}
-			catch (SQLException ex) {
+			} catch (SQLException ex) {
 				throw new CannotGetJdbcConnectionException("DataSource " + ds, ex);
 			}
 		}
@@ -158,8 +156,7 @@ public abstract class DataSourceUtils {
 			if (shouldClose) {
 				try {
 					con.close();
-				}
-				catch (SQLException ex) {
+				} catch (SQLException ex) {
 					throw new CannotCloseJdbcConnectionException("Failed to close connection", ex);
 				}
 			}
@@ -176,8 +173,8 @@ public abstract class DataSourceUtils {
 	 */
 	public static Connection getCloseSuppressingConnectionProxy(Connection source) {
 		return (Connection) Proxy.newProxyInstance(Thread.currentThread().getContextClassLoader(),
-		                                           new Class[] {Connection.class},
-		                                           new CloseSuppressingInvocationHandler(source));
+				new Class[]{Connection.class},
+				new CloseSuppressingInvocationHandler(source));
 	}
 
 
@@ -197,8 +194,7 @@ public abstract class DataSourceUtils {
 			}
 			try {
 				return method.invoke(this.source, args);
-			}
-			catch (InvocationTargetException ex) {
+			} catch (InvocationTargetException ex) {
 				throw ex.getTargetException();
 			}
 		}

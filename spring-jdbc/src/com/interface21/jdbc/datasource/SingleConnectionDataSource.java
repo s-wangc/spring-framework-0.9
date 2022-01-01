@@ -33,7 +33,9 @@ public class SingleConnectionDataSource extends DriverManagerDataSource {
 
 	private boolean suppressClose;
 
-	/** wrapped connection */
+	/**
+	 * wrapped connection
+	 */
 	private Connection connection;
 
 	/**
@@ -46,11 +48,12 @@ public class SingleConnectionDataSource extends DriverManagerDataSource {
 	/**
 	 * Create a new SingleConnectionDataSource with the given standard
 	 * DriverManager parameters.
+	 *
 	 * @param suppressClose if the returned connection will be a close-suppressing
-	 * proxy or the physical connection.
+	 *                      proxy or the physical connection.
 	 */
 	public SingleConnectionDataSource(String driverName, String url, String user, String password,
-	                                  boolean suppressClose) throws CannotGetJdbcConnectionException {
+									  boolean suppressClose) throws CannotGetJdbcConnectionException {
 		setDriverClassName(driverName);
 		setUrl(url);
 		setUsername(user);
@@ -60,13 +63,14 @@ public class SingleConnectionDataSource extends DriverManagerDataSource {
 
 	/**
 	 * Create a new SingleConnectionDataSource with a given connection.
-	 * @param source underlying source connection
+	 *
+	 * @param source        underlying source connection
 	 * @param suppressClose if the connection should be wrapped with a* connection that
-	 * suppresses close() calls (to allow for normal close() usage in applications that
-	 * expect a pooled connection but do not know our SmartDataSource interface).
+	 *                      suppresses close() calls (to allow for normal close() usage in applications that
+	 *                      expect a pooled connection but do not know our SmartDataSource interface).
 	 */
 	public SingleConnectionDataSource(Connection source, boolean suppressClose)
-	    throws CannotGetJdbcConnectionException, InvalidDataAccessApiUsageException {
+			throws CannotGetJdbcConnectionException, InvalidDataAccessApiUsageException {
 		super();
 		if (source == null) {
 			throw new InvalidDataAccessApiUsageException("Connection is null in SingleConnectionDataSource");
@@ -93,16 +97,16 @@ public class SingleConnectionDataSource extends DriverManagerDataSource {
 
 	/**
 	 * Initialized the underlying connection.
+	 *
 	 * @param source the JDBC Connection to use,
-	 * or null for initialization via DriverManager
+	 *               or null for initialization via DriverManager
 	 */
 	protected void init(Connection source) throws CannotGetJdbcConnectionException {
 		if (source == null) {
 			// no JDBC Connection given -> initialize via DriverManager
 			try {
 				source = DriverManager.getConnection(getUrl(), getUsername(), getPassword());
-			}
-			catch (SQLException ex) {
+			} catch (SQLException ex) {
 				throw new CannotCloseJdbcConnectionException("Could not create connection", ex);
 			}
 		}
@@ -110,8 +114,7 @@ public class SingleConnectionDataSource extends DriverManagerDataSource {
 		// prepare connection
 		try {
 			source.setAutoCommit(true);
-		}
-		catch (SQLException ex) {
+		} catch (SQLException ex) {
 			throw new CannotGetJdbcConnectionException("Could not set autoCommit", ex);
 		}
 
@@ -126,8 +129,7 @@ public class SingleConnectionDataSource extends DriverManagerDataSource {
 	public void close() throws SQLException {
 		try {
 			this.connection.close();
-		}
-		catch (SQLException ex) {
+		} catch (SQLException ex) {
 			throw new CannotCloseJdbcConnectionException("Cannot close connection", ex);
 		}
 	}
@@ -147,8 +149,8 @@ public class SingleConnectionDataSource extends DriverManagerDataSource {
 		logger.debug("SingleConnectionConnectionFactory.getConnection: " + connection);
 		if (this.connection.isClosed()) {
 			throw new SQLException("Connection was closed in SingleConnectionDataSource. " +
-			                       "Check that user code checks shouldClose() before closing connections, " +
-			                       "or set suppressClose to true");
+					"Check that user code checks shouldClose() before closing connections, " +
+					"or set suppressClose to true");
 		}
 		return this.connection;
 	}
@@ -160,8 +162,7 @@ public class SingleConnectionDataSource extends DriverManagerDataSource {
 	public Connection getConnection(String username, String password) throws SQLException {
 		if (username != null && password != null && username.equals(getUsername()) && password.equals(getPassword())) {
 			return getConnection();
-		}
-		else {
+		} else {
 			throw new SQLException("SingleConnectionDataSource does not support custom username and password");
 		}
 	}

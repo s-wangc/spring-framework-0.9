@@ -5,6 +5,7 @@ import com.interface21.web.servlet.ThemeResolver;
 /**
  * Abstract base class for ThemeResolver implementations.
  * Provides support for a default theme name.
+ *
  * @author Juergen Hoeller
  * @since 17.06.2003
  */
@@ -16,6 +17,7 @@ public abstract class AbstractThemeResolver implements ThemeResolver {
 
 	/**
 	 * Set the name of the default theme.
+	 *
 	 * @param defaultThemeName new default theme name
 	 */
 	public void setDefaultThemeName(String defaultThemeName) {
@@ -24,6 +26,7 @@ public abstract class AbstractThemeResolver implements ThemeResolver {
 
 	/**
 	 * Return the name of the default theme.
+	 *
 	 * @return the default theme name
 	 */
 	public String getDefaultThemeName() {

@@ -23,11 +23,11 @@ import com.interface21.remoting.support.AuthorizableRemoteProxyFactoryBean;
  * <a href="http://www.caucho.com/burlap">Burlap website</a>
  *
  * <p>Note: Burlap services accessed with this proxy factory do not have to be
- * exported via BurlapServiceExporter, as there isn't any special handling involved. 
+ * exported via BurlapServiceExporter, as there isn't any special handling involved.
  *
  * @author Juergen Hoeller
- * @since 13.05.2003
  * @see BurlapServiceExporter
+ * @since 13.05.2003
  */
 public class BurlapProxyFactoryBean extends AuthorizableRemoteProxyFactoryBean {
 
@@ -43,12 +43,10 @@ public class BurlapProxyFactoryBean extends AuthorizableRemoteProxyFactoryBean {
 			public Object invoke(MethodInvocation invocation) throws Throwable {
 				try {
 					return invocation.invokeNext();
-				}
-				catch (BurlapRuntimeException ex) {
+				} catch (BurlapRuntimeException ex) {
 					Throwable rootCause = (ex.getRootCause() != null) ? ex.getRootCause() : ex;
 					throw new RemoteAccessException("Error on remote access", rootCause);
-				}
-				catch (UndeclaredThrowableException ex) {
+				} catch (UndeclaredThrowableException ex) {
 					throw new RemoteAccessException("Error on remote access", ex.getUndeclaredThrowable());
 				}
 			}

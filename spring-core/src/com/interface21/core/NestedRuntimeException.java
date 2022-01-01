@@ -36,12 +36,15 @@ import java.io.PrintWriter;
  */
 public abstract class NestedRuntimeException extends RuntimeException implements HasRootCause {
 
-	/** Root cause of this nested exception */
+	/**
+	 * Root cause of this nested exception
+	 */
 	private Throwable rootCause;
 
 	/**
 	 * Constructs a <code>ExceptionWrapperException</code> with the specified
 	 * detail message.
+	 *
 	 * @param msg the detail message
 	 */
 	public NestedRuntimeException(String msg) {
@@ -53,7 +56,7 @@ public abstract class NestedRuntimeException extends RuntimeException implements
 	 * detail message and nested exception.
 	 *
 	 * @param msg the detail message
-	 * @param ex the nested exception
+	 * @param ex  the nested exception
 	 */
 	public NestedRuntimeException(String msg, Throwable ex) {
 		super(msg);
@@ -81,13 +84,13 @@ public abstract class NestedRuntimeException extends RuntimeException implements
 	/**
 	 * Prints the composite message and the embedded stack trace to
 	 * the specified stream <code>ps</code>.
+	 *
 	 * @param ps the print stream
 	 */
 	public void printStackTrace(PrintStream ps) {
 		if (rootCause == null) {
 			super.printStackTrace(ps);
-		}
-		else {
+		} else {
 			//ps.println(this);
 			rootCause.printStackTrace(ps);
 		}
@@ -96,13 +99,13 @@ public abstract class NestedRuntimeException extends RuntimeException implements
 	/**
 	 * Prints the composite message and the embedded stack trace to
 	 * the specified print writer <code>pw</code>
+	 *
 	 * @param pw the print writer
 	 */
 	public void printStackTrace(PrintWriter pw) {
 		if (rootCause == null) {
 			super.printStackTrace(pw);
-		}
-		else {
+		} else {
 			//pw.println(this);
 			rootCause.printStackTrace(pw);
 		}

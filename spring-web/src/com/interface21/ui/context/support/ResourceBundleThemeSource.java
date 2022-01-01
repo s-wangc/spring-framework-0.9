@@ -16,6 +16,7 @@ import com.interface21.ui.context.ThemeSource;
  * ThemeSource implementation that looks up an individual ResourceBundle
  * per theme. The theme name gets interpreted as ResourceBundle basename,
  * supporting a common basename prefix for all themes.
+ *
  * @author Jean-Pierre Pawlak
  * @author Juergen Hoeller
  * @see #setBasenamePrefix
@@ -28,7 +29,9 @@ public class ResourceBundleThemeSource implements NestingThemeSource {
 
 	private String basenamePrefix = "";
 
-	/** Map from theme name to Theme instance */
+	/**
+	 * Map from theme name to Theme instance
+	 */
 	private Map themes = new HashMap();
 
 	public void setParent(ThemeSource parent) {
@@ -43,6 +46,7 @@ public class ResourceBundleThemeSource implements NestingThemeSource {
 	 * Set the prefix that gets applied to the ResourceBundle basenames,
 	 * i.e. the theme names.
 	 * E.g.: basenamePrefix="test.", themeName="theme" -> basename="test.theme".
+	 *
 	 * @param basenamePrefix prefix for ResourceBundle basenames
 	 */
 	public void setBasenamePrefix(String basenamePrefix) {
@@ -76,8 +80,7 @@ public class ResourceBundleThemeSource implements NestingThemeSource {
 			if (parentTheme != null) {
 				messageSource.setParent(parentTheme.getMessageSource());
 			}
-		}
-		else {
+		} else {
 			messageSource.setParent(null);
 		}
 	}

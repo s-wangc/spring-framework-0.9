@@ -1,10 +1,10 @@
 /**
- * Generic framework code included with 
+ * Generic framework code included with
  * <a href="http://www.amazon.com/exec/obidos/tg/detail/-/1861007841/">Expert One-On-One J2EE Design and Development</a>
- * by Rod Johnson (Wrox, 2002). 
+ * by Rod Johnson (Wrox, 2002).
  * This code is free to use and modify. However, please
  * acknowledge the source and include the above URL in each
- * class using or derived from this code. 
+ * class using or derived from this code.
  * Please contact <a href="mailto:rod.johnson@interface21.com">rod.johnson@interface21.com</a>
  * for commercial support.
  */
@@ -41,7 +41,7 @@ import com.interface21.web.context.WebApplicationContext;
  * @author Juergen Hoeller
  * @version $Revision: 1.14 $
  */
-public class XmlWebApplicationContext extends AbstractXmlUiApplicationContext	implements WebApplicationContext {
+public class XmlWebApplicationContext extends AbstractXmlUiApplicationContext implements WebApplicationContext {
 
 	/**
 	 * Name of servlet context parameter that can specify the config location prefix
@@ -69,7 +69,7 @@ public class XmlWebApplicationContext extends AbstractXmlUiApplicationContext	im
 
 	/** Default config location for the root context. */
 	public static final String DEFAULT_CONFIG_LOCATION =
-	    DEFAULT_CONFIG_LOCATION_PREFIX + "applicationContext" + DEFAULT_CONFIG_LOCATION_SUFFIX;
+			DEFAULT_CONFIG_LOCATION_PREFIX + "applicationContext" + DEFAULT_CONFIG_LOCATION_SUFFIX;
 
 
 	/** Namespace of this context, or null if root */
@@ -89,8 +89,8 @@ public class XmlWebApplicationContext extends AbstractXmlUiApplicationContext	im
 	public XmlWebApplicationContext() {
 		setDisplayName("Root WebApplicationContext");
 	}
-	
-	/** 
+
+	/**
 	 * Create a new child WebApplicationContext.
 	 */
 	public XmlWebApplicationContext(ApplicationContext parent, String namespace) {
@@ -124,7 +124,7 @@ public class XmlWebApplicationContext extends AbstractXmlUiApplicationContext	im
 			WebApplicationContextUtils.publishConfigObjects(this);
 			// Expose as a ServletContext object
 			WebApplicationContextUtils.publishWebApplicationContext(this);
-		}	
+		}
 	}
 
 	public final ServletContext getServletContext() {
@@ -147,8 +147,7 @@ public class XmlWebApplicationContext extends AbstractXmlUiApplicationContext	im
 			String configLocationSuffix = this.servletContext.getInitParameter(CONFIG_LOCATION_SUFFIX_PARAM);
 			String suffix = (configLocationSuffix != null) ? configLocationSuffix : DEFAULT_CONFIG_LOCATION_SUFFIX;
 			return prefix + getNamespace() + suffix;
-		}
-		else {
+		} else {
 			String configLocation = this.servletContext.getInitParameter(CONFIG_LOCATION_PARAM);
 			return (configLocation != null) ? configLocation : DEFAULT_CONFIG_LOCATION;
 		}

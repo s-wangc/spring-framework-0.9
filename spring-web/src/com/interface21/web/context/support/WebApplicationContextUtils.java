@@ -1,10 +1,10 @@
 /**
- * Generic framework code included with 
+ * Generic framework code included with
  * <a href="http://www.amazon.com/exec/obidos/tg/detail/-/1861007841/">Expert One-On-One J2EE Design and Development</a>
- * by Rod Johnson (Wrox, 2002). 
+ * by Rod Johnson (Wrox, 2002).
  * This code is free to use and modify. However, please
  * acknowledge the source and include the above URL in each
- * class using or derived from this code. 
+ * class using or derived from this code.
  * Please contact <a href="mailto:rod.johnson@interface21.com">rod.johnson@interface21.com</a>
  * for commercial support.
  */
@@ -60,11 +60,11 @@ public abstract class WebApplicationContextUtils {
 
 		sc.setAttribute(WebApplicationContext.WEB_APPLICATION_CONTEXT_ATTRIBUTE_NAME, wac);
 		logger.info(
-			"Loader initialized on server name "
-				+ wac.getServletContext().getServerInfo()
-				+ "; WebApplicationContext object is available in ServletContext with name '"
-				+ WebApplicationContext.WEB_APPLICATION_CONTEXT_ATTRIBUTE_NAME
-				+ "'");
+				"Loader initialized on server name "
+						+ wac.getServletContext().getServerInfo()
+						+ "; WebApplicationContext object is available in ServletContext with name '"
+						+ WebApplicationContext.WEB_APPLICATION_CONTEXT_ATTRIBUTE_NAME
+						+ "'");
 	}
 
 	/**
@@ -109,10 +109,9 @@ public abstract class WebApplicationContextUtils {
 				try {
 					Object configObject = wac.getBean(name);
 					wac.getServletContext().setAttribute(strippedName, configObject);
-					logger.info("Config object with name ["	+ name	+ "] and class ["	+ configObject.getClass().getName() +
-					            "] initialized and added to ServletConfig");
-				}
-				catch (BeansException ex) {
+					logger.info("Config object with name [" + name + "] and class [" + configObject.getClass().getName() +
+							"] initialized and added to ServletConfig");
+				} catch (BeansException ex) {
 					throw new ApplicationContextException("Couldn't load config object with name '" + name + "': " + ex, ex);
 				}
 			}

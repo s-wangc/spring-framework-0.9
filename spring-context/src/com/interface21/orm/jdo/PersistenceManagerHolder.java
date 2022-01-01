@@ -10,9 +10,9 @@ import javax.jdo.PersistenceManager;
  * to the thread, for a given PersistenceManagerFactory.
  *
  * @author Juergen Hoeller
- * @since 03.06.2003
  * @see JdoTransactionManager
  * @see PersistenceManagerFactoryUtils
+ * @since 03.06.2003
  */
 public class PersistenceManagerHolder {
 

@@ -7,9 +7,9 @@ import java.sql.Connection;
  * Base interface for TransactionAttribute.
  *
  * @author Juergen Hoeller
- * @since 08.05.2003
  * @see com.interface21.transaction.support.DefaultTransactionDefinition
  * @see com.interface21.transaction.interceptor.TransactionAttribute
+ * @since 08.05.2003
  */
 public interface TransactionDefinition {
 
@@ -37,20 +37,24 @@ public interface TransactionDefinition {
 
 	/**
 	 * Default isolation level, all other according to java.sql.Connection levels.
+	 *
 	 * @see java.sql.Connection
 	 */
-	int ISOLATION_DEFAULT          = -1;
+	int ISOLATION_DEFAULT = -1;
 	int ISOLATION_READ_UNCOMMITTED = Connection.TRANSACTION_READ_UNCOMMITTED;
-	int ISOLATION_READ_COMMITTED   = Connection.TRANSACTION_READ_COMMITTED;
-	int ISOLATION_REPEATABLE_READ  = Connection.TRANSACTION_REPEATABLE_READ;
-	int ISOLATION_SERIALIZABLE     = Connection.TRANSACTION_SERIALIZABLE;
+	int ISOLATION_READ_COMMITTED = Connection.TRANSACTION_READ_COMMITTED;
+	int ISOLATION_REPEATABLE_READ = Connection.TRANSACTION_REPEATABLE_READ;
+	int ISOLATION_SERIALIZABLE = Connection.TRANSACTION_SERIALIZABLE;
 
-	/** Default transaction timeout */
+	/**
+	 * Default transaction timeout
+	 */
 	int TIMEOUT_DEFAULT = -1;
 
 	/**
 	 * Return the propagation behavior.
 	 * Must return of the constants in PlatformTransactionManager.
+	 *
 	 * @see PlatformTransactionManager
 	 */
 	int getPropagationBehavior();
@@ -58,6 +62,7 @@ public interface TransactionDefinition {
 	/**
 	 * Return the isolation level.
 	 * Must return of the constants in PlatformTransactionManager.
+	 *
 	 * @see PlatformTransactionManager
 	 */
 	int getIsolationLevel();
@@ -65,6 +70,7 @@ public interface TransactionDefinition {
 	/**
 	 * Return the transaction timeout.
 	 * Must return a number of seconds, or TIMEOUT_DEFAULT.
+	 *
 	 * @see #TIMEOUT_DEFAULT
 	 */
 	public int getTimeout();

@@ -7,10 +7,11 @@ import com.interface21.ui.context.ThemeSource;
 
 /**
  * Adds theme capabilities for UI contexts.
+ *
  * @author Jean-Pierre Pawlak
  */
 public abstract class AbstractXmlUiApplicationContext
-	extends AbstractXmlApplicationContext implements ThemeSource {
+		extends AbstractXmlApplicationContext implements ThemeSource {
 
 	private ThemeSource themeSource;
 

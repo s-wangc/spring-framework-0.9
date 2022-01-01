@@ -2,7 +2,7 @@
  * The Spring Framework is published under the terms
  * of the Apache Software License.
  */
- 
+
 package com.interface21.beans.factory.support;
 
 import com.interface21.beans.PropertyValues;
@@ -25,25 +25,30 @@ import com.interface21.beans.PropertyValues;
  */
 public abstract class AbstractBeanDefinition {
 
-	/** Is this a singleton bean? */
+	/**
+	 * Is this a singleton bean?
+	 */
 	private boolean singleton;
-	
-	/** Property map */
+
+	/**
+	 * Property map
+	 */
 	private PropertyValues pvs;
-	
-	/** 
+
+	/**
 	 * Creates new BeanDefinition
+	 *
 	 * @param pvs properties of the bean
 	 */
 	protected AbstractBeanDefinition(PropertyValues pvs, boolean singleton) {
 		this.pvs = pvs;
 		this.singleton = singleton;
 	}
-	
+
 	protected AbstractBeanDefinition() {
 		this.singleton = true;
 	}
-	
+
 	/**
 	 * Is this a <b>Singleton</b>, with a single, shared
 	 * instance returned on all calls,
@@ -51,12 +56,13 @@ public abstract class AbstractBeanDefinition {
 	 * with each caller requesting an instance getting an independent
 	 * instance? How this is defined will depend on the BeanFactory.
 	 * "Singletons" are the commoner type.
+	 *
 	 * @return whether this is a Singleton
 	 */
 	public final boolean isSingleton() {
 		return singleton;
 	}
-	
+
 	public void setPropertyValues(PropertyValues pvs) {
 		this.pvs = pvs;
 	}
@@ -64,6 +70,7 @@ public abstract class AbstractBeanDefinition {
 	/**
 	 * Return the PropertyValues to be applied to a new instance
 	 * of this bean.
+	 *
 	 * @return the PropertyValues to be applied to a new instance
 	 * of this bean
 	 */
@@ -79,7 +86,7 @@ public abstract class AbstractBeanDefinition {
 			return false;
 		AbstractBeanDefinition obd = (AbstractBeanDefinition) other;
 		return this.singleton = obd.singleton &&
-			this.pvs.changesSince(obd.pvs).getPropertyValues().length == 0;
+				this.pvs.changesSince(obd.pvs).getPropertyValues().length == 0;
 	}
 
 }

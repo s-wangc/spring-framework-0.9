@@ -2,7 +2,7 @@
  * The Spring Framework is published under the terms
  * of the Apache Software License.
  */
- 
+
 package com.interface21.web.servlet.view;
 
 import java.io.IOException;
@@ -27,7 +27,9 @@ import com.interface21.context.ApplicationContextException;
  */
 public class InternalResourceView extends AbstractView {
 
-	/** URL of the JSP or other resource within the WAR */
+	/**
+	 * URL of the JSP or other resource within the WAR
+	 */
 	private String url;
 
 	/**
@@ -35,9 +37,10 @@ public class InternalResourceView extends AbstractView {
 	 */
 	public InternalResourceView() {
 	}
-	 
+
 	/**
 	 * Create a new InternalResourceView with the given URL.
+	 *
 	 * @param url url to forward to
 	 */
 	public InternalResourceView(String url) {
@@ -46,6 +49,7 @@ public class InternalResourceView extends AbstractView {
 
 	/**
 	 * Set the resource URL that this view forwards to.
+	 *
 	 * @param url the URL of the resource this view forwards to
 	 */
 	public void setUrl(String url) {
@@ -58,10 +62,11 @@ public class InternalResourceView extends AbstractView {
 
 	/**
 	 * Overridden lifecycle method to check that URL property is set
+	 *
 	 * @see com.interface21.context.support.ApplicationObjectSupport#initApplicationContext()
 	 */
 	protected void initApplicationContext() throws ApplicationContextException {
-		if (this.url == null) 
+		if (this.url == null)
 			throw new ApplicationContextException("Must set url property in class " + getClass().getName());
 	}
 
@@ -70,14 +75,14 @@ public class InternalResourceView extends AbstractView {
 	 * This includes setting the model as request attributes.
 	 */
 	protected void renderMergedOutputModel(Map model, HttpServletRequest request, HttpServletResponse response) throws ServletException {
-			
+
 		if (this.url == null)
 			throw new ServletException("InternalResourceView is not configured: URL cannot be null");
-			
+
 		exposeModelsAsRequestAttributes(model, request);
 
 		// Let the target resource set the content type
-				
+
 		try {
 			// Simply forward to the JSP
 			RequestDispatcher rd = request.getRequestDispatcher(this.url);
@@ -85,8 +90,7 @@ public class InternalResourceView extends AbstractView {
 				throw new ServletException("Can't get RequestDispatcher for '" + this.url + "': check that this file exists within your WAR");
 			rd.forward(request, response);
 			logger.debug("Forwarded OK to resource within current application with url '" + this.url + "' in InternalResource view with name '" + getName() + "'");
-		}
-		catch (IOException ex) {
+		} catch (IOException ex) {
 			throw new ServletException("Couldn't dispatch to JSP with url '" + this.url + "' in InternalResourceView with name '" + getName() + "'", ex);
 		}
 	}
@@ -95,7 +99,8 @@ public class InternalResourceView extends AbstractView {
 	 * Expose the models in the given map as request attributes.
 	 * Names will be taken from the map.
 	 * This method is suitable for all resources reachable by RequestDispatcher.
-	 * @param model Map of models to expose
+	 *
+	 * @param model   Map of models to expose
 	 * @param request HttpServletRequest to preprocess.
 	 */
 	protected void exposeModelsAsRequestAttributes(Map model, HttpServletRequest request) throws ServletException {
@@ -112,10 +117,9 @@ public class InternalResourceView extends AbstractView {
 				}
 				request.setAttribute(modelname, val);
 			}
-		}
-		else {
+		} else {
 			logger.debug("Model is null. Nothing to expose to request");
 		}
 	}
-	
+
 }

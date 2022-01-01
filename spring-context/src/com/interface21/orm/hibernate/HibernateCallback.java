@@ -19,8 +19,8 @@ import net.sf.hibernate.Session;
  * already loaded a version from the database in the same Session.
  *
  * @author Juergen Hoeller
- * @since 02.05.2003
  * @see HibernateTemplate
+ * @since 02.05.2003
  */
 public interface HibernateCallback {
 
@@ -44,8 +44,8 @@ public interface HibernateCallback {
 	 * @param session active Hibernate session
 	 * @return a result object, or null if none
 	 * @throws HibernateException in case of Hibernate errors
-	 * @throws RuntimeException in case of an application exception,
-	 * propagating the exception to the caller
+	 * @throws RuntimeException   in case of an application exception,
+	 *                            propagating the exception to the caller
 	 * @see HibernateTemplate#execute
 	 * @see HibernateTemplate#executeFind
 	 * @see HibernateTransactionManager

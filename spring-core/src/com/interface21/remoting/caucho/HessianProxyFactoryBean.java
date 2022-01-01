@@ -26,8 +26,8 @@ import com.interface21.remoting.support.AuthorizableRemoteProxyFactoryBean;
  * exported via HessianServiceExporter, as there isn't any special handling involved.
  *
  * @author Juergen Hoeller
- * @since 13.05.2003
  * @see HessianServiceExporter
+ * @since 13.05.2003
  */
 public class HessianProxyFactoryBean extends AuthorizableRemoteProxyFactoryBean {
 
@@ -43,12 +43,10 @@ public class HessianProxyFactoryBean extends AuthorizableRemoteProxyFactoryBean 
 			public Object invoke(MethodInvocation invocation) throws Throwable {
 				try {
 					return invocation.invokeNext();
-				}
-				catch (HessianRuntimeException ex) {
+				} catch (HessianRuntimeException ex) {
 					Throwable rootCause = (ex.getRootCause() != null) ? ex.getRootCause() : ex;
 					throw new RemoteAccessException("Error on remote access", rootCause);
-				}
-				catch (UndeclaredThrowableException ex) {
+				} catch (UndeclaredThrowableException ex) {
 					throw new RemoteAccessException("Error on remote access", ex.getUndeclaredThrowable());
 				}
 			}

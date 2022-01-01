@@ -29,7 +29,7 @@ public class CookieThemeResolver extends AbstractThemeResolver {
 	private String cookieName = DEFAULT_COOKIE_NAME;
 
 	private int cookieMaxAge = DEFAULT_COOKIE_MAX_AGE;
-	
+
 	/**
 	 * Use the given name for theme cookies.
 	 */
@@ -77,8 +77,7 @@ public class CookieThemeResolver extends AbstractThemeResolver {
 			request.setAttribute(THEME_REQUEST_ATTRIBUTE_NAME, themeName);
 			cookie = new Cookie(getCookieName(), themeName);
 			cookie.setMaxAge(getCookieMaxAge());
-		}
-		else {
+		} else {
 			// set request attribute to fallback theme and remove cookie
 			request.setAttribute(THEME_REQUEST_ATTRIBUTE_NAME, getDefaultThemeName());
 			cookie = new Cookie(getCookieName(), "");

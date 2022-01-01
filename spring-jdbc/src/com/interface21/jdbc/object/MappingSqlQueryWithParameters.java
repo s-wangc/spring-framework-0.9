@@ -1,10 +1,10 @@
 /**
- * Generic framework code included with 
+ * Generic framework code included with
  * <a href="http://www.amazon.com/exec/obidos/tg/detail/-/1861007841/">Expert One-On-One J2EE Design and Development</a>
- * by Rod Johnson (Wrox, 2002). 
+ * by Rod Johnson (Wrox, 2002).
  * This code is free to use and modify. However, please
  * acknowledge the source and include the above URL in each
- * class using or derived from this code. 
+ * class using or derived from this code.
  * Please contact <a href="mailto:rod.johnson@interface21.com">rod.johnson@interface21.com</a>
  * for commercial support.
  */
@@ -48,25 +48,27 @@ public abstract class MappingSqlQueryWithParameters extends SqlQuery {
 	//-------------------------------------------------------------------------
 	// Constructors
 	//-------------------------------------------------------------------------
+
 	/**
 	 * Constructor to allow use as a JavaBean
 	 */
 	public MappingSqlQueryWithParameters() {
 	}
-	
+
 	/** Convenient constructor
 	 * @param ds DataSource to use to get connections
 	 * @param sql SQL to run
 	 */
 	public MappingSqlQueryWithParameters(DataSource ds, String sql) {
-		super(ds, sql); 
+		super(ds, sql);
 	}
-	
+
 
 	//-------------------------------------------------------------------------
 	// Implementation of protected abstract method
 	//-------------------------------------------------------------------------
-	/** 
+
+	/**
 	 * Implementation of protected abstract method. This invokes the subclass's
 	 * implementation of the mapRow() method.
 	 */
@@ -93,19 +95,20 @@ public abstract class MappingSqlQueryWithParameters extends SqlQuery {
 	//-------------------------------------------------------------------------
 	// Inner classes
 	//-------------------------------------------------------------------------
+
 	/**
 	 * Implementation of ResultReader that calls the enclosing
 	 * class's mapRow() method for each row.
 	 */
 	private class ResultReaderImpl implements ResultReader {
-		
+
 		/** List to save results in */
-		private List l; 
-		
+		private List l;
+
 		private Object[] params;
-		
+
 		private int rowNum = 0;
-		
+
 		/** Use an array list. More efficient if we know how many
 		 * results to expect
 		 */
@@ -114,7 +117,7 @@ public abstract class MappingSqlQueryWithParameters extends SqlQuery {
 			this.l = (rowsExpected > 0) ? (List) new ArrayList(rowsExpected) : (List) new LinkedList();
 			this.params = parameters;
 		}
- 
+
 		public void processRow(ResultSet rs) throws SQLException {
 			l.add(mapRow(rs, rowNum++, params));
 		}
@@ -125,6 +128,6 @@ public abstract class MappingSqlQueryWithParameters extends SqlQuery {
 		public List getResults() {
 			return l;
 		}
-	}	// inner class ResultReaderImpl
-	
-}	// class MappingSqlQueryWithParameters
+	}    // inner class ResultReaderImpl
+
+}    // class MappingSqlQueryWithParameters

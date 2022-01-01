@@ -1,10 +1,10 @@
 /**
- * Generic framework code included with 
+ * Generic framework code included with
  * <a href="http://www.amazon.com/exec/obidos/tg/detail/-/1861007841/">Expert One-On-One J2EE Design and Development</a>
- * by Rod Johnson (Wrox, 2002). 
+ * by Rod Johnson (Wrox, 2002).
  * This code is free to use and modify. However, please
  * acknowledge the source and include the above URL in each
- * class using or derived from this code. 
+ * class using or derived from this code.
  * Please contact <a href="mailto:rod.johnson@interface21.com">rod.johnson@interface21.com</a>
  * for commercial support.
  */
@@ -23,7 +23,7 @@ import com.interface21.beans.factory.InitializingBean;
 import com.interface21.dao.InvalidDataAccessApiUsageException;
 import com.interface21.jdbc.core.SqlParameter;
 
-/** 
+/**
  * Root of the JDBC object hierarchy, as described in Chapter 9 of
  * <a href="http://www.amazon.com/exec/obidos/tg/detail/-/1861007841/">Expert One-On-One J2EE Design and Development</a>
  * by Rod Johnson (Wrox, 2002).
@@ -44,7 +44,7 @@ import com.interface21.jdbc.core.SqlParameter;
  * @version $Id: RdbmsOperation.java,v 1.2 2003/05/28 16:39:14 jhoeller Exp $
  */
 public abstract class RdbmsOperation implements InitializingBean {
-	
+
 	//---------------------------------------------------------------------
 	// Instance data
 	//---------------------------------------------------------------------
@@ -55,25 +55,25 @@ public abstract class RdbmsOperation implements InitializingBean {
 	 * DataSource to use to obtain connections.
 	 */
 	private DataSource dataSource;
-	
+
 	/**
 	 * List of SqlParameter objects
 	 */
 	private List declaredParameters = new LinkedList();
-	
+
 	/**
 	 * SQL statement
 	 */
 	private String sql;
-	
+
 	/**
 	 * Has this operation been compiled? Compilation means at
 	 * least checking that a DataSource and sql have been provided,
 	 * but subclasses may also implement their own custom validation.
 	 */
 	private boolean compiled;
-	
-	
+
+
 	//---------------------------------------------------------------------
 	// Constructors
 	//---------------------------------------------------------------------
@@ -83,8 +83,8 @@ public abstract class RdbmsOperation implements InitializingBean {
 	 */
 	protected RdbmsOperation() {
 	}
-	
-	
+
+
 	//---------------------------------------------------------------------
 	//  Configuration methods
 	//---------------------------------------------------------------------
@@ -108,8 +108,8 @@ public abstract class RdbmsOperation implements InitializingBean {
 			}
 		}
 	}
-	
-	
+
+
 	/**
 	 * Declare a parameter. The order in which this method is called is significant.
 	 * @param param SqlParameter to add. This will specify SQL type and (optionally)
@@ -122,8 +122,8 @@ public abstract class RdbmsOperation implements InitializingBean {
 			throw new InvalidDataAccessApiUsageException("Cannot add parameters once query is compiled");
 		declaredParameters.add(param);
 	}
-	
-	
+
+
 	/**
 	 * Return a list of the declared SqlParameter objects
 	 * @return a list of the declared SqlParameter objects
@@ -131,7 +131,7 @@ public abstract class RdbmsOperation implements InitializingBean {
 	protected List getDeclaredParameters() {
 		return declaredParameters;
 	}
-	
+
 	/**
 	 * Subclasses can override this to supply dynamic SQL if they wish,
 	 * but SQL is normally set by calling the setSql() method
@@ -148,7 +148,7 @@ public abstract class RdbmsOperation implements InitializingBean {
 	public void setSql(String sql) {
 		this.sql = sql;
 	}
-	 
+
 	/**
 	 * Gets the DataSource in use
 	 * @return Returns the DataSource used to obtain connections
@@ -156,16 +156,16 @@ public abstract class RdbmsOperation implements InitializingBean {
 	protected final DataSource getDataSource() {
 		return this.dataSource;
 	}
-	
+
 	/**
 	 * Sets the DataSource used to obtain connections
 	 * @param dataSource The DataSource to set
 	 */
-	public final void setDataSource(DataSource dataSource) {		
+	public final void setDataSource(DataSource dataSource) {
 		this.dataSource = dataSource;
 	}
-	
-	
+
+
 	//---------------------------------------------------------------------
 	// Implementation of InitializingBean
 	//---------------------------------------------------------------------
@@ -174,11 +174,11 @@ public abstract class RdbmsOperation implements InitializingBean {
 	 * Ensures compilation if used in a bean factory
 	 * @see InitializingBean#afterPropertiesSet()
 	 */
-	public void afterPropertiesSet()  {
+	public void afterPropertiesSet() {
 		compile();
 	}
-	
-	
+
+
 	//---------------------------------------------------------------------
 	// Other methods
 	//---------------------------------------------------------------------
@@ -192,8 +192,8 @@ public abstract class RdbmsOperation implements InitializingBean {
 	public boolean isCompiled() {
 		return compiled;
 	}
-	
-	
+
+
 	/**
 	 * Compile this query.
 	 * Ignore subsequent attempts to compile
@@ -201,7 +201,7 @@ public abstract class RdbmsOperation implements InitializingBean {
 	 * been correctly initialized, for example if no DataSource has been provided.
 	 */
 	public final void compile() throws InvalidDataAccessApiUsageException {
-		if (!isCompiled()) { 
+		if (!isCompiled()) {
 			if (this.sql == null)
 				throw new InvalidDataAccessApiUsageException("Sql must be set in class " + getClass().getName());
 			if (this.dataSource == null)
@@ -212,8 +212,8 @@ public abstract class RdbmsOperation implements InitializingBean {
 			logger.info("Compiled OK");
 		}
 	}
-	
-	
+
+
 	/**
 	 * Subclasses must implement to perform their own compilation.
 	 * Invoked after this class's compilation is complete.
@@ -236,14 +236,13 @@ public abstract class RdbmsOperation implements InitializingBean {
 	protected final void validateParameters(Object[] parameters) throws InvalidDataAccessApiUsageException {
 		if (!compiled)
 			throw new InvalidDataAccessApiUsageException("SQL operation must be compiled before execution");
-			
+
 		if (parameters != null) {
 			if (declaredParameters == null)
 				throw new InvalidDataAccessApiUsageException("Didn't expect any parameters: none was declared");
 			if (parameters.length != declaredParameters.size())
 				throw new InvalidDataAccessApiUsageException(parameters.length + " parameters were supplied, but none was declared in class " + getClass().getName());
-		}
-		else {
+		} else {
 			// No parameters were supplied
 			if (!declaredParameters.isEmpty())
 				throw new InvalidDataAccessApiUsageException(declaredParameters.size() + " parameters must be supplied");

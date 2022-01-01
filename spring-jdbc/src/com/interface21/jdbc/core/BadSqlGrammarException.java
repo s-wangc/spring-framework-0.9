@@ -1,8 +1,8 @@
 /**
- * Generic framework code included with 
+ * Generic framework code included with
  * <a href="http://www.amazon.com/exec/obidos/tg/detail/-/1861007841/">Expert One-On-One J2EE Design and Development</a>
- * by Rod Johnson (Wrox, 2002). 
- * This code is free to use and modify. 
+ * by Rod Johnson (Wrox, 2002).
+ * This code is free to use and modify.
  * Please contact <a href="mailto:rod.johnson@interface21.com">rod.johnson@interface21.com</a>
  * for commercial support.
  */
@@ -22,10 +22,10 @@ import com.interface21.dao.InvalidDataAccessResourceUsageException;
  * @version $Id: BadSqlGrammarException.java,v 1.1.1.1 2003/02/11 08:10:21 johnsonr Exp $
  */
 public class BadSqlGrammarException extends InvalidDataAccessResourceUsageException {
-	
-	/** Root cause: underlying JDBC exception. */ 
+
+	/** Root cause: underlying JDBC exception. */
 	private final SQLException ex;
-	
+
 	/** The offending SQL. */
 	private final String sql;
 
@@ -40,7 +40,7 @@ public class BadSqlGrammarException extends InvalidDataAccessResourceUsageExcept
 		this.ex = ex;
 		this.sql = sql;
 	}
-	
+
 	/**
 	 * Return the wrapped SQLException.
 	 * @return the wrapped SQLException
@@ -48,7 +48,7 @@ public class BadSqlGrammarException extends InvalidDataAccessResourceUsageExcept
 	public SQLException getSQLException() {
 		return ex;
 	}
-	
+
 	/**
 	 * Return the SQL that caused the problem.
 	 * @return the offdending SQL

@@ -2,7 +2,7 @@
  * The Spring Framework is published under the terms
  * of the Apache Software License.
  */
- 
+
 package com.interface21.transaction.interceptor;
 
 import java.beans.PropertyEditorSupport;
@@ -29,13 +29,14 @@ import com.interface21.transaction.interceptor.TransactionAttributeEditor;
  * The transaction attribute string must be parseable by the
  * TransactionAttributePropertyEditor in this package.
  * TODO address method overloading and * or regexp syntax
- * @since 26-Apr-2003
+ *
+ * @author Rod Johnson
  * @version $Id: TransactionAttributeSourceEditor.java,v 1.1 2003/06/13 13:40:39 jhoeller Exp $
  * @see com.interface21.transaction.interceptor.TransactionAttributeSourceEditor
- * @author Rod Johnson
+ * @since 26-Apr-2003
  */
 public class TransactionAttributeSourceEditor extends PropertyEditorSupport {
-	
+
 	protected final Log logger = LogFactory.getLog(getClass());
 
 	/**
@@ -45,44 +46,44 @@ public class TransactionAttributeSourceEditor extends PropertyEditorSupport {
 		MapTransactionAttributeSource mtas = new MapTransactionAttributeSource();
 		if (s == null || "".equals(s)) {
 			// Leave value in property editor null
-		}
-		else {
+		} else {
 			// Use properties editor to tokenize the hold string
 			PropertiesEditor propertiesEditor = new PropertiesEditor();
 			propertiesEditor.setAsText(s);
 			Properties p = (Properties) propertiesEditor.getValue();
-			
+
 			// Now we have properties, process each one individually
 			Set keys = p.keySet();
-			for (Iterator iter = keys.iterator(); iter.hasNext();) {
+			for (Iterator iter = keys.iterator(); iter.hasNext(); ) {
 				String name = (String) iter.next();
 				String value = p.getProperty(name);
 				parseMethodDescriptor(name, value, mtas);
 			}
 		}
-		
+
 		setValue(mtas);
-	}	// setAsText
-	
+	}    // setAsText
+
 	/**
 	 * Handle a given property describing one transactional method.
-	 * @param name name of the property. Contains class and method name.
+	 *
+	 * @param name  name of the property. Contains class and method name.
 	 * @param value value, which should be a string representation of a TransactionAttribute
-	 * @param tasi private TransactionAttributeSource implementation that this
-	 * method can continue to configure
+	 * @param tasi  private TransactionAttributeSource implementation that this
+	 *              method can continue to configure
 	 */
 	private void parseMethodDescriptor(String name, String value, MapTransactionAttributeSource tasi) {
 		int lastDotIndex = name.lastIndexOf(".");
-		if (lastDotIndex == -1) 
+		if (lastDotIndex == -1)
 			throw new TransactionUsageException("'" + name + "' is not a valid method name: format is FQN.methodName");
 		String className = name.substring(0, lastDotIndex);
 		String methodName = name.substring(lastDotIndex + 1);
-		logger.debug("Transactional method: " + className + "/" + methodName + 
+		logger.debug("Transactional method: " + className + "/" + methodName +
 				" with transaction attribute string " + value);
-		
+
 		try {
 			Class clazz = Class.forName(className);
-			
+
 			// TODO address method overloading?
 			// at present this will just match the first method
 			// consider EJB syntax (int, String) etc.?
@@ -93,31 +94,31 @@ public class TransactionAttributeSourceEditor extends PropertyEditorSupport {
 					m = methods[i];
 				}
 			}
-			if (m == null) 
+			if (m == null)
 				throw new TransactionUsageException("Couldn't find method '" + methodName + "' on " + clazz);
-				
+
 			// Convert value to a transaction attribute
-			
+
 			// TODO could keep this as in instance variable? Threading implications?
 			TransactionAttributeEditor pe = transactionAttributePropertyEditor();
 			pe.setAsText(value);
 			TransactionAttribute ta = (TransactionAttribute) pe.getValue();
-			
+
 			tasi.addTransactionalMethod(m, ta);
-		}
-		catch (ClassNotFoundException ex) {
+		} catch (ClassNotFoundException ex) {
 			throw new TransactionUsageException("Class '" + className + "' not found");
 		}
-	}	// handleOneProperty
-	
-	
+	}    // handleOneProperty
+
+
 	/**
 	 * Getting a TransactionAttributePropertyEditor is in a separate
-	 * protected method to allow for effective unit testing. 
+	 * protected method to allow for effective unit testing.
+	 *
 	 * @return TransactionAttributePropertyEditor
 	 */
 	protected TransactionAttributeEditor transactionAttributePropertyEditor() {
 		return new TransactionAttributeEditor();
 	}
-	
+
 }

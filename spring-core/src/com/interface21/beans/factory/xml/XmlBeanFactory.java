@@ -58,8 +58,8 @@ import com.interface21.beans.factory.support.RuntimeBeanReference;
  * <p>Pre-instantiates singletons. TODO: This could be made configurable.
  *
  * @author Rod Johnson
- * @since 15 April 2001
  * @version $Id: XmlBeanFactory.java,v 1.2 2003/06/22 20:02:52 jhoeller Exp $
+ * @since 15 April 2001
  */
 public class XmlBeanFactory extends ListableBeanFactoryImpl {
 
@@ -114,7 +114,8 @@ public class XmlBeanFactory extends ListableBeanFactoryImpl {
 
 	/**
 	 * Creates new XmlBeanFactory using java.io to read the XML document with the given filename
-	 * @param filename name of the file containing the XML document
+	 *
+	 * @param filename          name of the file containing the XML document
 	 * @param parentBeanFactory parent bean factory
 	 */
 	public XmlBeanFactory(String filename, BeanFactory parentBeanFactory) throws BeansException {
@@ -122,14 +123,14 @@ public class XmlBeanFactory extends ListableBeanFactoryImpl {
 		try {
 			logger.info("Loading XmlBeanFactory from file '" + filename + "'");
 			loadBeanDefinitions(new FileInputStream(filename));
-		}
-		catch (IOException ex) {
+		} catch (IOException ex) {
 			throw new BeanDefinitionStoreException("Can't open file [" + filename + "]", ex);
 		}
 	}
 
 	/**
 	 * Creates new XmlBeanFactory using java.io to read the XML document with the given filename
+	 *
 	 * @param filename name of the file containing the XML document
 	 */
 	public XmlBeanFactory(String filename) throws BeansException {
@@ -139,7 +140,8 @@ public class XmlBeanFactory extends ListableBeanFactoryImpl {
 	/**
 	 * Create a new XmlBeanFactory with the given input stream,
 	 * which must be parsable using DOM.
-	 * @param is InputStream containing XML
+	 *
+	 * @param is                InputStream containing XML
 	 * @param parentBeanFactory parent bean factory
 	 * @throws BeansException
 	 */
@@ -151,6 +153,7 @@ public class XmlBeanFactory extends ListableBeanFactoryImpl {
 	/**
 	 * Create a new XmlBeanFactory with the given input stream,
 	 * which must be parsable using DOM.
+	 *
 	 * @param is InputStream containing XML
 	 * @throws BeansException
 	 */
@@ -160,7 +163,8 @@ public class XmlBeanFactory extends ListableBeanFactoryImpl {
 
 	/**
 	 * Creates new XmlBeanFactory from a DOM document
-	 * @param doc DOM document, already parsed
+	 *
+	 * @param doc               DOM document, already parsed
 	 * @param parentBeanFactory parent bean factory
 	 */
 	public XmlBeanFactory(Document doc, BeanFactory parentBeanFactory) throws BeansException {
@@ -170,6 +174,7 @@ public class XmlBeanFactory extends ListableBeanFactoryImpl {
 
 	/**
 	 * Creates new XmlBeanFactory from a DOM document
+	 *
 	 * @param doc DOM document, already parsed
 	 */
 	public XmlBeanFactory(Document doc) throws BeansException {
@@ -198,22 +203,17 @@ public class XmlBeanFactory extends ListableBeanFactoryImpl {
 			db.setEntityResolver(new BeansDtdResolver());
 			Document doc = db.parse(is);
 			loadBeanDefinitions(doc);
-		}
-		catch (ParserConfigurationException ex) {
+		} catch (ParserConfigurationException ex) {
 			throw new BeanDefinitionStoreException("ParserConfiguration exception parsing XML", ex);
-		}
-		catch (SAXException ex) {
+		} catch (SAXException ex) {
 			throw new BeanDefinitionStoreException("XML document is invalid", ex);
-		}
-		catch (IOException ex) {
+		} catch (IOException ex) {
 			throw new BeanDefinitionStoreException("IOException parsing XML document", ex);
-		}
-		finally {
+		} finally {
 			try {
 				if (is != null)
 					is.close();
-			}
-			catch (IOException ex) {
+			} catch (IOException ex) {
 				throw new FatalBeanException("IOException closing stream for XML document", ex);
 			}
 		}
@@ -281,12 +281,10 @@ public class XmlBeanFactory extends ListableBeanFactoryImpl {
 			if (classname != null) {
 				ClassLoader cl = Thread.currentThread().getContextClassLoader();
 				return new RootBeanDefinition(Class.forName(classname, true, cl), pvs, singleton);
-			}
-			else {
+			} else {
 				return new ChildBeanDefinition(parent, pvs, singleton);
 			}
-		}
-		catch (ClassNotFoundException ex) {
+		} catch (ClassNotFoundException ex) {
 			throw new FatalBeanException("Error creating bean with name [" + beanName + "]: class '" + classname + "' not found", ex);
 		}
 	}
@@ -320,7 +318,7 @@ public class XmlBeanFactory extends ListableBeanFactoryImpl {
 	private String getBeanId(Element e) throws BeanDefinitionStoreException {
 		if (!e.getTagName().equals(BEAN_ELEMENT))
 			throw new FatalBeanException("Internal error: trying to treat element with tagname <"
-			                             + e.getTagName() + "> as a <bean> element");
+					+ e.getTagName() + "> as a <bean> element");
 		String propertyName = e.getAttribute(ID_ATTRIBUTE);
 		if (propertyName == null || "".equals(propertyName))
 			throw new BeanDefinitionStoreException("Bean without id attribute", null);
@@ -363,18 +361,14 @@ public class XmlBeanFactory extends ListableBeanFactoryImpl {
 				}
 			}
 			return new RuntimeBeanReference(beanName);
-		}
-		else if (ele.getTagName().equals(VALUE_ELEMENT)) {
+		} else if (ele.getTagName().equals(VALUE_ELEMENT)) {
 			// It's a literal value
 			return getTextValue(ele);
-		}
-		else if (ele.getTagName().equals(LIST_ELEMENT)) {
+		} else if (ele.getTagName().equals(LIST_ELEMENT)) {
 			return getList(ele);
-		}
-		else if (ele.getTagName().equals(MAP_ELEMENT)) {
+		} else if (ele.getTagName().equals(MAP_ELEMENT)) {
 			return getMap(ele);
-		}
-		else if (ele.getTagName().equals(PROPS_ELEMENT)) {
+		} else if (ele.getTagName().equals(PROPS_ELEMENT)) {
 			return getProps(ele);
 		}
 		throw new BeanDefinitionStoreException("Unknown subelement of <property>: <" + ele.getTagName() + ">", null);
@@ -433,8 +427,8 @@ public class XmlBeanFactory extends ListableBeanFactoryImpl {
 		}
 		if (nl.getLength() != 1 || !(nl.item(0) instanceof Text)) {
 			throw new FatalBeanException("Unexpected element or type mismatch: " +
-			                             "expected single node of " + nl.item(0).getClass() + " to be of type Text: "
-			                             + "found " + e, null);
+					"expected single node of " + nl.item(0).getClass() + " to be of type Text: "
+					+ "found " + e, null);
 		}
 		Text t = (Text) nl.item(0);
 		// This will be a String

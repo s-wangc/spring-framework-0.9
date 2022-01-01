@@ -13,7 +13,6 @@ import com.interface21.samples.pagedlist.appli.ICountry;
 
 /**
  * @author Jean-Pierre PAWLAK
- *
  */
 public class DaoCountryMem implements IDaoCountry, InitializingBean {
 
@@ -45,7 +44,7 @@ public class DaoCountryMem implements IDaoCountry, InitializingBean {
 		while (it.hasNext()) {
 			Country country = (Country) it.next();
 			if ((null == name || country.getName().startsWith(name)) &&
-			    (null == code || country.getCode().startsWith(code))
+					(null == code || country.getCode().startsWith(code))
 			) {
 				countries.add(country);
 			}

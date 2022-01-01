@@ -11,19 +11,19 @@ package com.interface21.core;
  */
 public interface Ordered {
 
-  /**
-   * Return the order value of this object,
-   * higher value meaning greater in terms of sorting.
-   * Normally starting with 0 or 1, Integer.MAX_VALUE
-   * indicating greatest.
-   * Same order values will result in arbitrary positions
-   * for the affected objects.
-   *
-   * <p>Higher value can be interpreted as lower priority,
-   * consequently the first object has highest priority
-   * (somewhat analogous to Servlet "load-on-startup" values).
-   *
-   * @return the order value
-   */
+	/**
+	 * Return the order value of this object,
+	 * higher value meaning greater in terms of sorting.
+	 * Normally starting with 0 or 1, Integer.MAX_VALUE
+	 * indicating greatest.
+	 * Same order values will result in arbitrary positions
+	 * for the affected objects.
+	 *
+	 * <p>Higher value can be interpreted as lower priority,
+	 * consequently the first object has highest priority
+	 * (somewhat analogous to Servlet "load-on-startup" values).
+	 *
+	 * @return the order value
+	 */
 	public int getOrder();
 }

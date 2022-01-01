@@ -16,9 +16,9 @@ import com.interface21.web.context.support.XmlWebApplicationContext;
  * falling back to the default context class (XmlWebApplicationContext) if not found.
  *
  * @author Juergen Hoeller
- * @since 17.02.2003
  * @see ContextLoaderListener
  * @see XmlWebApplicationContext
+ * @since 17.02.2003
  */
 public class ContextLoader {
 
@@ -34,6 +34,7 @@ public class ContextLoader {
 	/**
 	 * Initializes Spring's web application context for the given servlet context,
 	 * solely regarding the servlet context init parameter.
+	 *
 	 * @param servletContext current servlet context
 	 * @return the new WebApplicationContext
 	 */

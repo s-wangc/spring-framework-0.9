@@ -14,6 +14,7 @@ import com.interface21.beans.BeanWrapperImpl;
 /**
  * PropertyComparator performs a comparison of two beans,
  * using the specified bean property via a BeanWrapper.
+ *
  * @author Juergen Hoeller
  * @since 19.05.2003
  */
@@ -52,7 +53,8 @@ public class PropertyComparator implements Comparator {
 	 * Sorts the given List according to the given sort definition.
 	 * <p>Note: Contained objects have to provide the given property
 	 * in the form of a bean property, i.e. a getXXX method.
-	 * @param source the input List
+	 *
+	 * @param source         the input List
 	 * @param sortDefinition the parameters to sort by
 	 * @throws IllegalArgumentException in case of a missing propertyName
 	 */
@@ -64,7 +66,8 @@ public class PropertyComparator implements Comparator {
 	 * Sorts the given source according to the given sort definition.
 	 * <p>Note: Contained objects have to provide the given property
 	 * in the form of a bean property, i.e. a getXXX method.
-	 * @param source input source
+	 *
+	 * @param source         input source
 	 * @param sortDefinition the parameters to sort by
 	 * @throws IllegalArgumentException in case of a missing propertyName
 	 */

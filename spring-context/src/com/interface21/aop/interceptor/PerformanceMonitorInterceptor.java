@@ -12,6 +12,7 @@ import com.interface21.util.StopWatch;
  * Could make this much more sophisticated, storing information.
  * Presently logs information using Log4j. This interceptor
  * has no effect on the intercepted method call.
+ *
  * @author Rod Johnson
  * @author Dmitriy Kopylenko
  * @version $Id: PerformanceMonitorInterceptor.java,v 1.1 2003/06/13 13:40:11 jhoeller Exp $

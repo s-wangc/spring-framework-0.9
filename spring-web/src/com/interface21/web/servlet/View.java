@@ -1,10 +1,10 @@
 /**
- * Generic framework code included with 
+ * Generic framework code included with
  * <a href="http://www.amazon.com/exec/obidos/tg/detail/-/1861007841/">Expert One-On-One J2EE Design and Development</a>
- * by Rod Johnson (Wrox, 2002). 
+ * by Rod Johnson (Wrox, 2002).
  * This code is free to use and modify. However, please
  * acknowledge the source and include the above URL in each
- * class using or derived from this code. 
+ * class using or derived from this code.
  * Please contact <a href="mailto:rod.johnson@interface21.com">rod.johnson@interface21.com</a>
  * for commercial support.
  */
@@ -36,8 +36,8 @@ import javax.servlet.http.HttpServletResponse;
  * @author Rod Johnson
  */
 public interface View {
-	
-	/** 
+
+	/**
 	 * Add static data to this view, exposed in each view.
 	 * <br/>Must be invoked before any calls to render().
 	 * <br/><b>Note that it is legal for dynamic and static attributes to
@@ -48,7 +48,7 @@ public interface View {
 	 * @param o object to expose
 	 */
 	void addStaticAttribute(String name, Object o);
-	
+
 	/**
 	 * Renders the view given the specified model. 
 	 * The first step will be preparing the request: this commonly consists of  
@@ -60,7 +60,7 @@ public interface View {
 	 * @throws ServletException if there is an unexpected error not related to IO.
 	 */
 	void render(Map model, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException;
-	
+
 	/**
 	 * Set the view's name. Helpful for traceability.
 	 * Framework code must call this when constructing views.
@@ -68,7 +68,7 @@ public interface View {
 	 * Views should use this for log messages.
 	 */
 	void setName(String name);
-	
+
 	/** Return the view's name. Should
 	 * never be null, if the view was correctly configured.
 	 * @return the view's name

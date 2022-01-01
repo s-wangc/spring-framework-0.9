@@ -19,27 +19,29 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Jean-Pierre Pawlak
  * @author Juergen Hoeller
- * @since 17.06.2003
  * @see com.interface21.web.servlet.theme.FixedThemeResolver
  * @see com.interface21.ui.context.Theme
  * @see com.interface21.ui.context.ThemeSource
+ * @since 17.06.2003
  */
 public interface ThemeResolver {
 
-  /**
-   * Resolve the current theme name via the given request.
-   * Should return a default theme as fallback in any case.
-   * @param request request to be used for resolution
-   * @return the current theme name
-   */
+	/**
+	 * Resolve the current theme name via the given request.
+	 * Should return a default theme as fallback in any case.
+	 *
+	 * @param request request to be used for resolution
+	 * @return the current theme name
+	 */
 	String resolveThemeName(HttpServletRequest request);
 
-  /**
-   * Set the current theme name to the given one.
-   * @param request request to be used for theme name modification
-   * @param response response to be used for theme name modification
-   * @param themeName the new theme name
-   */
+	/**
+	 * Set the current theme name to the given one.
+	 *
+	 * @param request   request to be used for theme name modification
+	 * @param response  response to be used for theme name modification
+	 * @param themeName the new theme name
+	 */
 	void setThemeName(HttpServletRequest request, HttpServletResponse response, String themeName);
-	
+
 }

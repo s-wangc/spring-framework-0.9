@@ -10,8 +10,8 @@ import com.interface21.transaction.TransactionStatus;
  * services into a higher-level method implementation with transaction demarcation.
  *
  * @author Juergen Hoeller
- * @since 17.03.2003
  * @see com.interface21.transaction.support.TransactionTemplate
+ * @since 17.03.2003
  */
 public interface TransactionCallback {
 
@@ -25,7 +25,7 @@ public interface TransactionCallback {
 	 * i.e. a business object or a collection of business objects. A thrown
 	 * RuntimeException is treated as application exception that enforces a
 	 * rollback. An exception gets propagated to the caller of the template.
-	 * 
+	 *
 	 * <p>Note when using JTA: JTA transactions only work with transactional
 	 * JNDI resources, so implementations need to use such resources if
 	 * they want transaction support.
@@ -33,7 +33,7 @@ public interface TransactionCallback {
 	 * @param status associated transaction status
 	 * @return a result object, or null
 	 * @throws java.lang.RuntimeException if the transaction needs to be rolled back,
-	 * propagating the application exception to the caller
+	 *                                    propagating the application exception to the caller
 	 * @see com.interface21.transaction.support.TransactionTemplate#execute
 	 */
 	Object doInTransaction(TransactionStatus status) throws RuntimeException;

@@ -19,42 +19,44 @@ import com.interface21.jdbc.core.RowCallbackHandler;
  * table. Expects columns for bean name, property name and value
  * as string. Formats for each are identical to the properties format
  * recognized by ListableBeanFactoryImpl.
+ *
  * @author Rod Johnson
  * @version $Id: JdbcBeanFactory.java,v 1.2 2003/06/06 16:13:22 jhoeller Exp $
  */
 public class JdbcBeanFactory implements ListableBeanFactory {
-	
+
 	private ListableBeanFactory delegate;
-	
+
 	/**
 	 * SQL that produces the three columns.
 	 */
 	private String sql;
-	
+
 	private JdbcTemplate jdbcTemplate;
 
 
 	/**
 	 * Create a new JdbcBeanFactory
-	 * @param ds datasource to use to obtain connections. The datasource
-	 * will be cached during the life of this bean factory.
+	 *
+	 * @param ds  datasource to use to obtain connections. The datasource
+	 *            will be cached during the life of this bean factory.
 	 * @param sql the first three columns must be bean name, property name and value. Any join
-	 * and any other columns are permitted: e.g.
-	 * SELECT BEAN_NAME, PROPERTY, VALUE FROM CONFIG WHERE CONFIG.APP_ID = 1
-	 * It's also possible to perform a join. Column names are not significant--only
-	 * the ordering of these first three columns.
+	 *            and any other columns are permitted: e.g.
+	 *            SELECT BEAN_NAME, PROPERTY, VALUE FROM CONFIG WHERE CONFIG.APP_ID = 1
+	 *            It's also possible to perform a join. Column names are not significant--only
+	 *            the ordering of these first three columns.
 	 */
 	public JdbcBeanFactory(DataSource ds, String sql) {
 		this.sql = sql;
 		this.jdbcTemplate = new JdbcTemplate(ds);
 		refresh();
 	}
-	
+
 	/**
 	 * Refresh the factory. Uses copy-on-write for thread safety
 	 */
 	public void refresh() {
-		ListableBeanFactoryImpl newDelegate =  new ListableBeanFactoryImpl();
+		ListableBeanFactoryImpl newDelegate = new ListableBeanFactoryImpl();
 		final Properties props = new Properties();
 		this.jdbcTemplate.query(sql, new RowCallbackHandler() {
 			public void processRow(ResultSet rs) throws SQLException {
@@ -65,7 +67,7 @@ public class JdbcBeanFactory implements ListableBeanFactory {
 				props.setProperty(beanName + "." + property, value);
 			}
 		});
-		
+
 		newDelegate.registerBeanDefinitions(props, null);
 		this.delegate = newDelegate;
 	}

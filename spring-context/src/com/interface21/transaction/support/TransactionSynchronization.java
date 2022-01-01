@@ -3,10 +3,11 @@ package com.interface21.transaction.support;
 /**
  * Interface for callbacks after transaction completion.
  * Supported by AbstractPlatformTransactionManager.
+ *
  * @author Juergen Hoeller
- * @since 02.06.2003
  * @see TransactionSynchronizationManager
  * @see AbstractPlatformTransactionManager
+ * @since 02.06.2003
  */
 public interface TransactionSynchronization {
 
@@ -28,6 +29,7 @@ public interface TransactionSynchronization {
 	/**
 	 * Invoked after transaction completion.
 	 * Can e.g. perform proper resource cleanup.
+	 *
 	 * @param status completion status according to the STATUS_ constants
 	 */
 	void afterCompletion(int status);

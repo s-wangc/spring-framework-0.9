@@ -19,42 +19,44 @@ import java.util.StringTokenizer;
  * registered by BeanWrapperImpl.
  * <br>The required format is defined in java.util.Properties documentation.
  * Each property must be on a new line.
+ *
  * @author Rod Johnson
  * @version $Id: PropertiesEditor.java,v 1.5 2003/05/21 21:15:20 johnsonr Exp $
  */
 public class PropertiesEditor extends PropertyEditorSupport {
-	
+
 	/**
 	 * Any of these characters, if they're first after whitespace
 	 * or first on a line, mean that the line is a comment and should
 	 * be ignored.
 	 */
 	private final static String COMMENT_MARKERS = "#!";
-	
+
 	/**
 	 * @see java.beans.PropertyEditor#setAsText(String)
 	 */
 	public void setAsText(String s) throws IllegalArgumentException {
-		
+
 		if (s == null)
 			throw new IllegalArgumentException("Cannot set properties to null");
-	
+
 		Properties props =
-			load(s); 
-			//parse(s);
+				load(s);
+		//parse(s);
 		setValue(props);
 	}
-	
-	
+
+
 	/**
 	 * Parse the string ourselves.
 	 * Workaround for Orion 1.6 issue
+	 *
 	 * @param s
 	 * @return Properties
 	 */
 	private Properties parse(String s) {
 		Properties props = new Properties();
-		
+
 		// Zap whitespace
 		StringTokenizer st = new StringTokenizer(s);
 		while (st.hasMoreTokens()) {
@@ -67,28 +69,27 @@ public class PropertiesEditor extends PropertyEditorSupport {
 				// We only have the property name, but
 				// the value is the the empty string
 				props.put(tok, "");
-			}
-			else {
+			} else {
 				String key = tok.substring(0, eqpos);
 				String value = tok.substring(eqpos + 1);
 				props.put(key, value);
 			}
 		}
-		
+
 		return props;
-	}	// parse
+	}    // parse
 
 
-	/** NB: the following code, using properties default works in JBoss 3.0.0,
+	/**
+	 * NB: the following code, using properties default works in JBoss 3.0.0,
 	 * but not Orion 1.6
-	*/
+	 */
 	private Properties load(String s) {
 		Properties props = new Properties();
 		try {
 			props.load(new ByteArrayInputStream(s.getBytes()));
 			dropComments(props);
-		}
-		catch (IOException ex) {
+		} catch (IOException ex) {
 			// Shouldn't happen
 			throw new IllegalArgumentException("Failed to read String");
 		}

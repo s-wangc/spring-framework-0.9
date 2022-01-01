@@ -5,6 +5,7 @@ import java.beans.PropertyEditorSupport;
 /**
  * Editor for java.lang.Class, to directly feed a Class property
  * instead of needing an additional class name property.
+ *
  * @author Juergen Hoeller
  * @since 13.05.2003
  */
@@ -14,8 +15,7 @@ public class ClassEditor extends PropertyEditorSupport {
 		Class clazz = null;
 		try {
 			clazz = Class.forName(text);
-		}
-		catch (ClassNotFoundException ex) {
+		} catch (ClassNotFoundException ex) {
 			throw new IllegalArgumentException("Invalid class name [" + text + "]: " + ex.getMessage());
 		}
 		setValue(clazz);

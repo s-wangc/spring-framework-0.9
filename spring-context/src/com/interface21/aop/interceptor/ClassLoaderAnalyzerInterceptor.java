@@ -9,9 +9,10 @@ import com.interface21.util.ClassLoaderAnalyzer;
 
 /**
  * Trivial classloader analyzer interceptor
- * @version $Id: ClassLoaderAnalyzerInterceptor.java,v 1.1 2003/06/13 13:40:11 jhoeller Exp $
+ *
  * @author Rod Johnson
  * @author Dmitriy Kopylenko
+ * @version $Id: ClassLoaderAnalyzerInterceptor.java,v 1.1 2003/06/13 13:40:11 jhoeller Exp $
  */
 public class ClassLoaderAnalyzerInterceptor implements MethodInterceptor {
 
@@ -21,10 +22,10 @@ public class ClassLoaderAnalyzerInterceptor implements MethodInterceptor {
 		logger.info("Begin...");
 
 		logger.info(ClassLoaderAnalyzer.showClassLoaderHierarchy(
-			pInvocation.getInvokedObject(),
-			pInvocation.getInvokedObject().getClass().getName(),
-			"\n",
-			"-"));
+				pInvocation.getInvokedObject(),
+				pInvocation.getInvokedObject().getClass().getName(),
+				"\n",
+				"-"));
 		Object rval = pInvocation.invokeNext();
 
 		logger.info("End.");

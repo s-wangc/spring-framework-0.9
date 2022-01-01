@@ -22,6 +22,7 @@ public abstract class UiApplicationContextUtils {
 	/**
 	 * Name of the ThemeSource bean in the factory.
 	 * If none is supplied, theme resolution is delegated to the parent.
+	 *
 	 * @see com.interface21.ui.context.ThemeSource
 	 */
 	public static final String THEME_SOURCE_BEAN_NAME = "themeSource";
@@ -30,6 +31,7 @@ public abstract class UiApplicationContextUtils {
 
 	/**
 	 * Initialize the theme source for the given application context.
+	 *
 	 * @param applicationContext current application context
 	 * @return the initialized theme source (will never be null)
 	 */
@@ -40,11 +42,10 @@ public abstract class UiApplicationContextUtils {
 			// set parent theme source if applicable,
 			// and if the theme source is defined in this context, not in a parent
 			if (applicationContext.getParent() instanceof ThemeSource && themeSource instanceof NestingThemeSource &&
-				Arrays.asList(applicationContext.getBeanDefinitionNames()).contains(THEME_SOURCE_BEAN_NAME)) {
+					Arrays.asList(applicationContext.getBeanDefinitionNames()).contains(THEME_SOURCE_BEAN_NAME)) {
 				((NestingThemeSource) themeSource).setParent((ThemeSource) applicationContext.getParent());
 			}
-		}
-		catch (NoSuchBeanDefinitionException ex) {
+		} catch (NoSuchBeanDefinitionException ex) {
 			logger.warn("No ThemeSource found, default created");
 			themeSource = new ResourceBundleThemeSource();
 		}

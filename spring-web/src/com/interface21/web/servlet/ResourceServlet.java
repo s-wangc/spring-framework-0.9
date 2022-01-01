@@ -10,24 +10,25 @@ import javax.servlet.http.HttpServletResponse;
 
 
 /**
- * Simple servlet that can expose an internal resource, including a 
+ * Simple servlet that can expose an internal resource, including a
  * default URL if the specified resource is not found. An alternative,
  * for example, to trying and catching exceptions when using JSP include.
  * A typical usage would map all URLs with a .res extension onto an instance
- * of this servlet, and use the JSP include action to include 
+ * of this servlet, and use the JSP include action to include
  * with the resource parameter (specificed in a jsp:param sub-action)
  * indicating the actual path in the WAR.
  * <br>The defaultUrl bean property must be set to the
  * internal path of the default (placeholder) URL.
+ *
  * @author Rod Johnson
  */
 public class ResourceServlet extends HttpServletBean {
-	
+
 	/**
-	 * Name of the parameter that must contain the actual path. 
+	 * Name of the parameter that must contain the actual path.
 	 */
 	public static final String PATH_PARAM = "resource";
-	
+
 	/**
 	 * URL within the current web application from which to include
 	 * content if the requested path isn't found.
@@ -37,6 +38,7 @@ public class ResourceServlet extends HttpServletBean {
 
 	/**
 	 * Gets the defaultUrl.
+	 *
 	 * @return Returns a String
 	 */
 	public String getDefaultUrl() {
@@ -45,14 +47,14 @@ public class ResourceServlet extends HttpServletBean {
 
 	/**
 	 * Sets the defaultUrl.
+	 *
 	 * @param defaultUrl The defaultUrl to set
 	 */
 	public void setDefaultUrl(String defaultUrl) {
 		this.defaultUrl = defaultUrl;
 	}
-	
-	
-	
+
+
 	/**
 	 * @see javax.servlet.http.HttpServlet#doGet(HttpServletRequest, HttpServletResponse)
 	 */
@@ -64,12 +66,11 @@ public class ResourceServlet extends HttpServletBean {
 			RequestDispatcher rd = request.getRequestDispatcher(path);
 			rd.include(request, response);
 			logger.debug("Included content of '" + path + "'");
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			RequestDispatcher rd = request.getRequestDispatcher(this.defaultUrl);
 			rd.include(request, response);
 			logger.warn("Failed to include content of '" + path + "'");
 		}
 	}
 
-}	// class ResourceServlet
+}    // class ResourceServlet

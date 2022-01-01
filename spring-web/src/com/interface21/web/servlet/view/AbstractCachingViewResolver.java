@@ -1,14 +1,14 @@
 /*
- * Generic framework code included with 
+ * Generic framework code included with
  * <a href="http://www.amazon.com/exec/obidos/tg/detail/-/1861007841/">Expert One-On-One J2EE Design and Development</a>
- * by Rod Johnson (Wrox, 2002). 
+ * by Rod Johnson (Wrox, 2002).
  * This code is free to use and modify. However, please
  * acknowledge the source and include the above URL in each
- * class using or derived from this code. 
+ * class using or derived from this code.
  * Please contact <a href="mailto:rod.johnson@interface21.com">rod.johnson@interface21.com</a>
  * for commercial support.
  */
- 
+
 package com.interface21.web.servlet.view;
 
 import java.util.HashMap;
@@ -28,14 +28,19 @@ import com.interface21.web.servlet.ViewResolver;
  * This means that view resolution won't be a performance problem,
  * no matter how costly initial view retrieval is.
  * View retrieval is deferred to subclasses.
+ *
  * @author Rod Johnson
  */
 public abstract class AbstractCachingViewResolver extends ApplicationObjectSupport implements ViewResolver {
 
-	/** View name --> View instance */
+	/**
+	 * View name --> View instance
+	 */
 	private Map viewHash = new HashMap();
 
-	/** Whether we should cache views, once resolved */
+	/**
+	 * Whether we should cache views, once resolved
+	 */
 	private boolean cache = true;
 
 	/**
@@ -62,8 +67,7 @@ public abstract class AbstractCachingViewResolver extends ApplicationObjectSuppo
 		if (!cache) {
 			logger.warn("View caching is SWITCHED OFF -- DEVELOPMENT SETTING ONLY: this will severely impair performance");
 			v = loadAndConfigureView(viewName, locale);
-		}
-		else {
+		} else {
 			// We're caching - don't really need synchronization
 			v = (View) this.viewHash.get(getCacheKey(viewName, locale));
 			if (v == null) {
@@ -76,7 +80,7 @@ public abstract class AbstractCachingViewResolver extends ApplicationObjectSuppo
 
 	/**
 	 * Configure the given View. Only invoked once per View.
-	 * Configuration means giving the View its name, and 
+	 * Configuration means giving the View its name, and
 	 * setting the ApplicationContext on the View if necessary
 	 */
 	private View loadAndConfigureView(String viewname, Locale locale) throws ServletException {
@@ -85,7 +89,7 @@ public abstract class AbstractCachingViewResolver extends ApplicationObjectSuppo
 		View v = loadView(viewname, locale);
 		if (v == null)
 			throw new ServletException("Cannot resolve view name '" + viewname + "'");
-			
+
 		// Configure view
 		v.setName(viewname);
 
@@ -94,8 +98,7 @@ public abstract class AbstractCachingViewResolver extends ApplicationObjectSuppo
 		if (v instanceof ApplicationContextAware) {
 			try {
 				((ApplicationContextAware) v).setApplicationContext(getApplicationContext());
-			}
-			catch (ApplicationContextException ex) {
+			} catch (ApplicationContextException ex) {
 				throw new ServletException("Error initializing View [" + v + "]: " + ex.getMessage(), ex);
 			}
 
@@ -119,10 +122,11 @@ public abstract class AbstractCachingViewResolver extends ApplicationObjectSuppo
 	 * Subclasses must implement this method. There need be no concern for efficiency,
 	 * as this class will cache views. Not all subclasses may support internationalization:
 	 * A subclass that doesn't can ignore the locale parameter.
+	 *
 	 * @param viewName name of the view to retrieve
-	 * @param locale Locale to retrieve the view for
-	 * @throws ServletException if there is an error trying to resolve the view
+	 * @param locale   Locale to retrieve the view for
 	 * @return the View if it can be resolved, or null
+	 * @throws ServletException if there is an error trying to resolve the view
 	 */
 	protected abstract View loadView(String viewName, Locale locale) throws ServletException;
 

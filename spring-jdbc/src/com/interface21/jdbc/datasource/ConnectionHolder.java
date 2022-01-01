@@ -10,10 +10,10 @@ import java.sql.Connection;
  * to the thread, for a given DataSource.
  *
  * @author Juergen Hoeller
- * @since 06.05.2003
  * @see com.interface21.transaction.datasource.DataSourceTransactionManager
  * @see com.interface21.transaction.datasource.DataSourceTransactionObject
  * @see DataSourceUtils
+ * @since 06.05.2003
  */
 public class ConnectionHolder {
 

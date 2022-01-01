@@ -31,14 +31,16 @@ import com.interface21.util.Constants;
  * for convenient configuration in context definitions.
  *
  * @author Juergen Hoeller
- * @since 17.03.2003
  * @see com.interface21.transaction.support.TransactionCallback
  * @see com.interface21.transaction.PlatformTransactionManager
  * @see com.interface21.transaction.jta.JtaTransactionManager
+ * @since 17.03.2003
  */
 public class TransactionTemplate extends DefaultTransactionDefinition {
 
-	/** Constants instance for TransactionDefinition */
+	/**
+	 * Constants instance for TransactionDefinition
+	 */
 	private static final Constants constants = new Constants(TransactionDefinition.class);
 
 	protected PlatformTransactionManager transactionManager = null;
@@ -47,6 +49,7 @@ public class TransactionTemplate extends DefaultTransactionDefinition {
 	 * Create a new TransactionTemplate instance.
 	 * Mainly targetted at configuration by a bean factory.
 	 * Note: Transaction manager property needs to be set before any execute calls.
+	 *
 	 * @see #setTransactionManager
 	 */
 	public TransactionTemplate() {
@@ -54,6 +57,7 @@ public class TransactionTemplate extends DefaultTransactionDefinition {
 
 	/**
 	 * Create a new TransactionTemplate instance.
+	 *
 	 * @param transactionManager transaction manager to be used
 	 * @see PlatformTransactionManager
 	 */
@@ -78,6 +82,7 @@ public class TransactionTemplate extends DefaultTransactionDefinition {
 	/**
 	 * Set the propagation behavior by the name of the respective constant in
 	 * PlatformTransactionManager (e.g. "PROPAGATION_REQUIRED");
+	 *
 	 * @param constantName name of the constant
 	 * @throws IllegalArgumentException if an invalid constant was specified
 	 * @see PlatformTransactionManager
@@ -92,6 +97,7 @@ public class TransactionTemplate extends DefaultTransactionDefinition {
 	/**
 	 * Set the isolation level by the name of the respective constant in
 	 * PlatformTransactionManager (e.g. "ISOLATION_DEFAULT");
+	 *
 	 * @param constantName name of the constant
 	 * @throws IllegalArgumentException if an invalid constant was specified
 	 * @see PlatformTransactionManager
@@ -112,9 +118,9 @@ public class TransactionTemplate extends DefaultTransactionDefinition {
 	 * @param action callback object that specifies the transactional action
 	 * @return a result object returned by the callback, or null
 	 * @throws TransactionException in case of initialization, rollback,
-	 * or system errors
-	 * @throws RuntimeException in case of application exceptions thrown by
-	 * the callback object
+	 *                              or system errors
+	 * @throws RuntimeException     in case of application exceptions thrown by
+	 *                              the callback object
 	 */
 	public Object execute(TransactionCallback action) throws TransactionException, RuntimeException {
 		TransactionStatus status = this.transactionManager.getTransaction(this);
@@ -122,15 +128,13 @@ public class TransactionTemplate extends DefaultTransactionDefinition {
 			Object result = action.doInTransaction(status);
 			this.transactionManager.commit(status);
 			return result;
-		}
-		catch (TransactionException tse) {
+		} catch (TransactionException tse) {
 			throw tse;
-		}
-		catch (RuntimeException ex) {
+		} catch (RuntimeException ex) {
 			// transactional code threw exception
 			this.transactionManager.rollback(status);
 			throw ex;
 		}
 	}
-	
+
 }

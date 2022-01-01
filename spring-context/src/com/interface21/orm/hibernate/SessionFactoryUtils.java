@@ -37,11 +37,11 @@ import com.interface21.util.ThreadObjectManager;
  * Hibernate 2.0 (initially developed with RC1).
  *
  * @author Juergen Hoeller
- * @since 02.05.2003
  * @see HibernateTemplate
  * @see HibernateInterceptor
  * @see HibernateTransactionManager
  * @see com.interface21.transaction.jta.JtaTransactionManager
+ * @since 02.05.2003
  */
 public abstract class SessionFactoryUtils {
 
@@ -55,6 +55,7 @@ public abstract class SessionFactoryUtils {
 	/**
 	 * Return the thread object manager for Hibernate sessions, keeping a
 	 * SessionFactory/SessionHolder map per thread for Hibernate transactions.
+	 *
 	 * @return the thread object manager
 	 * @see #getSession
 	 * @see HibernateTransactionManager
@@ -66,7 +67,8 @@ public abstract class SessionFactoryUtils {
 	/**
 	 * Return if the given Session is bound to the current thread,
 	 * for the given SessionFactory.
-	 * @param session Session that should be checked
+	 *
+	 * @param session        Session that should be checked
 	 * @param sessionFactory SessionFactory that the Session was created with
 	 * @return if the Session is bound for the SessionFactory
 	 */
@@ -77,13 +79,14 @@ public abstract class SessionFactoryUtils {
 
 	/**
 	 * Create a Hibernate SessionFactory with the given config file.
+	 *
 	 * @param configLocation location of the config file (can be a URL
-	 * or a classpath resource), or null if default
+	 *                       or a classpath resource), or null if default
 	 * @return the new SessionFactory instance
 	 * @throws DataAccessResourceFailureException if the SessionFactory could not be created
 	 */
 	public static SessionFactory createSessionFactory(String configLocation)
-	    throws DataAccessResourceFailureException {
+			throws DataAccessResourceFailureException {
 		try {
 			Configuration config = new Configuration();
 			if (configLocation != null) {
@@ -100,14 +103,12 @@ public abstract class SessionFactoryUtils {
 					}
 					config.configure(configLocation);
 				}
-			}
-			else {
+			} else {
 				// default config file
 				config.configure();
 			}
 			return config.buildSessionFactory();
-		}
-		catch (HibernateException ex) {
+		} catch (HibernateException ex) {
 			throw new DataAccessResourceFailureException("Could not create Hibernate session factory", ex);
 		}
 	}
@@ -117,14 +118,15 @@ public abstract class SessionFactoryUtils {
 	 * Is aware of a respective Session bound to the current thread,
 	 * for example when using HibernateTransactionManager.
 	 * Will create a new Session else, if allowCreate is true.
+	 *
 	 * @param sessionFactory Hibernate SessionFactory to create the session with
-	 * @param allowCreate if a new Session should be created if no thread-bound found
+	 * @param allowCreate    if a new Session should be created if no thread-bound found
 	 * @return the Hibernate Session
 	 * @throws DataAccessResourceFailureException if the Session couldn't be created
-	 * @throws IllegalStateException if no thread-bound Session found and allowCreate false
+	 * @throws IllegalStateException              if no thread-bound Session found and allowCreate false
 	 */
 	public static Session getSession(SessionFactory sessionFactory, boolean allowCreate)
-	    throws DataAccessResourceFailureException, IllegalStateException {
+			throws DataAccessResourceFailureException, IllegalStateException {
 		SessionHolder holder = (SessionHolder) threadObjectManager.getThreadObject(sessionFactory);
 		if (holder != null) {
 			return holder.getSession();
@@ -135,12 +137,10 @@ public abstract class SessionFactoryUtils {
 		try {
 			logger.debug("Opening Hibernate session");
 			return sessionFactory.openSession();
-		}
-		catch (JDBCException ex) {
+		} catch (JDBCException ex) {
 			// SQLException underneath
 			throw new DataAccessResourceFailureException("Cannot not open Hibernate session", ex.getSQLException());
-		}
-		catch (HibernateException ex) {
+		} catch (HibernateException ex) {
 			throw new DataAccessResourceFailureException("Cannot not open Hibernate session", ex);
 		}
 	}
@@ -148,6 +148,7 @@ public abstract class SessionFactoryUtils {
 	/**
 	 * Convert the given HibernateException to an appropriate exception from
 	 * the com.interface21.dao hierarchy.
+	 *
 	 * @param ex HibernateException that occured
 	 * @return the corresponding DataAccessException instance
 	 */
@@ -178,12 +179,13 @@ public abstract class SessionFactoryUtils {
 	/**
 	 * Close the given Session, created via the given factory,
 	 * if it isn't bound to the thread.
-	 * @param session Session to close
+	 *
+	 * @param session        Session to close
 	 * @param sessionFactory Hibernate SessionFactory that the Session was created with
 	 * @throws DataAccessResourceFailureException if the Session couldn't be closed
 	 */
 	public static void closeSessionIfNecessary(Session session, SessionFactory sessionFactory)
-	    throws CleanupFailureDataAccessException {
+			throws CleanupFailureDataAccessException {
 		if (session == null || isSessionBoundToThread(session, sessionFactory)) {
 			return;
 		}
@@ -193,8 +195,7 @@ public abstract class SessionFactoryUtils {
 			// use same Session for further Hibernate actions within the transaction
 			// to save resources (thread object will get remoed by synchronization)
 			threadObjectManager.bindThreadObject(sessionFactory, new SessionHolder(session));
-		}
-		else {
+		} else {
 			doCloseSession(session);
 		}
 	}
@@ -206,12 +207,10 @@ public abstract class SessionFactoryUtils {
 		logger.debug("Closing Hibernate session");
 		try {
 			session.close();
-		}
-		catch (JDBCException ex) {
+		} catch (JDBCException ex) {
 			// SQLException underneath
 			throw new CleanupFailureDataAccessException("Cannot close Hibernate session", ex.getSQLException());
-		}
-		catch (HibernateException ex) {
+		} catch (HibernateException ex) {
 			throw new CleanupFailureDataAccessException("Cannot close Hibernate session", ex);
 		}
 	}

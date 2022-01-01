@@ -40,16 +40,24 @@ import com.interface21.web.servlet.support.RequestContext;
  */
 public abstract class AbstractView extends ApplicationObjectSupport implements View {
 
-	/** Map of static attributes, keyed by attribute name (String) */
-	private Map	staticAttributes = new HashMap();
+	/**
+	 * Map of static attributes, keyed by attribute name (String)
+	 */
+	private Map staticAttributes = new HashMap();
 
-	/** Default content type. Overridable as bean property. */
+	/**
+	 * Default content type. Overridable as bean property.
+	 */
 	private String contentType = "text/html; charset=ISO-8859-1";
-	
-	/** Name of request context attribute, or null if not needed */
+
+	/**
+	 * Name of request context attribute, or null if not needed
+	 */
 	private String requestContextAttribute;
 
-	/** The name by which this View is known */
+	/**
+	 * The name by which this View is known
+	 */
 	private String name;
 
 
@@ -61,20 +69,20 @@ public abstract class AbstractView extends ApplicationObjectSupport implements V
 		if (propString == null)
 			// Leave static attributes unchanged
 			return;
-			
+
 		StringTokenizer st = new StringTokenizer(propString, ",");
 		while (st.hasMoreTokens()) {
 			String tok = st.nextToken();
 			int eqindx = tok.indexOf("=");
 			if (eqindx == -1)
 				throw new IllegalArgumentException("Expected = in View string '" + propString + "'");
-			
+
 			if (eqindx >= tok.length() - 2)
 				throw new IllegalArgumentException("At least 2 characters ([]) required in View string '" + propString + "'");
-				
+
 			String name = tok.substring(0, eqindx);
 			String val = tok.substring(eqindx + 1);
-			
+
 			// Delete first and last characters of value: { and }
 			val = val.substring(1);
 			val = val.substring(0, val.length() - 1);
@@ -85,13 +93,14 @@ public abstract class AbstractView extends ApplicationObjectSupport implements V
 			addStaticAttribute(name, val);
 		}
 	}
-	
+
 	/**
 	 * Set static attributes from a java.util.Properties object. This is
 	 * the most convenient way to set static attributes. Note that static
 	 * attributes can be overridden by dynamic attributes, if a value
 	 * with the same name is included in the model.
 	 * <p>Relies on registration of PropertiesEditor.
+	 *
 	 * @see com.interface21.beans.propertyeditors.PropertiesEditor
 	 */
 	public final void setAttributes(Properties prop) throws IllegalArgumentException {
@@ -112,12 +121,13 @@ public abstract class AbstractView extends ApplicationObjectSupport implements V
 	 * Set the content type for this view.
 	 * May be ignored by subclasses if the view itself is assumed
 	 * to set the content type, e.g. in case of JSPs.
+	 *
 	 * @param contentType content type for this view
 	 */
 	public final void setContentType(String contentType) {
 		this.contentType = contentType;
 	}
-	
+
 	protected final String getContentType() {
 		return this.contentType;
 	}
@@ -125,6 +135,7 @@ public abstract class AbstractView extends ApplicationObjectSupport implements V
 	/**
 	 * Set the name of the RequestContext attribute for all views,
 	 * or null if not needed.
+	 *
 	 * @param requestContextAttribute name of the RequestContext attribute
 	 */
 	public void setRequestContextAttribute(String requestContextAttribute) {
@@ -135,16 +146,18 @@ public abstract class AbstractView extends ApplicationObjectSupport implements V
 	/**
 	 * Add static data to this view, exposed in each view.
 	 * <br/>Must be invoked before any calls to render().
+	 *
 	 * @param name name of attribute to expose
-	 * @param o object to expose
+	 * @param o    object to expose
 	 */
 	public final void addStaticAttribute(String name, Object o) {
 		this.staticAttributes.put(name, o);
 	}
 
-	/** 
+	/**
 	 * Handy for testing. Return the static attributes
 	 * held in this view.
+	 *
 	 * @return the static attributes in this view
 	 */
 	public final Map getStaticAttributes() {
@@ -154,16 +167,18 @@ public abstract class AbstractView extends ApplicationObjectSupport implements V
 	/**
 	 * Set the view's name. Helpful for traceability.
 	 * Framework code must call this when constructing views.
+	 *
 	 * @param name the view's name. May not be null.
-	 * Views should use this for log messages.
+	 *             Views should use this for log messages.
 	 */
 	public final void setName(String name) {
 		this.name = name;
 	}
-	
-	/** 
+
+	/**
 	 * Return the view's name. Should never be null,
 	 * if the view was correctly configured.
+	 *
 	 * @return the view's name
 	 */
 	public final String getName() {
@@ -174,14 +189,15 @@ public abstract class AbstractView extends ApplicationObjectSupport implements V
 	/**
 	 * Prepares the view given the specified model.
 	 * Delegates to renderMergedOutputModel for the actual rendering.
+	 *
 	 * @see #renderMergedOutputModel
 	 */
 	public final void render(Map model, HttpServletRequest request, HttpServletResponse response)
-	    throws ServletException, IOException {
+			throws ServletException, IOException {
 		if (logger.isDebugEnabled())
 			logger.debug("Rendering view with name '" + this.name + " with mergedModel={" + model +
-				"} and static attributes={" + this.staticAttributes + "}");
-		
+					"} and static attributes={" + this.staticAttributes + "}");
+
 		// Consolidate static and dynamic model attributes
 		Map mergedModel = new HashMap(this.staticAttributes);
 		mergedModel.putAll(model);
@@ -194,19 +210,20 @@ public abstract class AbstractView extends ApplicationObjectSupport implements V
 		renderMergedOutputModel(mergedModel, request, response);
 	}
 
-	/** 
+	/**
 	 * Subclasses must implement this method to render the view.
 	 * <p>The first take will be preparing the request: This may include setting
 	 * the model elements as attributes, e.g. in the case of a JSP view.
-	 * @param model combined output Map, with dynamic values
-	 * taking precedence over static attributes
-	 * @param request current HTTP request
+	 *
+	 * @param model    combined output Map, with dynamic values
+	 *                 taking precedence over static attributes
+	 * @param request  current HTTP request
 	 * @param response current HTTP response
-	 * @throws IOException if there is an IO exception trying to obtain
-	 * or render the view
+	 * @throws IOException      if there is an IO exception trying to obtain
+	 *                          or render the view
 	 * @throws ServletException if there is any other error
 	 */
 	protected abstract void renderMergedOutputModel(Map model, HttpServletRequest request, HttpServletResponse response)
-	    throws ServletException, IOException;
+			throws ServletException, IOException;
 
 }

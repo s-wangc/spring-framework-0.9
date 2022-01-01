@@ -2,65 +2,65 @@
 	Spring bean file DTD.
 -->
 
-<!-- The document root. -->
+        <!-- The document root. -->
 
-<!ELEMENT beans (
-        bean+
-)>
+        <!ELEMENT beans (
+                bean+
+                )>
 
-<!ELEMENT bean (
-        property*
-)>
+        <!ELEMENT bean (
+                property*
+                )>
 
-<!ATTLIST bean id ID #REQUIRED>
+        <!ATTLIST bean id ID #REQUIRED>
 
-<!-- One or the other -->
-<!ATTLIST bean class CDATA #IMPLIED>
-<!ATTLIST bean parent CDATA #IMPLIED>
+        <!-- One or the other -->
+        <!ATTLIST bean class CDATA #IMPLIED>
+        <!ATTLIST bean parent CDATA #IMPLIED>
 
-<!-- Todo default=true -->
-<!ATTLIST bean singleton CDATA #IMPLIED>
+        <!-- Todo default=true -->
+        <!ATTLIST bean singleton CDATA #IMPLIED>
 
-<!--
-	Optional. Can be used to create an alias
-	illegal in an id.
--->
-<!ATTLIST bean name CDATA #IMPLIED>
+        <!--
+            Optional. Can be used to create an alias
+            illegal in an id.
+        -->
+        <!ATTLIST bean name CDATA #IMPLIED>
 
-<!ELEMENT property (
-        (value | ref | list | map | props)
-)>
+        <!ELEMENT property (
+                (value | ref | list | map | props)
+                )>
 
-<!ATTLIST property name CDATA #REQUIRED>
+        <!ATTLIST property name CDATA #REQUIRED>
 
-<!ELEMENT ref EMPTY>
+        <!ELEMENT ref EMPTY>
 
-<!ELEMENT value (#PCDATA)>
+        <!ELEMENT value (#PCDATA)>
 
-<!-- One or the other -->
-<!ATTLIST ref bean IDREF #IMPLIED>
-<!ATTLIST ref external CDATA #IMPLIED>
+        <!-- One or the other -->
+        <!ATTLIST ref bean IDREF #IMPLIED>
+        <!ATTLIST ref external CDATA #IMPLIED>
 
-<!ELEMENT list (
-        (value | ref)*
-)>
+        <!ELEMENT list (
+                (value | ref)*
+                )>
 
-<!ELEMENT map (
-        (entry)*
-)>
+        <!ELEMENT map (
+                (entry)*
+                )>
 
-<!ELEMENT entry (
-        (value | ref)*
-)>
+        <!ELEMENT entry (
+                (value | ref)*
+                )>
 
-<!ATTLIST entry key CDATA #REQUIRED>
+        <!ATTLIST entry key CDATA #REQUIRED>
 
-<!ELEMENT props (
-        (prop)*
-)>
+        <!ELEMENT props (
+                (prop)*
+                )>
 
-<!ELEMENT prop
-        (#PCDATA)
->
+        <!ELEMENT prop
+                (#PCDATA)
+                >
 
-<!ATTLIST prop key CDATA #REQUIRED>
+        <!ATTLIST prop key CDATA #REQUIRED>

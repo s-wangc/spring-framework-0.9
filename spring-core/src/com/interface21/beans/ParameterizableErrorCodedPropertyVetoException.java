@@ -8,11 +8,12 @@ import com.interface21.core.ParameterizableErrorCoded;
 /**
  * Exception used by PropertyVetosException to wrap failures.
  * Clients can throw these.
- * @author  Tony Falabella
+ *
+ * @author Tony Falabella
  * @version $Id: ParameterizableErrorCodedPropertyVetoException.java,v 1.2 2003/03/21 14:32:22 jhoeller Exp $
  */
 public class ParameterizableErrorCodedPropertyVetoException
-    extends ErrorCodedPropertyVetoException implements ParameterizableErrorCoded {
+		extends ErrorCodedPropertyVetoException implements ParameterizableErrorCoded {
 
 	//~ Instance variables -----------------------------------------------------
 
@@ -27,15 +28,15 @@ public class ParameterizableErrorCodedPropertyVetoException
 	 * they are calling us with that or if they want to use the ErrorCoded
 	 * ability of this exception.
 	 * NOTE:  Mesg passed in will already have been "resolved".
-	 *        We will take the string passed in literally as is.
-	 *        This means that the caller of this method either created a literal string
-	 *        and passed it to us, OR the caller looked up the string value
-	 *        for a mesg themself in a msgCat BEFORE calling us.
+	 * We will take the string passed in literally as is.
+	 * This means that the caller of this method either created a literal string
+	 * and passed it to us, OR the caller looked up the string value
+	 * for a mesg themself in a msgCat BEFORE calling us.
 	 */
 	public ParameterizableErrorCodedPropertyVetoException(String mesg,
-	                                                      PropertyChangeEvent e,
-	                                                      String errorCode,
-	                                                      Object[] errorArgs) {
+														  PropertyChangeEvent e,
+														  String errorCode,
+														  Object[] errorArgs) {
 		super(mesg, e, errorCode);
 		this.errorArgs = errorArgs;
 		// No root cause
@@ -72,7 +73,7 @@ public class ParameterizableErrorCodedPropertyVetoException
 
 	/* package */
 	ParameterizableErrorCodedPropertyVetoException(Object source,
-	                                               InvalidPropertyValuesException.MissingFieldException ex) {
+												   InvalidPropertyValuesException.MissingFieldException ex) {
 		super(source, ex);
 		// MissingFieldException only implements ErrorCoded interface
 		this.errorArgs = null;
@@ -82,6 +83,7 @@ public class ParameterizableErrorCodedPropertyVetoException
 
 	/**
 	 * Implementation of ParameterizableErrorCoded interface.
+	 *
 	 * @return An array of objects to be used as params to replace
 	 * placeholders within the errorCode message text.
 	 */
@@ -93,15 +95,15 @@ public class ParameterizableErrorCodedPropertyVetoException
 		StringBuffer msgBuff = null;
 
 		msgBuff.append("ErrorCodedPropertyVetoException: message=[" + getMessage() + "]; " +
-		               "errorCode=[" + getErrorCode() + "]");
+				"errorCode=[" + getErrorCode() + "]");
 
 		if (errorArgs != null) {
 			msgBuff.append("; errorArgs=[");
 
 			for (int i = 0; i < errorArgs.length; i++) {
-			  msgBuff.append("(" + errorArgs[i].getClass().getName() +
-			                 ")[" + errorArgs[i] + "]");
-				if (i < errorArgs.length-1)
+				msgBuff.append("(" + errorArgs[i].getClass().getName() +
+						")[" + errorArgs[i] + "]");
+				if (i < errorArgs.length - 1)
 					msgBuff.append(", ");
 			}
 

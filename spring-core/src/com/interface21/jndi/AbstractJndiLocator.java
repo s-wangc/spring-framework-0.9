@@ -33,7 +33,9 @@ import com.interface21.beans.factory.InitializingBean;
  */
 public abstract class AbstractJndiLocator implements InitializingBean {
 
-	/** JNDI prefix used in a J2EE container */
+	/**
+	 * JNDI prefix used in a J2EE container
+	 */
 	public static String CONTAINER_PREFIX = "java:comp/env/";
 
 	protected final Log logger = LogFactory.getLog(getClass());
@@ -57,6 +59,7 @@ public abstract class AbstractJndiLocator implements InitializingBean {
 	 * doesn't include a java:comp/env/ prefix, it will be prepended.
 	 * <p>As this is a shortcut, it calls afterPropertiesSet to perform
 	 * the JNDI lookup immediately.
+	 *
 	 * @param jndiName JNDI name.
 	 */
 	public AbstractJndiLocator(String jndiName) throws NamingException, IllegalArgumentException {
@@ -81,6 +84,7 @@ public abstract class AbstractJndiLocator implements InitializingBean {
 	/**
 	 * Set the JNDI name. If it doesn't begin "java:comp/env/"
 	 * we add this prefix if we're running in a container.
+	 *
 	 * @param jndiName JNDI name of bean to look up
 	 * @see #setInContainer
 	 */
@@ -131,6 +135,7 @@ public abstract class AbstractJndiLocator implements InitializingBean {
 	/**
 	 * Subclasses must implement this to cache the object this class has obtained
 	 * from JNDI.
+	 *
 	 * @param o object successfully retrieved from JNDI
 	 */
 	protected abstract void located(Object o);

@@ -58,10 +58,10 @@ import com.interface21.dao.CleanupFailureDataAccessException;
  * Hibernate 2.0 (initially developed with RC1).
  *
  * @author Juergen Hoeller
- * @since 13.06.2003
  * @see SessionFactoryUtils#getSession
  * @see HibernateTransactionManager
  * @see HibernateTemplate
+ * @since 13.06.2003
  */
 public class HibernateInterceptor implements MethodInterceptor {
 
@@ -102,8 +102,7 @@ public class HibernateInterceptor implements MethodInterceptor {
 			logger.debug("Using new Session for Hibernate interceptor");
 			sessionHolder = new SessionHolder(SessionFactoryUtils.getSession(this.sessionFactory, true));
 			SessionFactoryUtils.getThreadObjectManager().bindThreadObject(this.sessionFactory, sessionHolder);
-		}
-		else {
+		} else {
 			logger.debug("Found thread-bound Session for Hibernate interceptor");
 		}
 		try {
@@ -113,19 +112,16 @@ public class HibernateInterceptor implements MethodInterceptor {
 				flushHolder.getSession().flush();
 			}
 			return retVal;
-		}
-		finally {
+		} finally {
 			if (sessionHolder != null) {
 				SessionFactoryUtils.getThreadObjectManager().removeThreadObject(this.sessionFactory);
 				try {
 					SessionFactoryUtils.closeSessionIfNecessary(sessionHolder.getSession(), this.sessionFactory);
-				}
-				catch (CleanupFailureDataAccessException ex) {
+				} catch (CleanupFailureDataAccessException ex) {
 					// just log it, to keep an invocation-related exception
 					logger.error("Cannot close Hibernate Session after method interception", ex);
 				}
-			}
-			else {
+			} else {
 				logger.debug("Not closing pre-bound Hibernate Session after interceptor");
 			}
 		}

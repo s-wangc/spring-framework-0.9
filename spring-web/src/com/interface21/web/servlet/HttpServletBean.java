@@ -1,10 +1,10 @@
 /**
- * Generic framework code included with 
+ * Generic framework code included with
  * <a href="http://www.amazon.com/exec/obidos/tg/detail/-/1861007841/">Expert One-On-One J2EE Design and Development</a>
- * by Rod Johnson (Wrox, 2002). 
+ * by Rod Johnson (Wrox, 2002).
  * This code is free to use and modify. However, please
  * acknowledge the source and include the above URL in each
- * class using or derived from this code. 
+ * class using or derived from this code.
  * Please contact <a href="mailto:rod.johnson@interface21.com">rod.johnson@interface21.com</a>
  * for commercial support.
  */
@@ -28,7 +28,7 @@ import com.interface21.beans.PropertyValues;
 /**
  * Simple extension of javax.servlet.http.HttpServlet that treats its config
  * parameters as bean properties. A very handy superclass for any type of servlet.
-  * Type conversion is automatic. It is also
+ * Type conversion is automatic. It is also
  * possible for subclasses to specify required properties. This servlet leaves
  * request handling to subclasses, inheriting the default behaviour of HttpServlet.
  * <p/>This servlet superclass has no dependency on the application context.
@@ -38,19 +38,19 @@ import com.interface21.beans.PropertyValues;
  * @version $Revision: 1.2 $
  */
 public class HttpServletBean extends HttpServlet {
-	
+
 	protected final Log logger = LogFactory.getLog(getClass());
 
-	/** 
+	/**
 	 * May be null. List of required properties (Strings) that must
 	 * be supplied as config parameters to this servlet.
 	 */
 	private List requiredProperties = new LinkedList();
-	
+
 	/** Holds name info: useful for logging */
 	private String identifier;
-	
-	
+
+
 	//---------------------------------------------------------------------
 	// Constructors
 	//---------------------------------------------------------------------
@@ -60,8 +60,8 @@ public class HttpServletBean extends HttpServlet {
 	 */
 	public HttpServletBean() {
 	}
-	
-	/** 
+
+	/**
 	 * Subclasses can invoke this method to specify that this property
 	 * (which must match a JavaBean property they expose) is mandatory,
 	 * and must be supplied as a config parameter.
@@ -70,7 +70,7 @@ public class HttpServletBean extends HttpServlet {
 	protected final void addRequiredProperty(String property) {
 		requiredProperties.add(property);
 	}
-	
+
 	/**
 	 * Map config parameters onto bean properties of this servlet, and
 	 * invoke subclass initialization.
@@ -79,33 +79,31 @@ public class HttpServletBean extends HttpServlet {
 	 */
 	public final void init() throws ServletException {
 		this.identifier = "Servlet with name '" + getServletConfig().getServletName() + "' ";
-		 
+
 		logger.info(getIdentifier() + "entering init...");
-		
+
 		// Set bean properties
 		try {
 			PropertyValues pvs = new ServletConfigPropertyValues(getServletConfig(), requiredProperties);
 			BeanWrapper bw = new BeanWrapperImpl(this);
 			bw.setPropertyValues(pvs);
 			logger.debug(getIdentifier() + "properties bound OK");
-			
+
 			// Let subclasses do whatever initialization they like
 			initServletBean();
 			logger.info(getIdentifier() + "configured successfully");
-		}
-		catch (BeansException ex) {
+		} catch (BeansException ex) {
 			String mesg = getIdentifier() + ": error setting properties from ServletConfig";
 			logger.error(mesg, ex);
 			throw new ServletException(mesg, ex);
-		}
-		catch (Throwable t) {
+		} catch (Throwable t) {
 			// Let subclasses throw unchecked exceptions
 			String mesg = getIdentifier() + ": initialization error";
 			logger.error(mesg, t);
 			throw new ServletException(mesg, t);
 		}
 	}
-	
+
 	/**
 	 * Subclasses may override this to perform custom initialization.
 	 *  All bean properties of this servlet will have been set before this
@@ -115,8 +113,8 @@ public class HttpServletBean extends HttpServlet {
 	protected void initServletBean() throws ServletException {
 		logger.debug(getIdentifier() + "NOP default implementation of initServletBean");
 	}
-	
-	/** 
+
+	/**
 	 * Return the name of this servlet:
 	 * handy to include in log messages. Subclasses may override it if
 	 * necessary to include additional information. Use like this: 
@@ -128,5 +126,5 @@ public class HttpServletBean extends HttpServlet {
 	protected String getIdentifier() {
 		return this.identifier;
 	}
-	
+
 }

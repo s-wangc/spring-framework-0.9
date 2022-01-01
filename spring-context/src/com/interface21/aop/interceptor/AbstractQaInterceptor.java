@@ -13,7 +13,7 @@ public abstract class AbstractQaInterceptor implements MethodInterceptor {
 		checkInvariants(invocation.getInvokedObject());
 		return result;
 	}
-	
+
 	protected abstract void checkInvariants(Object target);
 
 }

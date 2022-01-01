@@ -13,7 +13,7 @@ import com.interface21.web.util.HtmlUtils;
  * Bind tag, supporting evaluation of binding errors for a certain
  * bean or bean property. Exports a "status" variable of type BindStatus.
  *
- *<p> Discussed in Chapter 12 of
+ * <p> Discussed in Chapter 12 of
  * <a href="http://www.amazon.com/exec/obidos/tg/detail/-/1861007841/">Expert One-On-One J2EE Design and Development</a>
  * by Rod Johnson.
  *
@@ -43,8 +43,7 @@ public class BindTag extends RequestContextAwareTag {
 		int dotPos = this.path.indexOf('.');
 		if (dotPos == -1) {
 			name = this.path;
-		}
-		else {
+		} else {
 			name = this.path.substring(0, dotPos);
 			property = this.path.substring(dotPos + 1);
 		}
@@ -56,15 +55,14 @@ public class BindTag extends RequestContextAwareTag {
 
 		List fes = null;
 		Object value = null;
-		
+
 		if (property != null) {
 			fes = errors.getFieldErrors(property);
 			value = errors.getFieldValue(property);
 			if (isHtmlEscape() && value instanceof String) {
 				value = HtmlUtils.htmlEscape((String) value);
 			}
-		}
-		else {
+		} else {
 			fes = errors.getGlobalErrors();
 		}
 
@@ -94,8 +92,7 @@ public class BindTag extends RequestContextAwareTag {
 			ObjectError error = (ObjectError) fes.get(i);
 			try {
 				messages[i] = getRequestContext().getMessage(error, isHtmlEscape());
-			}
-			catch (NoSuchMessageException ex) {
+			} catch (NoSuchMessageException ex) {
 				throw new JspException(ex.getMessage());
 			}
 		}

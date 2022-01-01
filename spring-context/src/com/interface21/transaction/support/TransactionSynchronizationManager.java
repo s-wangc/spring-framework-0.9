@@ -19,13 +19,13 @@ import java.util.List;
  * for proper transactional handling of the JVM-level cache.
  *
  * @author Juergen Hoeller
- * @since 02.06.2003
  * @see #isActive
  * @see #register
  * @see TransactionSynchronization
  * @see AbstractPlatformTransactionManager
  * @see com.interface21.transaction.jta.JtaTransactionManager
  * @see com.interface21.orm.hibernate.SessionFactoryUtils#closeSessionIfNecessary
+ * @since 02.06.2003
  */
 public abstract class TransactionSynchronizationManager {
 
@@ -42,6 +42,7 @@ public abstract class TransactionSynchronizationManager {
 	/**
 	 * Return if thread synchronizations are active for the current thread.
 	 * Can be called before register to avoid unnecessary instance creation.
+	 *
 	 * @see #register
 	 */
 	public static boolean isActive() {
@@ -63,12 +64,13 @@ public abstract class TransactionSynchronizationManager {
 	 * Trigger afterCompletion calls for the current thread.
 	 * Called by transaction manager after transaction commit/rollback.
 	 * Calls get ignored if transaction synchronization isn't active.
+	 *
 	 * @param status completion status according to TransactionSynchronization constants
 	 * @see com.interface21.transaction.support.TransactionSynchronization
 	 */
 	public static void triggerAfterCompletion(int status) {
 		if (isActive()) {
-			for (Iterator it = ((List) synchronizations.get()).iterator(); it.hasNext();) {
+			for (Iterator it = ((List) synchronizations.get()).iterator(); it.hasNext(); ) {
 				TransactionSynchronization synchronization = (TransactionSynchronization) it.next();
 				synchronization.afterCompletion(status);
 			}

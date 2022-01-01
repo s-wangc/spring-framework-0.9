@@ -9,21 +9,22 @@
 
 <hibernate-mapping>
 
-	<!--
-	  - Mapping for class ExamplePersistentObject.
-	  - Full JVM-level caching via Apache JCS activated.
-	  -->
+    <!--
+      - Mapping for class ExamplePersistentObject.
+      - Full JVM-level caching via Apache JCS activated.
+      -->
 
-	<class name="example.ExamplePersistentObject" table="example">
+    <class name="example.ExamplePersistentObject" table="example">
 
-		<jcs-cache usage="read-write"/>
+        <jcs-cache usage="read-write"/>
 
-	  <id name="id" column="example_id" type="int" unsaved-value="-1"/>
+        <id name="id" column="example_id" type="int" unsaved-value="-1"/>
 
-		<property name="name" column="name"/>
+        <property name="name" column="name"/>
 
-		<many-to-one name="parentExample" column="parent_example_id" class="example.ExamplePersistentObject" outer-join="false"/>
+        <many-to-one name="parentExample" column="parent_example_id" class="example.ExamplePersistentObject"
+                     outer-join="false"/>
 
-	</class>
+    </class>
 
 </hibernate-mapping>

@@ -18,18 +18,22 @@ import com.interface21.util.StringUtils;
 /**
  * PropertyValues implementation created from ServetConfig parameters.
  * This class is immutable once initialized.
+ *
  * @author Rod Johnson
  */
 class ServletConfigPropertyValues implements PropertyValues {
 
 	protected final Log logger = LogFactory.getLog(getClass());
-	/** PropertyValues delegate. We use delegation rather than simply subclass
+	/**
+	 * PropertyValues delegate. We use delegation rather than simply subclass
 	 * MutablePropertyValues as we don't want to expose MutablePropertyValues's
 	 * update methods. This class is immutable once initialized.
 	 */
 	private MutablePropertyValues mutablePropertyValues;
 
-	/** Creates new PropertyValues object
+	/**
+	 * Creates new PropertyValues object
+	 *
 	 * @param config ServletConfig we'll use to take PropertyValues from
 	 * @throws ServletException should never be thrown from this method
 	 */
@@ -37,10 +41,12 @@ class ServletConfigPropertyValues implements PropertyValues {
 		this(config, null);
 	}
 
-	/** Creates new PropertyValues object
-	 * @param config ServletConfig we'll use to take PropertyValues from
+	/**
+	 * Creates new PropertyValues object
+	 *
+	 * @param config             ServletConfig we'll use to take PropertyValues from
 	 * @param requiredProperties array of property names we need, where
-	 * we can't accept default values
+	 *                           we can't accept default values
 	 * @throws ServletException if any required properties are missing
 	 */
 	public ServletConfigPropertyValues(ServletConfig config, List requiredProperties) throws ServletException {
@@ -60,7 +66,7 @@ class ServletConfigPropertyValues implements PropertyValues {
 		// Fail if we are still missing properties
 		if (missingProps.size() > 0) {
 			throw new ServletException("Initialization from ServletConfig for servlet '" + config.getServletName() + "' failed: the following required properties were missing -- (" +
-			                           StringUtils.collectionToDelimitedString(missingProps, ", ") + ")");
+					StringUtils.collectionToDelimitedString(missingProps, ", ") + ")");
 		}
 
 		if (logger.isDebugEnabled()) {
@@ -72,6 +78,7 @@ class ServletConfigPropertyValues implements PropertyValues {
 	/**
 	 * Return an array of the PropertyValue objects
 	 * held in this object.
+	 *
 	 * @return an array of the PropertyValue objects
 	 * held in this object.
 	 */
@@ -82,6 +89,7 @@ class ServletConfigPropertyValues implements PropertyValues {
 
 	/**
 	 * Is there a propertyValue object for this property?
+	 *
 	 * @param propertyName name of the property we're interested in
 	 * @return whether there is a propertyValue object for this property?
 	 */

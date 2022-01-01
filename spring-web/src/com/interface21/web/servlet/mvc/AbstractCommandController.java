@@ -1,10 +1,10 @@
 /**
- * Generic framework code included with 
+ * Generic framework code included with
  * <a href="http://www.amazon.com/exec/obidos/tg/detail/-/1861007841/">Expert One-On-One J2EE Design and Development</a>
- * by Rod Johnson (Wrox, 2002). 
+ * by Rod Johnson (Wrox, 2002).
  * This code is free to use and modify. However, please
  * acknowledge the source and include the above URL in each
- * class using or derived from this code. 
+ * class using or derived from this code.
  * Please contact <a href="mailto:rod.johnson@interface21.com">rod.johnson@interface21.com</a>
  * for commercial support.
  */
@@ -55,7 +55,7 @@ public abstract class AbstractCommandController extends BaseCommandController {
 		setCommandClass(commandClass);
 		setBeanName(beanName);
 	}
-	
+
 	protected final ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		Object command = userObject(request);
@@ -75,7 +75,7 @@ public abstract class AbstractCommandController extends BaseCommandController {
 	 * @return a ModelAndView to render, or null if handled directly
 	 */
 	protected abstract ModelAndView handle(HttpServletRequest request, HttpServletResponse response,
-	                                       Object command, BindException errors)
-	    throws ServletException, IOException;
+										   Object command, BindException errors)
+			throws ServletException, IOException;
 
 }

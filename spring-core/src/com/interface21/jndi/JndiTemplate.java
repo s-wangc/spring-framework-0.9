@@ -1,10 +1,10 @@
 /**
- * Generic framework code included with 
+ * Generic framework code included with
  * <a href="http://www.amazon.com/exec/obidos/tg/detail/-/1861007841/">Expert One-On-One J2EE Design and Development</a>
- * by Rod Johnson (Wrox, 2002). 
+ * by Rod Johnson (Wrox, 2002).
  * This code is free to use and modify. However, please
  * acknowledge the source and include the above URL in each
- * class using or derived from this code. 
+ * class using or derived from this code.
  * Please contact <a href="mailto:rod.johnson@interface21.com">rod.johnson@interface21.com</a>
  * for commercial support.
  */
@@ -34,7 +34,7 @@ import org.apache.commons.logging.LogFactory;
  * @see com.interface21.jdbc.core.JdbcTemplate
  */
 public class JndiTemplate {
-	
+
 	protected final Log logger = LogFactory.getLog(getClass());
 
 	private Properties environment;
@@ -99,7 +99,7 @@ public class JndiTemplate {
 			}
 		});
 	}
-	
+
 	/**
 	 * Remove the binding for the given name from the current JNDI context.
 	 * @param name  the JNDI name of the object
@@ -114,7 +114,7 @@ public class JndiTemplate {
 			}
 		});
 	}
-	
+
 	/**
 	 * Execute the given callback implementation.
 	 * @param contextCallback ContextCallback implementation
@@ -126,13 +126,11 @@ public class JndiTemplate {
 		try {
 			ctx = createInitialContext();
 			return contextCallback.doInContext(ctx);
-		}
-		finally {
+		} finally {
 			try {
 				if (ctx != null)
 					ctx.close();
-			}
-			catch (NamingException ex) {
+			} catch (NamingException ex) {
 				logger.warn("InitialContext threw exception on close", ex);
 			}
 		}

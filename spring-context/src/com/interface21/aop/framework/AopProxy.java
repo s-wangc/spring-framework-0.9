@@ -2,7 +2,7 @@
  * The Spring Framework is published under the terms
  * of the Apache Software License.
  */
- 
+
 package com.interface21.aop.framework;
 
 import java.lang.reflect.InvocationHandler;
@@ -22,32 +22,32 @@ import org.apache.commons.logging.LogFactory;
  * be used directly by client code.
  * <br/>Proxies created using this class can be threadsafe if the
  * underlying (target) class is threadsafe.
+ *
  * @author Rod Johnson
  * @version $Id: AopProxy.java,v 1.5 2003/06/18 19:09:48 johnsonr Exp $
  */
 public class AopProxy implements InvocationHandler {
-	
+
 	private static Method EQUALS_METHOD;
-	
+
 	// We need a static block to handle checked exceptions
 	static {
 		try {
-			EQUALS_METHOD = Object.class.getMethod("equals", new Class[] { Object.class});
-		} 
-		catch (Exception e) {
+			EQUALS_METHOD = Object.class.getMethod("equals", new Class[]{Object.class});
+		} catch (Exception e) {
 			// Cannot happen
-		} 
+		}
 	}
-	
+
 	/**
 	 * @return a new Proxy object for the given object proxying
 	 * the given interface
 	 */
 	public static Object getProxy(AopProxy aop) {
-		return getProxy(Thread.currentThread().getContextClassLoader(), 
-					 aop);
+		return getProxy(Thread.currentThread().getContextClassLoader(),
+				aop);
 	}
-	
+
 	/**
 	 * @return a new Proxy object for the given object proxying
 	 * the given interface
@@ -55,20 +55,21 @@ public class AopProxy implements InvocationHandler {
 	public static Object getProxy(ClassLoader cl, AopProxy aop) {
 		//System.out.println(StringUtils.arrayToDelimitedString(aop.config.getProxiedInterfaces(), "/"));
 		Object proxy =
-			Proxy.newProxyInstance(cl, aop.config.getProxiedInterfaces(), aop);
+				Proxy.newProxyInstance(cl, aop.config.getProxiedInterfaces(), aop);
 		return proxy;
 	}
-	
+
 	protected final Log logger = LogFactory.getLog(getClass());
 
-	/** Config used to configure this proxy */
-	private ProxyConfig config;
-	
 	/**
-	 * 
+	 * Config used to configure this proxy
+	 */
+	private ProxyConfig config;
+
+	/**
 	 * @throws AopConfigException if the config is invalid. We try
-	 * to throw an informative exception in this case, rather than let
-	 * a mysterious failure happen later.
+	 *                            to throw an informative exception in this case, rather than let
+	 *                            a mysterious failure happen later.
 	 */
 	public AopProxy(ProxyConfig config) throws AopConfigException {
 		if (config == null)
@@ -77,34 +78,34 @@ public class AopProxy implements InvocationHandler {
 			throw new AopConfigException("Cannot create AopProxy with null interceptors");
 		this.config = config;
 	}
-	
+
 	/**
 	 * Implementation of InvocationHandler.invoke.
 	 * Callers will see exactly the exception thrown by the target, unless a hook
 	 * method throws an exception.
 	 */
 	public final Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-	
+
 		// Create a new invocation object
 		// TODO refactor into InvocationFactory?
-		MethodInvocationImpl invocation = new MethodInvocationImpl(proxy, config.getTarget(), 
-									method.getDeclaringClass(), //?
-									method, args,
-									this.config.getMethodPointcuts(), // could customize here
-									this.config.getAttributeRegistry());
-		
+		MethodInvocationImpl invocation = new MethodInvocationImpl(proxy, config.getTarget(),
+				method.getDeclaringClass(), //?
+				method, args,
+				this.config.getMethodPointcuts(), // could customize here
+				this.config.getAttributeRegistry());
+
 		if (this.config.getExposeInvocation()) {
 			// Make invocation available if necessary
 			AopContext.setCurrentInvocation(invocation);
 		}
-		
+
 		try {
 			if (EQUALS_METHOD.equals(invocation.getMethod())) {
 				// What if equals throws exception!?
 				logger.debug("Intercepting equals() method in proxy");
 				return invocation.getMethod().invoke(this, invocation.getArguments());
 			}
-			
+
 			Object retVal = invocation.invokeNext();
 			if (retVal != null && retVal == invocation.getInvokedObject()) {
 				// Special case: it returned this
@@ -114,12 +115,11 @@ public class AopProxy implements InvocationHandler {
 				retVal = proxy;
 			}
 			return retVal;
-		}
-		finally {
+		} finally {
 			if (this.config.getExposeInvocation()) {
 				AopContext.setCurrentInvocation(null);
 			}
-		
+
 			//if (logger.isDebugEnabled()) {
 			//	logger.debug("Processed invocation [" + invocation + "]");
 			//}
@@ -128,43 +128,42 @@ public class AopProxy implements InvocationHandler {
 
 	/**
 	 * Equality means interceptors and interfaces are ==
-	 * @see java.lang.Object#equals(java.lang.Object)
+	 *
 	 * @param other may be a dynamic proxy wrapping an instance
-	 * of this class
+	 *              of this class
+	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
-	public boolean equals(Object other) {		
-		if (other == null) 
+	public boolean equals(Object other) {
+		if (other == null)
 			return false;
 		if (other == this)
 			return true;
-		
+
 		AopProxy aopr2 = null;
 		if (other instanceof AopProxy) {
 			aopr2 = (AopProxy) other;
-		}
-		else if (Proxy.isProxyClass(other.getClass())) {
+		} else if (Proxy.isProxyClass(other.getClass())) {
 			InvocationHandler ih = Proxy.getInvocationHandler((Proxy) other);
 			if (!(ih instanceof AopProxy))
 				return false;
-			aopr2 = (AopProxy) ih; 
-		}
-		else {
+			aopr2 = (AopProxy) ih;
+		} else {
 			// Not a valid comparison
 			return false;
 		}
-		
+
 		// If we get here, aopr2 is the other AopProxy
 		if (this == aopr2)
 			return true;
-			
+
 		if (!Arrays.equals(aopr2.config.getProxiedInterfaces(), this.config.getProxiedInterfaces()))
 			return false;
-		
+
 		// List equality is cool
 		if (!aopr2.config.getMethodPointcuts().equals(this.config.getMethodPointcuts()))
 			return false;
-			
+
 		return true;
 	}
-	
+
 }

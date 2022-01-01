@@ -25,13 +25,15 @@ import com.interface21.context.ApplicationContextException;
  * <p>Extends AbstractCachingViewResolver for decent performance.
  *
  * @author Juergen Hoeller
- * @since 18.06.2003
  * @see com.interface21.context.ApplicationContext#getResourceAsStream
  * @see ResourceBundleViewResolver
+ * @since 18.06.2003
  */
 public class XmlViewResolver extends AbstractCachingViewResolver {
 
-	/** Default if no other location is supplied */
+	/**
+	 * Default if no other location is supplied
+	 */
 	public final static String DEFAULT_LOCATION = "/WEB-INF/views.xml";
 
 	private String location = DEFAULT_LOCATION;
@@ -41,6 +43,7 @@ public class XmlViewResolver extends AbstractCachingViewResolver {
 	/**
 	 * Set the location of the XML file that defines the view beans.
 	 * <p>The default is "/WEB-INF/views.xml".
+	 *
 	 * @param location the location of the XML file.
 	 */
 	public void setLocation(String location) {
@@ -55,12 +58,10 @@ public class XmlViewResolver extends AbstractCachingViewResolver {
 		if (isCache()) {
 			try {
 				initFactory();
-			}
-			catch (IOException ex) {
-				throw new ApplicationContextException("Cannot initialize XML file '" + this.location + "'" , ex);
-			}
-			catch (BeansException ex) {
-				throw new ApplicationContextException("Cannot initialize XML file '" + this.location + "'" , ex);
+			} catch (IOException ex) {
+				throw new ApplicationContextException("Cannot initialize XML file '" + this.location + "'", ex);
+			} catch (BeansException ex) {
+				throw new ApplicationContextException("Cannot initialize XML file '" + this.location + "'", ex);
 			}
 		}
 	}
@@ -72,15 +73,12 @@ public class XmlViewResolver extends AbstractCachingViewResolver {
 				throw new ServletException("Bean with name '" + viewName + "' in XML file '" + this.location + "' must be of type View");
 			}
 			return (View) o;
-		}
-		catch (IOException ex) {
+		} catch (IOException ex) {
 			throw new ServletException("Cannot load  XML file '" + this.location + "' trying to resolve view with name '" + viewName + "'", ex);
-		}
-		catch (NoSuchBeanDefinitionException ex) {
+		} catch (NoSuchBeanDefinitionException ex) {
 			// Let superclass handle this
 			return null;
-		}
-		catch (BeansException ex) {
+		} catch (BeansException ex) {
 			throw new ServletException("Error initializing view bean with name '" + viewName + "' in XML file '" + this.location + "'", ex);
 		}
 	}

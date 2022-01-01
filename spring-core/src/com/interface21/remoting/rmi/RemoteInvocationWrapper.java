@@ -17,7 +17,8 @@ class RemoteInvocationWrapper extends UnicastRemoteObject implements RemoteInvoc
 
 	/**
 	 * Create a new RemoteInvocationWrapper.
-	 * @param wrappedObject	the locally wrapped object, on which methods are invoked
+	 *
+	 * @param wrappedObject the locally wrapped object, on which methods are invoked
 	 */
 	public RemoteInvocationWrapper(Object wrappedObject) throws RemoteException {
 		super();

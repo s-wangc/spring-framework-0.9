@@ -12,15 +12,19 @@ import javax.servlet.jsp.tagext.TagSupport;
  * A page-level setting overrides a context-param.
  *
  * @author Juergen Hoeller
- * @since 04.03.2003
  * @see RequestContextAwareTag#setHtmlEscape
+ * @since 04.03.2003
  */
 public class HtmlEscapeTag extends TagSupport {
 
-	/** ServletContext init parameter (web.xml context-param) */
+	/**
+	 * ServletContext init parameter (web.xml context-param)
+	 */
 	public static final String HTML_ESCAPE_CONTEXT_PARAM = "defaultHtmlEscape";
 
-	/** PageContext attribute for page-level default */
+	/**
+	 * PageContext attribute for page-level default
+	 */
 	public static final String HTML_ESCAPE_PAGE_ATTR = "com.interface21.web.servlet.tags.HTML_ESCAPE";
 
 	private boolean defaultHtmlEscape = false;
@@ -33,8 +37,7 @@ public class HtmlEscapeTag extends TagSupport {
 		Boolean defaultValue = (Boolean) pageContext.getAttribute(HTML_ESCAPE_PAGE_ATTR);
 		if (defaultValue != null) {
 			return defaultValue.booleanValue();
-		}
-		else {
+		} else {
 			String param = pageContext.getServletContext().getInitParameter(HTML_ESCAPE_CONTEXT_PARAM);
 			return Boolean.valueOf(param).booleanValue();
 		}

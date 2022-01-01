@@ -27,9 +27,9 @@ import com.interface21.transaction.UnexpectedRollbackException;
  * </ul>
  *
  * @author Juergen Hoeller
- * @since 28.03.2003
  * @see #setAllowNonTransactionalExecution
  * @see #setTransactionSynchronization
+ * @since 28.03.2003
  */
 public abstract class AbstractPlatformTransactionManager implements PlatformTransactionManager {
 
@@ -63,6 +63,7 @@ public abstract class AbstractPlatformTransactionManager implements PlatformTran
 	 * <p>Note that transaction synchronization isn't supported for
 	 * multiple concurrent transactions. Only one transaction manager
 	 * is allowed to activate it at any time.
+	 *
 	 * @see TransactionSynchronizationManager
 	 */
 	public final void setTransactionSynchronization(boolean transactionSynchronization) {
@@ -84,7 +85,7 @@ public abstract class AbstractPlatformTransactionManager implements PlatformTran
 	 * Delegates to doGetTransaction, isExistingTransaction, doBegin.
 	 */
 	public final TransactionStatus getTransaction(TransactionDefinition definition)
-	    throws TransactionException {
+			throws TransactionException {
 		try {
 			Object transaction = doGetTransaction();
 			logger.debug("Using transaction object [" + transaction + "]");
@@ -107,8 +108,7 @@ public abstract class AbstractPlatformTransactionManager implements PlatformTran
 				}
 				return new TransactionStatus(transaction, true);
 			}
-		}
-		catch (CannotCreateTransactionException ex) {
+		} catch (CannotCreateTransactionException ex) {
 			// throw exception if transactional execution required
 			if (!this.allowNonTransactionalExecution) {
 				logger.error(ex.getMessage());
@@ -116,8 +116,7 @@ public abstract class AbstractPlatformTransactionManager implements PlatformTran
 			}
 			// else non-transactional execution
 			logger.warn("Transaction support is not available: falling back to non-transactional execution", ex);
-		}
-		catch (TransactionException ex) {
+		} catch (TransactionException ex) {
 			logger.error(ex.getMessage());
 			throw ex;
 		}
@@ -134,24 +133,20 @@ public abstract class AbstractPlatformTransactionManager implements PlatformTran
 		if (status.isRollbackOnly()) {
 			logger.debug("Transactional code has requested rollback");
 			rollback(status);
-		}
-		else if (status.isNewTransaction()) {
+		} else if (status.isNewTransaction()) {
 			try {
 				doCommit(status);
 				triggerAfterCompletion(TransactionSynchronization.STATUS_COMMITTED);
-			}
-			catch (UnexpectedRollbackException ex) {
+			} catch (UnexpectedRollbackException ex) {
 				triggerAfterCompletion(TransactionSynchronization.STATUS_ROLLED_BACK);
 				logger.error(ex.getMessage());
 				throw ex;
 
-			}
-			catch (TransactionException ex) {
+			} catch (TransactionException ex) {
 				triggerAfterCompletion(TransactionSynchronization.STATUS_UNKNOWN);
 				logger.error(ex.getMessage());
 				throw ex;
-			}
-			finally {
+			} finally {
 				TransactionSynchronizationManager.clear();
 			}
 		}
@@ -167,26 +162,21 @@ public abstract class AbstractPlatformTransactionManager implements PlatformTran
 			try {
 				doRollback(status);
 				triggerAfterCompletion(TransactionSynchronization.STATUS_ROLLED_BACK);
-			}
-			catch (TransactionException ex) {
+			} catch (TransactionException ex) {
 				triggerAfterCompletion(TransactionSynchronization.STATUS_UNKNOWN);
 				logger.error(ex.getMessage());
 				throw ex;
-			}
-			finally {
+			} finally {
 				TransactionSynchronizationManager.clear();
 			}
-		}
-		else if (status.getTransaction() != null) {
+		} else if (status.getTransaction() != null) {
 			try {
 				doSetRollbackOnly(status);
-			}
-			catch (TransactionException ex) {
+			} catch (TransactionException ex) {
 				logger.error(ex.getMessage());
 				throw ex;
 			}
-		}
-		else {
+		} else {
 			// no transaction support available
 			logger.info("Should roll back transaction but cannot - no transaction support available");
 		}
@@ -195,6 +185,7 @@ public abstract class AbstractPlatformTransactionManager implements PlatformTran
 	/**
 	 * Trigger afterCompletion callbacks on registered synchronizations,
 	 * if transaction synchronization is active.
+	 *
 	 * @param status completion status according to TransactionSynchronization constants
 	 * @see #setTransactionSynchronization
 	 */
@@ -207,16 +198,18 @@ public abstract class AbstractPlatformTransactionManager implements PlatformTran
 
 	/**
 	 * Return a current transaction object, i.e. a JTA UserTransaction.
+	 *
 	 * @return the current transaction object
 	 * @throws CannotCreateTransactionException if transaction support is
-	 * not available (e.g. no JTA UserTransaction retrievable from JNDI)
-	 * @throws TransactionException in case of lookup or system errors
+	 *                                          not available (e.g. no JTA UserTransaction retrievable from JNDI)
+	 * @throws TransactionException             in case of lookup or system errors
 	 */
 	protected abstract Object doGetTransaction() throws CannotCreateTransactionException, TransactionException;
 
 	/**
 	 * Check if the given transaction object indicates an existing,
 	 * i.e. already begun, transaction.
+	 *
 	 * @param transaction transaction object returned by doGetTransaction()
 	 * @return if there is an existing transaction
 	 * @throws TransactionException in case of system errors
@@ -225,9 +218,10 @@ public abstract class AbstractPlatformTransactionManager implements PlatformTran
 
 	/**
 	 * Begin a new transaction with the given isolation level.
-	 * @param transaction transaction object returned by doGetTransaction()
+	 *
+	 * @param transaction    transaction object returned by doGetTransaction()
 	 * @param isolationLevel desired isolation level
-	 * @param timeout transaction timeout (in seconds)
+	 * @param timeout        transaction timeout (in seconds)
 	 * @throws TransactionException in case of creation or system errors
 	 */
 	protected abstract void doBegin(Object transaction, int isolationLevel, int timeout) throws TransactionException;
@@ -235,6 +229,7 @@ public abstract class AbstractPlatformTransactionManager implements PlatformTran
 	/**
 	 * Perform an actual commit on the given transaction.
 	 * An implementation does not need to check the rollback-only flag.
+	 *
 	 * @param status status representation of the transaction
 	 * @throws TransactionException in case of commit or system errors
 	 */
@@ -243,6 +238,7 @@ public abstract class AbstractPlatformTransactionManager implements PlatformTran
 	/**
 	 * Perform an actual rollback on the given transaction.
 	 * An implementation does not need to check the new transaction flag.
+	 *
 	 * @param status status representation of the transaction
 	 * @throws TransactionException in case of system errors
 	 */
@@ -251,6 +247,7 @@ public abstract class AbstractPlatformTransactionManager implements PlatformTran
 	/**
 	 * Set the given transaction rollback-only. Only called on rollback
 	 * if the current transaction takes part in an existing one.
+	 *
 	 * @param status status representation of the transaction
 	 * @throws TransactionException in case of system errors
 	 */

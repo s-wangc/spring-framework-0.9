@@ -29,13 +29,13 @@ import com.interface21.beans.factory.InitializingBean;
  * <p>The major advantage of RMI, compared to Hessian and Burlap, is serialization.
  * Effectively, any serializable Java object can be transported without hassle.
  * Hessian and Burlap have their own (de-)serialization mechanisms, but are
- * HTTP-based and thus much easier to setup than RMI. 
+ * HTTP-based and thus much easier to setup than RMI.
  *
  * @author Juergen Hoeller
- * @since 13.05.2003
  * @see RmiProxyFactoryBean
  * @see RemoteInvocationHandler
  * @see RemoteInvocationWrapper
+ * @since 13.05.2003
  */
 public class RmiServiceExporter implements InitializingBean {
 
@@ -82,8 +82,7 @@ public class RmiServiceExporter implements InitializingBean {
 		try {
 			// retrieve registry
 			registry = LocateRegistry.getRegistry(this.port);
-		}
-		catch (RemoteException ex) {
+		} catch (RemoteException ex) {
 			logger.debug("Could not retrieve RMI registry", ex);
 			// assume no registry found -> create new one
 			registry = LocateRegistry.createRegistry(this.port);

@@ -1,10 +1,10 @@
 /**
- * Generic framework code included with 
+ * Generic framework code included with
  * <a href="http://www.amazon.com/exec/obidos/tg/detail/-/1861007841/">Expert One-On-One J2EE Design and Development</a>
- * by Rod Johnson (Wrox, 2002). 
+ * by Rod Johnson (Wrox, 2002).
  * This code is free to use and modify. However, please
  * acknowledge the source and include the above URL in each
- * class using or derived from this code. 
+ * class using or derived from this code.
  * Please contact <a href="mailto:rod.johnson@interface21.com">rod.johnson@interface21.com</a>
  * for commercial support.
  */
@@ -35,9 +35,9 @@ import java.util.Properties;
  * @author Juergen Hoeller
  */
 public class SimpleUrlHandlerMapping extends AbstractUrlHandlerMapping {
-	
+
 	private Properties mappings;
-	
+
 	/**
 	 * Set mappings from a properties object. This property must
 	 * be set to configure this object.
@@ -58,17 +58,15 @@ public class SimpleUrlHandlerMapping extends AbstractUrlHandlerMapping {
 				logger.info("Controller mapping from URL '" + url + "' to '" + beanName + "'");
 				if ("*".equals(url)) {
 					setDefaultHandler(initHandler(beanName, url));
-				}
-				else {
+				} else {
 					// Prepend with / if it's not present
 					if (!url.startsWith("/"))
-						url = "/" + url;					
+						url = "/" + url;
 					Object handler = initHandler(beanName, url);
 					registerHandler(url, handler);
 				}
 			}
-		}
-		else {
+		} else {
 			logger.warn("No mappings in " + getClass().getName());
 		}
 	}

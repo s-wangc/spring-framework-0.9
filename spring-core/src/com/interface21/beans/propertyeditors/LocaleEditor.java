@@ -9,6 +9,7 @@ import com.interface21.util.StringUtils;
  * Editor for java.util.Locale, to directly feed a Locale property.
  * Expects the same syntax as Locale.toString, i.e. language + optionally
  * country + optionally variant, separated by "_" (e.g. "en", "en_US").
+ *
  * @author Juergen Hoeller
  * @since 26.05.2003
  */

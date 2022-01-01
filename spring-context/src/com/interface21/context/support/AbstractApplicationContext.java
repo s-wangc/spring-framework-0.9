@@ -57,18 +57,19 @@ import com.interface21.util.StringUtils;
  * parent context.
  *
  * @author Rod Johnson
- * @since January 21, 2001
  * @version $Revision: 1.22 $
  * @see #refreshBeanFactory
  * @see #getBeanFactory
  * @see #OPTIONS_BEAN_NAME
  * @see #MESSAGE_SOURCE_BEAN_NAME
+ * @since January 21, 2001
  */
 public abstract class AbstractApplicationContext implements ApplicationContext {
 
 	/**
 	 * Name of options bean in the factory.
 	 * If none is supplied, a default ContextOptions instance will be used.
+	 *
 	 * @see ContextOptions
 	 */
 	public static final String OPTIONS_BEAN_NAME = "contextOptions";
@@ -76,6 +77,7 @@ public abstract class AbstractApplicationContext implements ApplicationContext {
 	/**
 	 * Name of the MessageSource bean in the factory.
 	 * If none is supplied, message resolution is delegated to the parent.
+	 *
 	 * @see MessageSource
 	 */
 	public static final String MESSAGE_SOURCE_BEAN_NAME = "messageSource";
@@ -84,19 +86,29 @@ public abstract class AbstractApplicationContext implements ApplicationContext {
 	// Instance data
 	//---------------------------------------------------------------------
 
-	/** Log4j logger used by this class. Available to subclasses. */
+	/**
+	 * Log4j logger used by this class. Available to subclasses.
+	 */
 	protected final Log logger = LogFactory.getLog(getClass());
 
-	/** Parent context */
+	/**
+	 * Parent context
+	 */
 	private ApplicationContext parent;
 
-	/** Display name */
+	/**
+	 * Display name
+	 */
 	private String displayName = getClass().getName() + ";hashCode=" + hashCode();
 
-	/** System time in milliseconds when this context started */
+	/**
+	 * System time in milliseconds when this context started
+	 */
 	private long startupTime;
 
-	/** Special bean to handle configuration */
+	/**
+	 * Special bean to handle configuration
+	 */
 	private ContextOptions contextOptions;
 
 	/**
@@ -129,6 +141,7 @@ public abstract class AbstractApplicationContext implements ApplicationContext {
 
 	/**
 	 * Create a new AbstractApplicationContext with the given parent context.
+	 *
 	 * @param parent parent context
 	 */
 	public AbstractApplicationContext(ApplicationContext parent) {
@@ -143,6 +156,7 @@ public abstract class AbstractApplicationContext implements ApplicationContext {
 	/**
 	 * Return the parent context, or null if there is no parent,
 	 * and this is the root of the context hierarchy.
+	 *
 	 * @return the parent context, or null if there is no parent
 	 */
 	public ApplicationContext getParent() {
@@ -154,6 +168,7 @@ public abstract class AbstractApplicationContext implements ApplicationContext {
 	 * Note that parent shouldn't be changed: it should only be
 	 * set later if it isn't available when an object of this
 	 * class is created.
+	 *
 	 * @param ac parent context
 	 */
 	protected void setParent(ApplicationContext ac) {
@@ -162,6 +177,7 @@ public abstract class AbstractApplicationContext implements ApplicationContext {
 
 	/**
 	 * Return a friendly name for context
+	 *
 	 * @return a display name for the context
 	 */
 	public String getDisplayName() {
@@ -178,6 +194,7 @@ public abstract class AbstractApplicationContext implements ApplicationContext {
 
 	/**
 	 * Return the timestamp when this context was first loaded
+	 *
 	 * @return the timestamp (ms) when this context was first loaded
 	 */
 	public final long getStartupDate() {
@@ -186,6 +203,7 @@ public abstract class AbstractApplicationContext implements ApplicationContext {
 
 	/**
 	 * Return context options. These control reloading etc.
+	 *
 	 * @return context options
 	 */
 	public final ContextOptions getOptions() {
@@ -194,9 +212,10 @@ public abstract class AbstractApplicationContext implements ApplicationContext {
 
 	/**
 	 * Load or reload configuration.
+	 *
 	 * @throws ApplicationContextException if the configuration was invalid or couldn't
-	 * be found, or if configuration has already been loaded and reloading is forbidden
-	 * DYNAMIC CLASSLOADER ISSUE...subclass to get classloader!?
+	 *                                     be found, or if configuration has already been loaded and reloading is forbidden
+	 *                                     DYNAMIC CLASSLOADER ISSUE...subclass to get classloader!?
 	 */
 	public final void refresh() throws ApplicationContextException {
 		if (this.contextOptions != null && !this.contextOptions.isReloadable())
@@ -215,8 +234,7 @@ public abstract class AbstractApplicationContext implements ApplicationContext {
 
 		try {
 			loadOptions();
-		}
-		catch (BeansException ex) {
+		} catch (BeansException ex) {
 			throw new ApplicationContextException("Unexpected error loading context options", ex);
 		}
 
@@ -225,11 +243,10 @@ public abstract class AbstractApplicationContext implements ApplicationContext {
 			// set parent message source if applicable,
 			// and if the message source is defined in this context, not in a parent
 			if (this.parent != null && (this.messageSource instanceof NestingMessageSource) &&
-			    Arrays.asList(getBeanFactory().getBeanDefinitionNames()).contains(MESSAGE_SOURCE_BEAN_NAME)) {
+					Arrays.asList(getBeanFactory().getBeanDefinitionNames()).contains(MESSAGE_SOURCE_BEAN_NAME)) {
 				((NestingMessageSource) this.messageSource).setParent(this.parent);
 			}
-		}
-		catch (NoSuchBeanDefinitionException ex) {
+		} catch (NoSuchBeanDefinitionException ex) {
 			logger.warn("No MessageSource found for: " + getDisplayName());
 			// use empty message source to be able to accept getMessage calls
 			this.messageSource = new StaticMessageSource();
@@ -241,6 +258,7 @@ public abstract class AbstractApplicationContext implements ApplicationContext {
 
 	/**
 	 * Callback method which can be overridden to add context-specific refresh work.
+	 *
 	 * @throws ApplicationContextException in case of errors during refresh
 	 */
 	protected void onRefresh() throws ApplicationContextException {
@@ -271,7 +289,7 @@ public abstract class AbstractApplicationContext implements ApplicationContext {
 		logger.info("Configuring singleton beans in context");
 		String[] beanNames = getBeanDefinitionNames();
 		logger.debug("Found " + beanNames.length + " listeners in bean factory: names=[" +
-		             StringUtils.arrayToDelimitedString(beanNames, ",") + "]");
+				StringUtils.arrayToDelimitedString(beanNames, ",") + "]");
 		for (int i = 0; i < beanNames.length; i++) {
 			String beanName = beanNames[i];
 			if (isSingleton(beanName)) {
@@ -293,7 +311,7 @@ public abstract class AbstractApplicationContext implements ApplicationContext {
 		logger.info("Refreshing listeners");
 		String[] listenerNames = getBeanDefinitionNames(ApplicationListener.class);
 		logger.debug("Found " + listenerNames.length + " listeners in bean factory: names=[" +
-		             StringUtils.arrayToDelimitedString(listenerNames, ",") + "]");
+				StringUtils.arrayToDelimitedString(listenerNames, ",") + "]");
 		for (int i = 0; i < listenerNames.length; i++) {
 			String beanName = listenerNames[i];
 			try {
@@ -312,8 +330,9 @@ public abstract class AbstractApplicationContext implements ApplicationContext {
 	 * Note that the implementation of the ApplicationContextAware interface
 	 * must check itself that if it is already initialized resp. if it wants
 	 * to perform reinitialization.
+	 *
 	 * @param o object to invoke the setApplicationContext() method on,
-	 * if it implements the ApplicationContextAware interface
+	 *          if it implements the ApplicationContextAware interface
 	 */
 	protected void configureManagedObject(Object o) throws ApplicationContextException {
 		if (o instanceof ApplicationContextAware) {
@@ -325,8 +344,9 @@ public abstract class AbstractApplicationContext implements ApplicationContext {
 
 	/**
 	 * Publish the given event to all listeners.
+	 *
 	 * @param event event to publish. The event may be application-specific,
-	 * or a standard framework event.
+	 *              or a standard framework event.
 	 */
 	public final void publishEvent(ApplicationEvent event) {
 		logger.debug("Publishing event in context [" + getDisplayName() + "]: " + event.toString());
@@ -347,6 +367,7 @@ public abstract class AbstractApplicationContext implements ApplicationContext {
 	 * This implementation supports fully qualified URLs and appropriate
 	 * (file) paths, via getResourceByPath.
 	 * Throws a FileNotFoundException if getResourceByPath returns null.
+	 *
 	 * @see #getResourceByPath
 	 */
 	public final InputStream getResourceAsStream(String location) throws IOException {
@@ -371,6 +392,7 @@ public abstract class AbstractApplicationContext implements ApplicationContext {
 	 * relative to the application's working directory. This should be
 	 * appropriate for standalone implementations but can be overridden,
 	 * e.g. for implementations targetted at a container.
+	 *
 	 * @param path path to the resource
 	 * @return InputStream for the specified resource, can be null if
 	 * not found (instead of throwing an exception)
@@ -416,14 +438,15 @@ public abstract class AbstractApplicationContext implements ApplicationContext {
 
 	/**
 	 * Try to resolve the message.Return default message if no message was found.
-	 * @param code code to lookup up, such as 'calculator.noRateSet'
-	 * @param locale Locale in which to do lookup
-	 * @param args Array of arguments that will be filled in for params within
-	 * the message (params look like "{0}", "{1,date}", "{2,time}" within a message).
-	 * @see <a href=http://java.sun.com/j2se/1.3/docs/api/java/text/MessageFormat.html>java.text.MessageFormat</a>
+	 *
+	 * @param code           code to lookup up, such as 'calculator.noRateSet'
+	 * @param locale         Locale in which to do lookup
+	 * @param args           Array of arguments that will be filled in for params within
+	 *                       the message (params look like "{0}", "{1,date}", "{2,time}" within a message).
 	 * @param defaultMessage String to return if the lookup fails
 	 * @return a resolved message if the lookup is successful;
 	 * otherwise return the default message passed as a parameter
+	 * @see <a href=http://java.sun.com/j2se/1.3/docs/api/java/text/MessageFormat.html>java.text.MessageFormat</a>
 	 */
 	public String getMessage(String code, Object args[], String defaultMessage, Locale locale) {
 		return this.messageSource.getMessage(code, args, defaultMessage, locale);
@@ -431,13 +454,14 @@ public abstract class AbstractApplicationContext implements ApplicationContext {
 
 	/**
 	 * Try to resolve the message. Treat as an error if the message can't be found.
-	 * @param code code to lookup up, such as 'calculator.noRateSet'
+	 *
+	 * @param code   code to lookup up, such as 'calculator.noRateSet'
 	 * @param locale Locale in which to do lookup
-	 * @param args Array of arguments that will be filled in for params within
-	 * the message (params look like "{0}", "{1,date}", "{2,time}" within a message).
-	 * @see <a href="http://java.sun.com/j2se/1.3/docs/api/java/text/MessageFormat.html">java.text.MessageFormat</a>
+	 * @param args   Array of arguments that will be filled in for params within
+	 *               the message (params look like "{0}", "{1,date}", "{2,time}" within a message).
 	 * @return message
 	 * @throws NoSuchMessageException not found in any locale
+	 * @see <a href="http://java.sun.com/j2se/1.3/docs/api/java/text/MessageFormat.html">java.text.MessageFormat</a>
 	 */
 	public String getMessage(String code, Object args[], Locale locale) throws NoSuchMessageException {
 		return this.messageSource.getMessage(code, args, locale);
@@ -447,15 +471,16 @@ public abstract class AbstractApplicationContext implements ApplicationContext {
 	 * <b>Using all the attributes contained within the <code>MessageSourceResolvable</code>
 	 * arg that was passed in (except for the <code>locale</code> attribute)</b>,
 	 * try to resolve the message from the <code>MessageSource</code> contained within the <code>Context</code>.<p>
-	 *
+	 * <p>
 	 * NOTE: We must throw a <code>NoSuchMessageException</code> on this method since
 	 * at the time of calling this method we aren't able to determine if the <code>defaultMessage</code>
 	 * attribute is null or not.
+	 *
 	 * @param resolvable Value object storing 4 attributes required to properly resolve a message.
-	 * @param locale Locale to be used as the "driver" to figuring out what message to return.
-	 * @see <a href="http://java.sun.com/j2se/1.3/docs/api/java/text/MessageFormat.html">java.text.MessageFormat</a>
+	 * @param locale     Locale to be used as the "driver" to figuring out what message to return.
 	 * @return message Resolved message.
 	 * @throws NoSuchMessageException not found in any locale
+	 * @see <a href="http://java.sun.com/j2se/1.3/docs/api/java/text/MessageFormat.html">java.text.MessageFormat</a>
 	 */
 	public String getMessage(MessageSourceResolvable resolvable, Locale locale) throws NoSuchMessageException {
 		return this.messageSource.getMessage(resolvable, locale);
@@ -505,7 +530,9 @@ public abstract class AbstractApplicationContext implements ApplicationContext {
 		return getBeanFactory().getBeanDefinitionNames(type);
 	}
 
-	/** Show information about this context */
+	/**
+	 * Show information about this context
+	 */
 	public String toString() {
 		StringBuffer sb = new StringBuffer("ApplicationContext: displayName=**" + displayName + "'**; ");
 		sb.append("class=[" + getClass().getName() + "]; ");
@@ -533,6 +560,7 @@ public abstract class AbstractApplicationContext implements ApplicationContext {
 	/**
 	 * Unimplemented interface method. Subclasses must implement this
 	 * efficiently, so that it can be called repeatedly without a performance penalty.
+	 *
 	 * @return this application context's default BeanFactory
 	 */
 	protected abstract ListableBeanFactory getBeanFactory();

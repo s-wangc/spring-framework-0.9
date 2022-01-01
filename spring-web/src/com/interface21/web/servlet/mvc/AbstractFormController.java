@@ -1,10 +1,10 @@
 /**
- * Generic framework code included with 
+ * Generic framework code included with
  * <a href="http://www.amazon.com/exec/obidos/tg/detail/-/1861007841/">Expert One-On-One J2EE Design and Development</a>
- * by Rod Johnson (Wrox, 2002). 
+ * by Rod Johnson (Wrox, 2002).
  * This code is free to use and modify. However, please
  * acknowledge the source and include the above URL in each
- * class using or derived from this code. 
+ * class using or derived from this code.
  * Please contact <a href="mailto:rod.johnson@interface21.com">rod.johnson@interface21.com</a>
  * for commercial support.
  */
@@ -59,7 +59,7 @@ import com.interface21.web.servlet.ModelAndView;
  * It can be overridden in subclasses to show respective messages or redirect to a
  * new form, in order to avoid duplicate submissions. The form object in the session
  * can be considered a transaction token in this case.
- * 
+ *
  * <p>Note that views should never retrieve form beans from the session but always
  * from the request, as prepared by the form controller. Remember that some view
  * technologies like Velocity cannot even access a HTTP session.
@@ -152,16 +152,15 @@ public abstract class AbstractFormController extends BaseCommandController {
 	protected final ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		if (isFormSubmission(request)) {
-		  if (isSessionForm() && request.getSession().getAttribute(getFormSessionAttributeName()) == null) {
-			  // cannot submit a session form if no form object is in the session
-			  return handleInvalidSubmit(request, response);
-		  }
+			if (isSessionForm() && request.getSession().getAttribute(getFormSessionAttributeName()) == null) {
+				// cannot submit a session form if no form object is in the session
+				return handleInvalidSubmit(request, response);
+			}
 			// process submit
 			Object command = userObject(request);
 			ServletRequestDataBinder errors = bindAndValidate(request, command);
 			return processSubmit(request, response, command, errors);
-		}
-		else {
+		} else {
 			return showNewForm(request, response);
 		}
 	}
@@ -190,7 +189,7 @@ public abstract class AbstractFormController extends BaseCommandController {
 	 * @throws IOException in case of I/O errors
 	 */
 	protected final ModelAndView showNewForm(HttpServletRequest request, HttpServletResponse response)
-	    throws ServletException, IOException {
+			throws ServletException, IOException {
 		// show new form
 		logger.debug("Displaying new form");
 		Object formObject = formBackingObject(request);
@@ -237,7 +236,7 @@ public abstract class AbstractFormController extends BaseCommandController {
 	 * @see SimpleFormController#setFormView
 	 */
 	protected abstract ModelAndView showForm(HttpServletRequest request, HttpServletResponse response,
-	                                         BindException errors) throws ServletException, IOException;
+											 BindException errors) throws ServletException, IOException;
 
 	/**
 	 * Prepare model and view for the given form, including reference and errors.
@@ -251,7 +250,7 @@ public abstract class AbstractFormController extends BaseCommandController {
 	 * @throws ServletException in case of invalid state or arguments
 	 */
 	protected final ModelAndView showForm(HttpServletRequest request, BindException errors, String viewName)
-	    throws ServletException {
+			throws ServletException {
 		return showForm(request, errors, viewName, null);
 	}
 
@@ -270,7 +269,7 @@ public abstract class AbstractFormController extends BaseCommandController {
 	 * @throws ServletException in case of invalid state or arguments
 	 */
 	protected final ModelAndView showForm(HttpServletRequest request, BindException errors, String viewName,
-	                                      Map controlModel) throws ServletException {
+										  Map controlModel) throws ServletException {
 		if (isSessionForm()) {
 			request.getSession().setAttribute(getFormSessionAttributeName(), errors.getTarget());
 		}
@@ -298,7 +297,7 @@ public abstract class AbstractFormController extends BaseCommandController {
 	 * @see ModelAndView
 	 */
 	protected Map referenceData(HttpServletRequest request, Object command, Errors errors)
-	    throws ServletException {
+			throws ServletException {
 		return null;
 	}
 
@@ -321,7 +320,7 @@ public abstract class AbstractFormController extends BaseCommandController {
 	 * @see #setBindOnNewForm
 	 */
 	protected ModelAndView handleInvalidSubmit(HttpServletRequest request, HttpServletResponse response)
-	    throws ServletException, IOException {
+			throws ServletException, IOException {
 		Object command = formBackingObject(request);
 		ServletRequestDataBinder errors = bindAndValidate(request, command);
 		return processSubmit(request, response, command, errors);
@@ -365,8 +364,8 @@ public abstract class AbstractFormController extends BaseCommandController {
 	 * @throws IOException in case of I/O errors
 	 * @see #showForm
 	 */
-	protected abstract ModelAndView processSubmit(HttpServletRequest request,	HttpServletResponse response,
-	                                              Object command, BindException errors)
+	protected abstract ModelAndView processSubmit(HttpServletRequest request, HttpServletResponse response,
+												  Object command, BindException errors)
 			throws ServletException, IOException;
 
 }

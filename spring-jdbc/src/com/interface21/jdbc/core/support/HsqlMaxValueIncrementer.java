@@ -19,7 +19,7 @@ import com.interface21.jdbc.datasource.DataSourceUtils;
  * Class to increment maximum value of a given HSQL table with the equivalent of an auto-increment column
  * (note : if you use this class, your HSQL key column should NOT be auto-increment, as the sequence table
  * does the job)
- * <br>The sequence is kept in a table; there should be one sequence table per table that needs an auto-generated key.  
+ * <br>The sequence is kept in a table; there should be one sequence table per table that needs an auto-generated key.
  * <p>
  * Example:<br/>
  * <code>
@@ -29,10 +29,11 @@ import com.interface21.jdbc.datasource.DataSourceUtils;
  * </code>
  * </p>
  * <p>If cacheSize is set, the intermediate values are served without querying the
- * database. If the server or your application is stopped or crashes or a transaction 
- * is rolled back, the unused values will never be served. The maximum hole size in 
+ * database. If the server or your application is stopped or crashes or a transaction
+ * is rolled back, the unused values will never be served. The maximum hole size in
  * numbering is consequently the value of cacheSize.
  * </p>
+ *
  * @author <a href="mailto:isabelle@meta-logix.com">Isabelle Muszynski</a>
  * @author <a href="mailto:jp.pawlak@tiscali.fr">Jean-Pierre Pawlak</a>
  * @author Thomas Risberg
@@ -40,12 +41,12 @@ import com.interface21.jdbc.datasource.DataSourceUtils;
  */
 
 public class HsqlMaxValueIncrementer
-    extends AbstractDataFieldMaxValueIncrementer {
+		extends AbstractDataFieldMaxValueIncrementer {
 
 	protected final Log logger = LogFactory.getLog(getClass());
 
 	private long[] valueCache = null;
-    
+
 	private NextMaxValueProvider nextMaxValueProvider;
 
 	/**
@@ -57,9 +58,10 @@ public class HsqlMaxValueIncrementer
 
 	/**
 	 * Constructor
-	 * @param ds the datasource to use
+	 *
+	 * @param ds              the datasource to use
 	 * @param incrementerName the name of the sequence/table to use
-	 * @param columnName the name of the column in the sequence table to use
+	 * @param columnName      the name of the column in the sequence table to use
 	 **/
 	public HsqlMaxValueIncrementer(DataSource ds, String incrementerName, String columnName) {
 		super(ds, incrementerName, columnName);
@@ -68,47 +70,51 @@ public class HsqlMaxValueIncrementer
 
 	/**
 	 * Constructor
-	 * @param ds the datasource to use
+	 *
+	 * @param ds              the datasource to use
 	 * @param incrementerName the name of the sequence/table to use
-	 * @param columnName the name of the column in the sequence table to use
-	 * @param cacheSize the number of buffered keys
+	 * @param columnName      the name of the column in the sequence table to use
+	 * @param cacheSize       the number of buffered keys
 	 **/
 	public HsqlMaxValueIncrementer(DataSource ds, String incrementerName, String columnName, int cacheSize) {
-        super(ds, incrementerName, columnName, cacheSize);
+		super(ds, incrementerName, columnName, cacheSize);
 		this.nextMaxValueProvider = new NextMaxValueProvider();
 	}
 
 	/**
 	 * Constructor
-	 * @param ds the datasource to use
+	 *
+	 * @param ds              the datasource to use
 	 * @param incrementerName the name of the sequence/table to use
-	 * @param columnName the name of the column in the sequence table to use
-	 * @param prefixWithZero in case of a String return value, should the string be prefixed with zeroes
-	 * @param padding the length to which the string return value should be padded with zeroes
+	 * @param columnName      the name of the column in the sequence table to use
+	 * @param prefixWithZero  in case of a String return value, should the string be prefixed with zeroes
+	 * @param padding         the length to which the string return value should be padded with zeroes
 	 **/
 	public HsqlMaxValueIncrementer(DataSource ds, String incrementerName, String columnName, boolean prefixWithZero, int padding) {
-        super(ds, incrementerName, columnName);
+		super(ds, incrementerName, columnName);
 		this.nextMaxValueProvider = new NextMaxValueProvider();
 		this.nextMaxValueProvider.setPrefixWithZero(prefixWithZero, padding);
 	}
 
 	/**
 	 * Constructor
-	 * @param ds the datasource to use
+	 *
+	 * @param ds              the datasource to use
 	 * @param incrementerName the name of the sequence/table to use
-	 * @param columnName the name of the column in the sequence table to use
-	 * @param prefixWithZero in case of a String return value, should the string be prefixed with zeroes
-	 * @param padding the length to which the string return value should be padded with zeroes
-	 * @param cacheSize the number of buffered keys
+	 * @param columnName      the name of the column in the sequence table to use
+	 * @param prefixWithZero  in case of a String return value, should the string be prefixed with zeroes
+	 * @param padding         the length to which the string return value should be padded with zeroes
+	 * @param cacheSize       the number of buffered keys
 	 **/
 	public HsqlMaxValueIncrementer(DataSource ds, String incrementerName, String columnName, boolean prefixWithZero, int padding, int cacheSize) {
-        super(ds, incrementerName, columnName, cacheSize);
+		super(ds, incrementerName, columnName, cacheSize);
 		this.nextMaxValueProvider = new NextMaxValueProvider();
 		this.nextMaxValueProvider.setPrefixWithZero(prefixWithZero, padding);
 	}
 
 	/**
 	 * Sets the prefixWithZero.
+	 *
 	 * @param prefixWithZero The prefixWithZero to set
 	 */
 	public void setPrefixWithZero(boolean prefixWithZero, int length) {
@@ -147,28 +153,36 @@ public class HsqlMaxValueIncrementer
 	// job of getting the sequence.nextVal value
 	private class NextMaxValueProvider extends AbstractNextMaxValueProvider {
 
-		/** The Sql string for updating the sequence value */
+		/**
+		 * The Sql string for updating the sequence value
+		 */
 		private String insertSql;
 
-		/** The Sql string for retrieving the new sequence value */
+		/**
+		 * The Sql string for retrieving the new sequence value
+		 */
 		private String valueSql;
 
-		/** The Sql string for removing old sequence values */
+		/**
+		 * The Sql string for removing old sequence values
+		 */
 		private String deleteSql;
 
-		/** The next id to serve */
+		/**
+		 * The next id to serve
+		 */
 		private int nextValueIx = -1;
 
 		synchronized protected long getNextKey(int type) throws DataAccessException {
 			if (isDirty()) {
 				initPrepare();
 			}
-			if(nextValueIx < 0 || nextValueIx >= getCacheSize()) {
+			if (nextValueIx < 0 || nextValueIx >= getCacheSize()) {
 				/*
-				* Need to use straight JDBC code because we need to make sure that the insert and select
-				* are performed on the same connection (otherwise we can't be sure that last_insert_id()
-				* returned the correct value)
-				*/
+				 * Need to use straight JDBC code because we need to make sure that the insert and select
+				 * are performed on the same connection (otherwise we can't be sure that last_insert_id()
+				 * returned the correct value)
+				 */
 				Connection con = null;
 				Statement st = null;
 				ResultSet rs = null;
@@ -182,30 +196,25 @@ public class HsqlMaxValueIncrementer
 						rs = st.executeQuery(valueSql);
 						if (rs.next()) {
 							valueCache[i] = rs.getLong(1);
-						}
-						else
+						} else
 							throw new InternalErrorException("last_insert_id() failed after executing an update");
 					}
 					long maxValue = valueCache[(valueCache.length - 1)];
 					st.executeUpdate(deleteSql + maxValue);
 					logger.info("Delete SQL is : " + deleteSql + maxValue);
-				}
-				catch (SQLException ex) {
+				} catch (SQLException ex) {
 					throw new DataAccessResourceFailureException("Could not obtain last_insert_id", ex);
-				}
-				finally {
+				} finally {
 					if (null != rs) {
 						try {
 							rs.close();
-						}
-						catch (SQLException e) {
+						} catch (SQLException e) {
 						}
 					}
 					if (null != st) {
 						try {
 							st.close();
-						}
-						catch (SQLException e) {
+						} catch (SQLException e) {
 						}
 						DataSourceUtils.closeConnectionIfNecessary(con, getDataSource());
 					}

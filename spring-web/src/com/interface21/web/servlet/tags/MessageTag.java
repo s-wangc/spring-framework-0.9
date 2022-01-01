@@ -72,22 +72,18 @@ public class MessageTag extends RequestContextAwareTag {
 			if (this.code != null) {
 				if (this.text != null) {
 					msg = messageSource.getMessage(this.code, null, this.text,
-					                               getRequestContext().getLocale());
-				}
-				else {
+							getRequestContext().getLocale());
+				} else {
 					msg = messageSource.getMessage(this.code, null,
-					                               getRequestContext().getLocale());
+							getRequestContext().getLocale());
 				}
-			}
-			else {
+			} else {
 				msg = this.text;
 			}
 			writeMessage(isHtmlEscape() ? HtmlUtils.htmlEscape(msg) : msg);
-		}
-		catch (NoSuchMessageException ex) {
+		} catch (NoSuchMessageException ex) {
 			throw new JspTagException(getNoSuchMessageExceptionDescription(ex));
-		}
-		catch (IOException ex) {
+		} catch (IOException ex) {
 			throw new JspTagException("Can't write message: " + ex.getMessage());
 		}
 		return EVAL_BODY_INCLUDE;

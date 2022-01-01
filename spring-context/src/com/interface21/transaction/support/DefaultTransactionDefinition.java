@@ -9,9 +9,9 @@ import com.interface21.transaction.TransactionDefinition;
  * Base class for both TransactionTemplate and DefaultTransactionAttribute.
  *
  * @author Juergen Hoeller
- * @since 08.05.2003
  * @see com.interface21.transaction.support.TransactionTemplate
  * @see com.interface21.transaction.interceptor.DefaultTransactionAttribute
+ * @since 08.05.2003
  */
 public class DefaultTransactionDefinition implements TransactionDefinition {
 

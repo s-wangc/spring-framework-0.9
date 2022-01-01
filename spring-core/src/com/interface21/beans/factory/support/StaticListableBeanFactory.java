@@ -16,12 +16,15 @@ import com.interface21.beans.factory.NoSuchBeanDefinitionException;
  * Singleton only.
  * Allows beans to be registered by name programmatically.
  * Mainly useful for testing.
+ *
  * @author Rod Johnson
  * @since 06-Jan-03
  */
 public class StaticListableBeanFactory implements ListableBeanFactory {
 
-	/** Map from bean name to bean instance */
+	/**
+	 * Map from bean name to bean instance
+	 */
 	private Map beans = new HashMap();
 
 
@@ -43,7 +46,7 @@ public class StaticListableBeanFactory implements ListableBeanFactory {
 	 * @see com.interface21.beans.factory.ListableBeanFactory#getBeanDefinitionNames(Class)
 	 */
 	public String[] getBeanDefinitionNames(Class type) {
-		
+
 		Set keys = beans.keySet();
 		List matches = new LinkedList();
 		Iterator itr = keys.iterator();
@@ -63,10 +66,10 @@ public class StaticListableBeanFactory implements ListableBeanFactory {
 	 */
 	public Object getBean(String name, Class requiredType) throws BeansException {
 		Object bean = getBean(name);
-		
+
 		if (!requiredType.isAssignableFrom(bean.getClass()))
 			throw new BeanNotOfRequiredTypeException(name, requiredType, bean);
-		
+
 		return bean;
 	}
 
@@ -79,14 +82,14 @@ public class StaticListableBeanFactory implements ListableBeanFactory {
 			throw new NoSuchBeanDefinitionException(name);
 		return bean;
 	}
-	
+
 	/**
 	 * Add a new singleton bean
 	 */
 	public void addBean(String name, Object bean) {
 		this.beans.put(name, bean);
 	}
-	
+
 	/**
 	 * @see com.interface21.beans.factory.BeanFactory#isSingleton(java.lang.String)
 	 */

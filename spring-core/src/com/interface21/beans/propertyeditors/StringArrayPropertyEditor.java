@@ -8,10 +8,11 @@ import com.interface21.util.StringUtils;
  * Properties editor for String[] type.
  * Strings must be in CSV format.
  * This property editor is registered by BeanWrapperImpl.
+ *
  * @author Rod Johnson
  */
 public class StringArrayPropertyEditor extends PropertyEditorSupport {
-	
+
 	/**
 	 * @see java.beans.PropertyEditor#setAsText(String)
 	 */

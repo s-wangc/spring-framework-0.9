@@ -63,10 +63,10 @@ import com.interface21.jdbc.datasource.DataSourceUtils;
  * @author Yann Caroff
  * @author Thomas Risberg
  * @author Isabelle Muszynski
- * @see com.interface21.dao
  * @version $Id: JdbcTemplate.java,v 1.20 2003/06/06 14:34:43 jhoeller Exp $
- * @since May 3, 2001
+ * @see com.interface21.dao
  * @see com.interface21.jndi.JndiObjectFactoryBean
+ * @since May 3, 2001
  */
 public class JdbcTemplate implements InitializingBean {
 
@@ -95,10 +95,14 @@ public class JdbcTemplate implements InitializingBean {
 	 **/
 	private DataSource dataSource;
 
-	/** If this variable is false, we will throw exceptions on SQL warnings */
+	/**
+	 * If this variable is false, we will throw exceptions on SQL warnings
+	 */
 	private boolean ignoreWarnings = true;
 
-	/** Helper to translate SQL exceptions to DataAccessExceptions */
+	/**
+	 * Helper to translate SQL exceptions to DataAccessExceptions
+	 */
 	private SQLExceptionTranslater exceptionTranslater;
 
 
@@ -111,6 +115,7 @@ public class JdbcTemplate implements InitializingBean {
 	 * Note: The DataSource has to be set before using the instance.
 	 * This constructor can be used to prepare a JdbcTemplate via a BeanFactory,
 	 * typically setting the DataSource via setDataSourceName.
+	 *
 	 * @see #setDataSource
 	 */
 	public JdbcTemplate() {
@@ -118,6 +123,7 @@ public class JdbcTemplate implements InitializingBean {
 
 	/**
 	 * Construct a new JdbcTemplate, given a DataSource to obtain connections from.
+	 *
 	 * @param dataSource J2EE DataSource to obtain connections from
 	 * @throws InvalidParameterException when dataSource is null
 	 */
@@ -167,6 +173,7 @@ public class JdbcTemplate implements InitializingBean {
 	 * Set the exception translater used in this class.
 	 * If no custom translater is provided, a default is used
 	 * which examines the SQLException's SQLState code.
+	 *
 	 * @param exceptionTranslater custom exception translator
 	 */
 	public void setExceptionTranslater(SQLExceptionTranslater exceptionTranslater) {
@@ -206,10 +213,11 @@ public class JdbcTemplate implements InitializingBean {
 	 * are included to allow full control over the extraction of data
 	 * from ResultSets and to facilitate integration with third-party
 	 * software.
-	 * @param sql SQL query to execute
+	 *
+	 * @param sql             SQL query to execute
 	 * @param callbackHandler object that will extract results
 	 * @throws DataAccessException if there is any problem executing
-	 * the query
+	 *                             the query
 	 */
 	public void query(String sql, RowCallbackHandler callbackHandler) throws DataAccessException {
 		doWithResultSetFromStaticQuery(sql, new RowCallbackHandlerResultSetExtracter(callbackHandler));
@@ -220,10 +228,11 @@ public class JdbcTemplate implements InitializingBean {
 	 * Uses a JDBC Statement, not a PreparedStatement. If you want to execute
 	 * a static query with a PreparedStatement, use the overloaded query method
 	 * with a NOP PreparedStatement setter as a parameter.
+	 *
 	 * @param sql SQL query to execute
 	 * @param rse object that will extract all rows of results
 	 * @throws DataAccessException if there is any problem executing
-	 * the query
+	 *                             the query
 	 */
 	public void doWithResultSetFromStaticQuery(String sql, ResultSetExtracter rse) throws DataAccessException {
 		if (sql == null)
@@ -249,21 +258,20 @@ public class JdbcTemplate implements InitializingBean {
 			s.close();
 
 			throwExceptionOnWarningIfNotIgnoringWarnings(warning);
-		}
-		catch (SQLException ex) {
+		} catch (SQLException ex) {
 			throw getExceptionTranslater().translate("JdbcTemplate.query(sql)", sql, ex);
-		}
-		finally {
+		} finally {
 			DataSourceUtils.closeConnectionIfNecessary(con, this.dataSource);
 		}
 	}
 
 	/**
 	 * Query using a prepared statement.
-	 * @param psc Callback handler that can create a PreparedStatement
-	 * given a Connection
+	 *
+	 * @param psc             Callback handler that can create a PreparedStatement
+	 *                        given a Connection
 	 * @param callbackHandler object that will extract results,
-	 * one row at a time
+	 *                        one row at a time
 	 * @throws DataAccessException if there is any problem
 	 */
 	public void query(PreparedStatementCreator psc, RowCallbackHandler callbackHandler) throws DataAccessException {
@@ -273,8 +281,9 @@ public class JdbcTemplate implements InitializingBean {
 	/**
 	 * Query using a prepared statement. Most other query methods use
 	 * this method.
+	 *
 	 * @param psc Callback handler that can create a PreparedStatement
-	 * given a Connection
+	 *            given a Connection
 	 * @param rse object that will extract results.
 	 * @throws DataAccessException if there is any problem
 	 */
@@ -294,11 +303,9 @@ public class JdbcTemplate implements InitializingBean {
 			rs.close();
 			ps.close();
 			throwExceptionOnWarningIfNotIgnoringWarnings(warning);
-		}
-		catch (SQLException ex) {
+		} catch (SQLException ex) {
 			throw getExceptionTranslater().translate("JdbcTemplate.query(psc) with PreparedStatementCreator [" + psc + "]", null, ex);
-		}
-		finally {
+		} finally {
 			DataSourceUtils.closeConnectionIfNecessary(con, this.dataSource);
 		}
 	}
@@ -307,11 +314,12 @@ public class JdbcTemplate implements InitializingBean {
 	 * Query given SQL to create a prepared statement from SQL and a
 	 * PreparedStatementSetter implementation that knows how to bind values
 	 * to the query.
-	 * @param sql SQL to execute
-	 * @param pss object that knows how to set values on the prepared statement.
-	 * If this is null, the SQL will be assumed to contain no bind parameters.
-	 * Even if there are no bind parameters, this object may be used to
-	 * set fetch size and other performance options.
+	 *
+	 * @param sql             SQL to execute
+	 * @param pss             object that knows how to set values on the prepared statement.
+	 *                        If this is null, the SQL will be assumed to contain no bind parameters.
+	 *                        Even if there are no bind parameters, this object may be used to
+	 *                        set fetch size and other performance options.
 	 * @param callbackHandler object that will extract results
 	 * @throws DataAccessException if the query fails
 	 */
@@ -324,8 +332,7 @@ public class JdbcTemplate implements InitializingBean {
 			if (containsBindVariables(sql))
 				throw new InvalidDataAccessApiUsageException("SQL '" + sql + "' requires at least one bind variable, but PreparedStatementSetter parameter was null");
 			query(sql, callbackHandler);
-		}
-		else {
+		} else {
 			// Wrap it in a new PreparedStatementCreator
 			query(new PreparedStatementCreator() {
 				public PreparedStatement createPreparedStatement(Connection conn) throws SQLException {
@@ -350,6 +357,7 @@ public class JdbcTemplate implements InitializingBean {
 
 	/**
 	 * Issue a single SQL update.
+	 *
 	 * @param sql static SQL to execute
 	 * @return the number of rows affected
 	 * @throws DataAccessException if there is any problem.
@@ -363,6 +371,7 @@ public class JdbcTemplate implements InitializingBean {
 	/**
 	 * Issue an update using a PreparedStatementCreator to provide SQL and any required
 	 * parameters
+	 *
 	 * @param psc helper: callback object that provides SQL and any necessary parameters
 	 * @return the number of rows affected
 	 * @throws DataAccessException if there is any problem issuing the update
@@ -374,6 +383,7 @@ public class JdbcTemplate implements InitializingBean {
 	/**
 	 * Issue multiple updates using multiple PreparedStatementCreators to provide SQL and any required
 	 * parameters
+	 *
 	 * @param pscs array of helpers: callback object that provides SQL and any necessary parameters
 	 * @return an array of the number of rows affected by each statement
 	 * @throws DataAccessException if there is any problem issuing the update
@@ -386,7 +396,7 @@ public class JdbcTemplate implements InitializingBean {
 			int[] retvals = new int[pscs.length];
 			for (index = 0; index < retvals.length; index++) {
 				PreparedStatement ps = pscs[index].createPreparedStatement(con);
-				if(logger.isInfoEnabled())
+				if (logger.isInfoEnabled())
 					logger.info("Executing SQL update using PreparedStatement: [" + pscs[index] + "]");
 				retvals[index] = ps.executeUpdate();
 				if (logger.isInfoEnabled())
@@ -397,12 +407,10 @@ public class JdbcTemplate implements InitializingBean {
 			// Don't worry about warnings, as we're more likely to get exception on updates
 			// (for example on data truncation)
 			return retvals;
-		}
-		catch (SQLException ex) {
+		} catch (SQLException ex) {
 			throw getExceptionTranslater().translate("processing update " +
-			                                         (index + 1) + " of " + pscs.length + "; update was [" + pscs[index] + "]", null, ex);
-		}
-		finally {
+					(index + 1) + " of " + pscs.length + "; update was [" + pscs[index] + "]", null, ex);
+		} finally {
 			DataSourceUtils.closeConnectionIfNecessary(con, this.dataSource);
 		}
 	}
@@ -413,12 +421,13 @@ public class JdbcTemplate implements InitializingBean {
 	 * with given SQL. Simpler than using a PreparedStatementCreator
 	 * as this method will create the PreparedStatement: the
 	 * PreparedStatementSetter has only to set parameters.
+	 *
 	 * @param sql SQL, containing bind parameters
 	 * @param pss helper that sets bind parameters. If this is null
-	 * we run an update with static SQL
+	 *            we run an update with static SQL
 	 * @return the number of rows affected
 	 * @throws DataAccessException if there is any problem issuing the update
-	 * TODO add a similar query method
+	 *                             TODO add a similar query method
 	 */
 	public int update(final String sql, final PreparedStatementSetter pss) throws DataAccessException {
 		if (pss == null) {
@@ -441,10 +450,11 @@ public class JdbcTemplate implements InitializingBean {
 	/**
 	 * Issue multiple updates using JDBC 2.0 batch updates and PreparedStatementSetters to
 	 * set values on a PreparedStatement created by this method
-	 * @param sql defining PreparedStatement that will be reused.
-	 * All statements in the batch will use the same SQL.
+	 *
+	 * @param sql    defining PreparedStatement that will be reused.
+	 *               All statements in the batch will use the same SQL.
 	 * @param setter object to set parameters on the
-	 * PreparedStatement created by this method
+	 *               PreparedStatement created by this method
 	 * @return an array of the number of rows affected by each statement
 	 * @throws DataAccessException if there is any problem issuing the update
 	 */
@@ -463,12 +473,10 @@ public class JdbcTemplate implements InitializingBean {
 
 			ps.close();
 			return retvals;
-		}
-		catch (SQLException ex) {
+		} catch (SQLException ex) {
 			throw getExceptionTranslater().translate("processing batch update " +
-			                                         " with size=" + setter.getBatchSize() + "; update was [" + sql + "]", sql, ex);
-		}
-		finally {
+					" with size=" + setter.getBatchSize() + "; update was [" + sql + "]", sql, ex);
+		} finally {
 			DataSourceUtils.closeConnectionIfNecessary(con, this.dataSource);
 		}
 	}
@@ -477,15 +485,15 @@ public class JdbcTemplate implements InitializingBean {
 	/**
 	 * Convenience method to throw a JdbcSqlWarningException if we're
 	 * not ignoring warnings
+	 *
 	 * @param warning warning from current statement. May be null,
-	 * in which case this method does nothing.
+	 *                in which case this method does nothing.
 	 */
 	private void throwExceptionOnWarningIfNotIgnoringWarnings(SQLWarning warning) throws SQLWarningException {
 		if (warning != null) {
 			if (this.ignoreWarnings) {
 				logger.warn("SQLWarning ignored: " + warning);
-			}
-			else {
+			} else {
 				throw new SQLWarningException("Warning not ignored", warning);
 			}
 		}

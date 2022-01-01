@@ -33,6 +33,7 @@ public abstract class RequestContextAwareTag extends TagSupport {
 	/**
 	 * Set HTML escaping for this tag, overriding the default
 	 * HTML escaping setting for the current page.
+	 *
 	 * @see HtmlEscapeTag#setDefaultHtmlEscape
 	 */
 	public final void setHtmlEscape(boolean htmlEscape) {
@@ -42,11 +43,12 @@ public abstract class RequestContextAwareTag extends TagSupport {
 	/**
 	 * Return the HTML escaping setting for this tag,
 	 * or the default setting if not overridden.
+	 *
 	 * @return
 	 */
 	protected final boolean isHtmlEscape() {
 		return (this.htmlEscape != null ? this.htmlEscape.booleanValue() :
-																			HtmlEscapeTag.isDefaultHtmlEscape(this.pageContext));
+				HtmlEscapeTag.isDefaultHtmlEscape(this.pageContext));
 	}
 
 	/**
@@ -63,8 +65,7 @@ public abstract class RequestContextAwareTag extends TagSupport {
 	public int doStartTag() throws JspException {
 		try {
 			this.requestContext = new RequestContext((HttpServletRequest) this.pageContext.getRequest());
-		}
-		catch (ServletException ex) {
+		} catch (ServletException ex) {
 			throw new JspTagException(ex.getMessage());
 		}
 		return EVAL_BODY_INCLUDE;

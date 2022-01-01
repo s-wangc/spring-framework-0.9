@@ -22,6 +22,7 @@ import com.interface21.util.StringUtils;
 /**
  * Mock JNDI naming context.
  * Mainly targetted at test environments, but also usable for standalone applications.
+ *
  * @author Rod Johnson
  * @author Juergen Hoeller
  * @see MockInitialContextFactoryBuilder
@@ -35,7 +36,7 @@ public class MockContext implements Context {
 	public MockContext() {
 		boundObjects = new Hashtable();
 	}
-	
+
 	public MockContext(Hashtable ht) {
 		boundObjects = ht;
 	}
@@ -49,7 +50,7 @@ public class MockContext implements Context {
 		Object found = boundObjects.get(name);
 		if (found == null) {
 			throw new NameNotFoundException("Name '" + name + "' not bound: " + boundObjects.size() + " bindings -- [" +
-			                                StringUtils.collectionToDelimitedString(boundObjects.keySet(), ",") + "]");
+					StringUtils.collectionToDelimitedString(boundObjects.keySet(), ",") + "]");
 		}
 		return found;
 	}
@@ -157,31 +158,31 @@ public class MockContext implements Context {
 	public String getNameInNamespace() throws NamingException {
 		return null;
 	}
-	
-	
+
+
 	/**
 	 * Bit of a hack, but the aim was to do the least possible
 	 * to get this working.
 	 */
 	private class NamingEnumerationImpl implements NamingEnumeration {
-		
+
 		private Iterator itr;
-		
+
 		public NamingEnumerationImpl(String root) {
 			Iterator i = boundObjects.keySet().iterator();
 			List l = new LinkedList();
 			// Create list
 			while (i.hasNext()) {
 				String name = (String) i.next();
-				 if (name.indexOf(root) != -1) {
-				 	 String strippedName = name.substring(root.length() + 1);
-				 	 Binding b = new Binding(strippedName, boundObjects.get(name));
-					 l.add(b);
-				 }
+				if (name.indexOf(root) != -1) {
+					String strippedName = name.substring(root.length() + 1);
+					Binding b = new Binding(strippedName, boundObjects.get(name));
+					l.add(b);
+				}
 			}
 			this.itr = l.iterator();
 		}
-		
+
 		public void close() throws NamingException {
 		}
 

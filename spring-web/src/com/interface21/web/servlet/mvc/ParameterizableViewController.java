@@ -14,25 +14,28 @@ import com.interface21.web.servlet.ModelAndView;
  * Trivial controller that always returns a named view.
  * An alternative to sending a request straight to a view
  * such as a JSP.
- * @author Rod Johnson 
+ *
+ * @author Rod Johnson
  */
-public class ParameterizableViewController extends AbstractController 
+public class ParameterizableViewController extends AbstractController
 		implements InitializingBean {
-	
+
 	private String successView;
-	
+
 
 	/* Require only success view name */
 	public ParameterizableViewController() {
 	}
-	
-	
+
+
 	//---------------------------------------------------------------------
 	// Bean properties
 	//---------------------------------------------------------------------
+
 	/**
 	 * Gets the viewName.
 	 * Used in this class: other properties are for subclasses only.
+	 *
 	 * @return Returns a String
 	 */
 	public String getViewName() {
@@ -41,12 +44,12 @@ public class ParameterizableViewController extends AbstractController
 
 	/**
 	 * Sets the viewName.
+	 *
 	 * @param viewName The viewName to set
 	 */
 	public void setViewName(String viewName) {
 		this.successView = viewName;
 	}
-	
 
 
 	/**
@@ -55,9 +58,10 @@ public class ParameterizableViewController extends AbstractController
 	protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		return new ModelAndView(this.successView);
 	}
-	
+
 	/**
 	 * Ensure at least successView is set!?
+	 *
 	 * @see InitializingBean#afterPropertiesSet()
 	 */
 	public void afterPropertiesSet() throws Exception {

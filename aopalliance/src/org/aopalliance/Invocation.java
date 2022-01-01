@@ -1,15 +1,15 @@
 package org.aopalliance;
 
 public interface Invocation {
-    Object getInvokedObject();
+	Object getInvokedObject();
 
-    Object invokeNext() throws Throwable;
+	Object invokeNext() throws Throwable;
 
-    Invocation detach() throws Throwable;
+	Invocation detach() throws Throwable;
 
-    AttributeRegistry getAttributeRegistry();
+	AttributeRegistry getAttributeRegistry();
 
-    void setArgument(int index, Object argument);
+	void setArgument(int index, Object argument);
 
-    Invocation cloneInstance();
+	Invocation cloneInstance();
 }

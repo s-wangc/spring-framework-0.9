@@ -10,10 +10,9 @@ import com.interface21.util.ResponseTimeMonitorImpl;
 import com.interface21.web.context.RequestHandledEvent;
 
 /**
- *
- * @author  RodJohnson
- * @since January 21, 2001
+ * @author RodJohnson
  * @version $RevisionId$
+ * @since January 21, 2001
  */
 public class PerformanceMonitorListener implements ApplicationListener {
 

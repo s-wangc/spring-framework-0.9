@@ -8,11 +8,12 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 /**
- * MessageSource that 
+ * MessageSource that
  * <br/>This class is a JavaBean, exposing a 'basename'
  * property.
  * <br/>This class relies on the caching of the underlying
  * core library ResourceBundle implementation.
+ *
  * @author Rod Johnson
  * @version $RevisionId$
  */
@@ -29,10 +30,11 @@ public class ResourceBundleMessageSource extends AbstractNestingMessageSource {
 	 * Messages will normally be held in the /lib or /classes directory of a WAR.
 	 * They can also be held in Jars on the classpath. For example, a Jar in an
 	 * application's manifest classpath could contain messages for the application.
+	 *
 	 * @param basename basename, following ResourceBundle conventions
 	 * @see java.util.ResourceBundle
 	 */
-	public void setBasename(String basename)  {
+	public void setBasename(String basename) {
 		this.basename = basename;
 	}
 
@@ -57,7 +59,7 @@ public class ResourceBundleMessageSource extends AbstractNestingMessageSource {
 			return null;
 		}
 	}
-	
+
 	/**
 	 * Show the state of this object.
 	 */

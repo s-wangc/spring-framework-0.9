@@ -22,12 +22,12 @@ public abstract class TransactionCallbackWithoutResult implements TransactionCal
 	 * Does not need to care about transactions itself, although it can retrieve
 	 * and influence the status of the current transaction via the given status
 	 * object, e.g. setting rollback-only.
-	 *
+	 * <p>
 	 * Note when using JTA: JTA transactions only work with transactional
 	 * JNDI resources, so implementations need to use such resources if
 	 * they want transaction support.
 	 *
-	 * @param status  the associated transaction status
+	 * @param status the associated transaction status
 	 * @throws java.lang.RuntimeException if the transaction needs to be rolled back
 	 */
 	protected abstract void doInTransactionWithoutResult(TransactionStatus status) throws RuntimeException;

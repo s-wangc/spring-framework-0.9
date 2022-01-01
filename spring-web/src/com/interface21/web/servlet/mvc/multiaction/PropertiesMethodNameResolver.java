@@ -1,14 +1,14 @@
 /*
- * Generic framework code included with 
+ * Generic framework code included with
  * <a href="http://www.amazon.com/exec/obidos/tg/detail/-/1861007841/">Expert One-On-One J2EE Design and Development</a>
- * by Rod Johnson (Wrox, 2002). 
+ * by Rod Johnson (Wrox, 2002).
  * This code is free to use and modify. However, please
  * acknowledge the source and include the above URL in each
- * class using or derived from this code. 
+ * class using or derived from this code.
  * Please contact <a href="mailto:rod.johnson@interface21.com">rod.johnson@interface21.com</a>
  * for commercial support.
  */
- 
+
 package com.interface21.web.servlet.mvc.multiaction;
 
 import java.util.Properties;
@@ -22,7 +22,7 @@ import com.interface21.beans.factory.InitializingBean;
 import com.interface21.web.util.WebUtils;
 
 /**
- * The most sophisticated and useful framework implementation of 
+ * The most sophisticated and useful framework implementation of
  * the MethodNameResolver interface. Uses java.util.Properties
  * defining the mapping between the URL of incoming requests and
  * method name. Such properties can be held in an XML document.
@@ -37,12 +37,14 @@ import com.interface21.web.util.WebUtils;
  * @author Rod Johnson
  */
 public class PropertiesMethodNameResolver implements MethodNameResolver, InitializingBean {
-	
+
 	protected final Log logger = LogFactory.getLog(getClass());
 
 	private boolean alwaysUseFullPath = false;
 
-	/** Properties defining the mappings */
+	/**
+	 * Properties defining the mappings
+	 */
 	private Properties mappings;
 
 	/**
@@ -51,10 +53,11 @@ public class PropertiesMethodNameResolver implements MethodNameResolver, Initial
 	 */
 	public PropertiesMethodNameResolver() {
 	}
-	
+
 	/**
 	 * Create a new PropertiesMethodNameResolver, fully configuring this
 	 * class by passing in properties.
+	 *
 	 * @param mappings property mapping
 	 */
 	public PropertiesMethodNameResolver(Properties mappings) {
@@ -78,7 +81,7 @@ public class PropertiesMethodNameResolver implements MethodNameResolver, Initial
 	public void setMappings(Properties mappings) {
 		this.mappings = mappings;
 	}
-	
+
 	public void afterPropertiesSet() {
 		if (this.mappings == null) {
 			throw new IllegalArgumentException("'mappings' property is required");

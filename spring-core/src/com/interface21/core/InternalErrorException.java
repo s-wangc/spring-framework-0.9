@@ -5,6 +5,7 @@ package com.interface21.core;
  * Assertions are useful while debugging/testing the code, but a
  * different mechanism is needed to catch internal framework errors in
  * production.
+ *
  * @author Isabelle Muszynski
  * @since 5 April 2003
  */
@@ -20,6 +21,7 @@ public class InternalErrorException extends NestedRuntimeException {
 
 	/**
 	 * Constructor
+	 *
 	 * @param msg the exception message
 	 **/
 	public InternalErrorException(String msg) {
@@ -28,8 +30,9 @@ public class InternalErrorException extends NestedRuntimeException {
 
 	/**
 	 * Constructor
+	 *
 	 * @param msg the exception message
-	 * @param ex the nested exception
+	 * @param ex  the nested exception
 	 **/
 	public InternalErrorException(String msg, Throwable ex) {
 		super(msg, ex);

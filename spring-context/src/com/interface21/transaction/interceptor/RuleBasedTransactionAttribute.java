@@ -2,7 +2,7 @@
  * The Spring Framework is published under the terms
  * of the Apache Software License.
  */
- 
+
 package com.interface21.transaction.interceptor;
 
 import java.util.Iterator;
@@ -17,7 +17,7 @@ import com.interface21.transaction.interceptor.NoRollbackRuleAttribute;
 import com.interface21.transaction.interceptor.RollbackRuleAttribute;
 
 /**
- * TransactionAttribute implementation that works out whether a 
+ * TransactionAttribute implementation that works out whether a
  * given exception should cause transaction rollback by applying
  * a number of rollback rules, both positive and negative.
  * If no rules are relevant to the exception, it behaves
@@ -26,17 +26,20 @@ import com.interface21.transaction.interceptor.RollbackRuleAttribute;
  * <br>
  * The TransactionAttributeEditor property editor creates objects
  * of this class.
- * @since 09-Apr-2003
- * @version $Id: RuleBasedTransactionAttribute.java,v 1.1 2003/06/13 13:40:38 jhoeller Exp $
+ *
  * @author Rod Johnson
+ * @version $Id: RuleBasedTransactionAttribute.java,v 1.1 2003/06/13 13:40:38 jhoeller Exp $
+ * @since 09-Apr-2003
  */
 public class RuleBasedTransactionAttribute extends DefaultTransactionAttribute {
-	
+
 	protected final Log logger = LogFactory.getLog(getClass());
 
-	/** List of RollbackRule. May not be null after construction. */
+	/**
+	 * List of RollbackRule. May not be null after construction.
+	 */
 	private List rollbackRules;
-	
+
 	public RuleBasedTransactionAttribute(List rollbackRules) {
 		this(PROPAGATION_REQUIRED, ISOLATION_DEFAULT, rollbackRules);
 	}
@@ -57,15 +60,16 @@ public class RuleBasedTransactionAttribute extends DefaultTransactionAttribute {
 	 * Winning rule is the shallowest rule (that is, the closest
 	 * in the inheritance hierarchy to the exception). If no rule applies (-1),
 	 * return false.
+	 *
 	 * @see com.interface21.transaction.interceptor.TransactionAttribute#rollBackOn(java.lang.Throwable)
 	 */
 	public boolean rollBackOn(Throwable t) {
 		logger.debug("Applying rules to determine whether transaction should rollback on " + t);
 		RollbackRuleAttribute winner = null;
 		int deepest = Integer.MAX_VALUE;
-		for (Iterator iter = this.rollbackRules.iterator(); iter.hasNext();) {
+		for (Iterator iter = this.rollbackRules.iterator(); iter.hasNext(); ) {
 			Object next = iter.next();
-			
+
 			// Ignore elements of unknown type
 			if (next instanceof RollbackRuleAttribute) {
 				RollbackRuleAttribute rule = (RollbackRuleAttribute) next;
@@ -78,14 +82,14 @@ public class RuleBasedTransactionAttribute extends DefaultTransactionAttribute {
 			}
 		}
 		logger.debug("Winning rollback rule is " + winner);
-		
+
 		// User superclass behaviour (rollback on unchecked)
 		// if no rule matches
 		if (winner == null) {
 			logger.debug("No relevant rollback rule found: applying superclass default");
 			return super.rollBackOn(t);
 		}
-			
+
 		return !(winner instanceof NoRollbackRuleAttribute);
 	}
 

@@ -13,11 +13,14 @@ import java.lang.reflect.Method;
  */
 class StubInvocationHandler implements InvocationHandler, Serializable {
 
-	/** remote stub around the server-side RemoteInvocationWrapper */
+	/**
+	 * remote stub around the server-side RemoteInvocationWrapper
+	 */
 	private RemoteInvocationHandler stub;
 
 	/**
 	 * Create a new StubInvocationHandler.
+	 *
 	 * @param stub the remote object's stub.
 	 */
 	public StubInvocationHandler(RemoteInvocationHandler stub) {

@@ -41,9 +41,10 @@ import com.interface21.beans.factory.NoSuchBeanDefinitionException;
  * method.
  * This class handles resolution of runtime bean references,
  * FactoryBean dereferencing, and management of collection properties.
- * @author  Rod Johnson
- * @since 15 April 2001
+ *
+ * @author Rod Johnson
  * @version $Id: AbstractBeanFactory.java,v 1.19 2003/06/07 15:58:34 johnsonr Exp $
+ * @since 15 April 2001
  */
 public abstract class AbstractBeanFactory implements BeanFactory {
 
@@ -61,19 +62,29 @@ public abstract class AbstractBeanFactory implements BeanFactory {
 	// Instance data
 	//---------------------------------------------------------------------
 
-	/** parent bean factory, for bean inheritance support */
+	/**
+	 * parent bean factory, for bean inheritance support
+	 */
 	private BeanFactory parentBeanFactory;
 
-	/** Cache of shared instances. bean name --> bean instanced */
+	/**
+	 * Cache of shared instances. bean name --> bean instanced
+	 */
 	private Map sharedInstanceCache = new HashMap();
 
-	/** Logger available to subclasses */
+	/**
+	 * Logger available to subclasses
+	 */
 	protected final Log logger = LogFactory.getLog(getClass());
 
-	/** name of default parent bean */
+	/**
+	 * name of default parent bean
+	 */
 	protected String defaultParentBean;
-	
-	/** Map from alias to canonical bean name */
+
+	/**
+	 * Map from alias to canonical bean name
+	 */
 	private Map aliasMap = new HashMap();
 
 
@@ -89,7 +100,8 @@ public abstract class AbstractBeanFactory implements BeanFactory {
 
 	/**
 	 * Creates a new AbstractBeanFactory, with the given parent.
-	 * @param parentBeanFactory  the parent bean factory, or null if none
+	 *
+	 * @param parentBeanFactory the parent bean factory, or null if none
 	 * @see #getBean
 	 */
 	public AbstractBeanFactory(BeanFactory parentBeanFactory) {
@@ -111,10 +123,11 @@ public abstract class AbstractBeanFactory implements BeanFactory {
 	/**
 	 * All the other methods in this class invoke this method
 	 * although beans may be cached after being instantiated by this method
-	 * @param name name of the bean. Must be unique in the BeanFactory
+	 *
+	 * @param name              name of the bean. Must be unique in the BeanFactory
 	 * @param newlyCreatedBeans cache with newly created beans (name, instance)
-	 * if triggered by the creation of another bean, or null else
-	 * (necessary to resolve circular references)
+	 *                          if triggered by the creation of another bean, or null else
+	 *                          (necessary to resolve circular references)
 	 * @return a new instance of this bean
 	 */
 	private Object createBean(String name, Map newlyCreatedBeans) throws BeansException {
@@ -153,10 +166,11 @@ public abstract class AbstractBeanFactory implements BeanFactory {
 	 * method is synchronized here.
 	 * TODO: there probably isn't any need for this to be
 	 * synchronized, at least not if we pre-instantiate singletons.
-	 * @param pname name that may include factory dereference prefix
+	 *
+	 * @param pname             name that may include factory dereference prefix
 	 * @param newlyCreatedBeans cache with newly created beans (name, instance)
-	 * if triggered by the creation of another bean, or null else
-	 * (necessary to resolve circular references)
+	 *                          if triggered by the creation of another bean, or null else
+	 *                          (necessary to resolve circular references)
 	 */
 	private final synchronized Object getSharedInstance(String pname, Map newlyCreatedBeans) throws BeansException {
 		// Get rid of the dereference prefix if there is one
@@ -170,8 +184,7 @@ public abstract class AbstractBeanFactory implements BeanFactory {
 			}
 			beanInstance = createBean(name, newlyCreatedBeans);
 			this.sharedInstanceCache.put(name, beanInstance);
-		}
-		else {
+		} else {
 			if (logger.isDebugEnabled())
 				logger.debug("Returning cached instance of Singleton bean '" + name + "'");
 		}
@@ -200,12 +213,11 @@ public abstract class AbstractBeanFactory implements BeanFactory {
 				}
 				// Initialization is really up to factory
 				//invokeInitializerIfNecessary(beanInstance);
-			}
-			else {
+			} else {
 				// The user wants the factory itself
 				logger.debug("Calling code asked for BeanFactory instance for name '" + name + "'");
 			}
-		}	// if we're dealing with a factory bean
+		}    // if we're dealing with a factory bean
 
 		return beanInstance;
 	}
@@ -213,6 +225,7 @@ public abstract class AbstractBeanFactory implements BeanFactory {
 	/**
 	 * Return the bean with the given name,
 	 * checking the parent bean factory if not found.
+	 *
 	 * @param name name of the bean to retrieve
 	 */
 	public final Object getBean(String name) {
@@ -222,10 +235,11 @@ public abstract class AbstractBeanFactory implements BeanFactory {
 	/**
 	 * Return the bean with the given name,
 	 * checking the parent bean factory if not found.
-	 * @param name name of the bean to retrieve
+	 *
+	 * @param name              name of the bean to retrieve
 	 * @param newlyCreatedBeans cache with newly created beans (name, instance)
-	 * if triggered by the creation of another bean, or null else
-	 * (necessary to resolve circular references)
+	 *                          if triggered by the creation of another bean, or null else
+	 *                          (necessary to resolve circular references)
 	 */
 	private Object getBeanInternal(String name, Map newlyCreatedBeans) {
 		if (name == null)
@@ -236,8 +250,7 @@ public abstract class AbstractBeanFactory implements BeanFactory {
 		try {
 			AbstractBeanDefinition bd = getBeanDefinition(transformedBeanName(name));
 			return bd.isSingleton() ? getSharedInstance(name, newlyCreatedBeans) : createBean(name, newlyCreatedBeans);
-		}
-		catch (NoSuchBeanDefinitionException ex) {
+		} catch (NoSuchBeanDefinitionException ex) {
 			// not found -> check parent
 			if (this.parentBeanFactory != null)
 				return this.parentBeanFactory.getBean(name);
@@ -247,11 +260,12 @@ public abstract class AbstractBeanFactory implements BeanFactory {
 
 	/**
 	 * Return a shared instance of the given bean. Analogous to getBeanInstance(name, requiredType).
-	 * @param name name of the instance to return
+	 *
+	 * @param name         name of the instance to return
 	 * @param requiredType type the bean must match
 	 * @return a shared instance of the given bean
 	 * @throws BeanNotOfRequiredTypeException if the bean  not of the required type
-	 * @throws NoSuchBeanDefinitionException if there's no such bean definition
+	 * @throws NoSuchBeanDefinitionException  if there's no such bean definition
 	 */
 	public final Object getBean(String name, Class requiredType) throws BeansException {
 		Object bean = getBean(name);
@@ -267,8 +281,7 @@ public abstract class AbstractBeanFactory implements BeanFactory {
 	public boolean isSingleton(String name) throws NoSuchBeanDefinitionException {
 		try {
 			return getBeanDefinition(name).isSingleton();
-		}
-		catch (NoSuchBeanDefinitionException ex) {
+		} catch (NoSuchBeanDefinitionException ex) {
 			// not found -> check parent
 			if (this.parentBeanFactory != null)
 				return this.parentBeanFactory.isSingleton(name);
@@ -295,8 +308,7 @@ public abstract class AbstractBeanFactory implements BeanFactory {
 		if (bd instanceof RootBeanDefinition) {
 			RootBeanDefinition rbd = (RootBeanDefinition) bd;
 			instanceWrapper = rbd.getBeanWrapperForNewInstance();
-		}
-		else if (bd instanceof ChildBeanDefinition) {
+		} else if (bd instanceof ChildBeanDefinition) {
 			ChildBeanDefinition ibd = (ChildBeanDefinition) bd;
 			instanceWrapper = getBeanWrapperForNewInstance(ibd.getParentName(), newlyCreatedBeans);
 		}
@@ -314,12 +326,13 @@ public abstract class AbstractBeanFactory implements BeanFactory {
 	 * Apply the given property values, resolving any runtime references
 	 * to other beans in this bean factory.
 	 * Must use deep copy, so we don't permanently modify this property
-	 * @param bw BeanWrapper wrapping the target object
-	 * @param pvs new property values
-	 * @param name bean name passed for better exception information
+	 *
+	 * @param bw                BeanWrapper wrapping the target object
+	 * @param pvs               new property values
+	 * @param name              bean name passed for better exception information
 	 * @param newlyCreatedBeans cache with newly created beans (name, instance)
-	 * if triggered by the creation of another bean, or null else
-	 * (necessary to resolve circular references)
+	 *                          if triggered by the creation of another bean, or null else
+	 *                          (necessary to resolve circular references)
 	 */
 	private void applyPropertyValues(BeanWrapper bw, PropertyValues pvs, String name, Map newlyCreatedBeans) throws BeansException {
 		if (pvs == null)
@@ -327,18 +340,17 @@ public abstract class AbstractBeanFactory implements BeanFactory {
 
 		MutablePropertyValues deepCopy = new MutablePropertyValues(pvs);
 		PropertyValue[] pvals = deepCopy.getPropertyValues();
-		
+
 		for (int i = 0; i < pvals.length; i++) {
 			PropertyValue pv = new PropertyValue(pvals[i].getName(), resolveValueIfNecessary(bw, newlyCreatedBeans, pvals[i]));
 			// Update mutable copy
 			deepCopy.setPropertyValueAt(pv, i);
 		}
-		
+
 		// Set our (possibly massaged) deepCopy
 		try {
 			bw.setPropertyValues(deepCopy);
-		}
-		catch (FatalBeanException ex) {
+		} catch (FatalBeanException ex) {
 			// Improve the message by showing the context
 			throw new FatalBeanException("Error setting property on bean [" + name + "]", ex);
 		}
@@ -357,17 +369,16 @@ public abstract class AbstractBeanFactory implements BeanFactory {
 	 * the value must be placed in a list.
 	 */
 	private Object resolveValueIfNecessary(BeanWrapper bw, Map newlyCreatedBeans, PropertyValue pv)
-		throws BeansException {
+			throws BeansException {
 		Object val;
-		
+
 		// Now we must check each PropertyValue to see whether it
-		 // requires a runtime reference to another bean to be resolved.
-		 // If it does, we'll attempt to instantiate the bean and set the reference.
+		// requires a runtime reference to another bean to be resolved.
+		// If it does, we'll attempt to instantiate the bean and set the reference.
 		if (pv.getValue() != null && (pv.getValue() instanceof RuntimeBeanReference)) {
 			RuntimeBeanReference ref = (RuntimeBeanReference) pv.getValue();
 			val = resolveReference(pv.getName(), ref, newlyCreatedBeans);
-		}	
-		else if (pv.getValue() != null && (pv.getValue() instanceof ManagedList)) {
+		} else if (pv.getValue() != null && (pv.getValue() instanceof ManagedList)) {
 			// Convert from managed list. This is a special container that
 			// may contain runtime bean references.
 			// May need to resolve references
@@ -378,8 +389,7 @@ public abstract class AbstractBeanFactory implements BeanFactory {
 				}
 			}
 			val = l;
-		}
-		else if (pv.getValue() != null && (pv.getValue() instanceof ManagedMap)) {
+		} else if (pv.getValue() != null && (pv.getValue() instanceof ManagedMap)) {
 			// Convert from managed map. This is a special container that
 			// may contain runtime bean references as values.
 			// May need to resolve references
@@ -391,24 +401,23 @@ public abstract class AbstractBeanFactory implements BeanFactory {
 				if (value instanceof RuntimeBeanReference) {
 					mm.put(key, resolveReference(pv.getName(), (RuntimeBeanReference) value, newlyCreatedBeans));
 				}
-			}	// for each key in the managed map
+			}    // for each key in the managed map
 			val = mm;
-		}
-		else {
+		} else {
 			// It's an ordinary property. Just copy it.
 			val = pv.getValue();
 		}
-		
-		 // If it's an array type, we may have to massage type
-		 // of collection. We'll start with ManagedList.
-		 // We may also have to convert array elements from Strings
-		 // TODO consider refactoring into BeanWrapperImpl?
-		 if (val != null && val instanceof ManagedList && bw.getPropertyDescriptor(pv.getName()).getPropertyType().isArray()) {
-			 // It's an array
-			 Class arrayClass = bw.getPropertyDescriptor(pv.getName()).getPropertyType();
-			 Class componentType = arrayClass.getComponentType();
-			 List l = (List) val;
-		
+
+		// If it's an array type, we may have to massage type
+		// of collection. We'll start with ManagedList.
+		// We may also have to convert array elements from Strings
+		// TODO consider refactoring into BeanWrapperImpl?
+		if (val != null && val instanceof ManagedList && bw.getPropertyDescriptor(pv.getName()).getPropertyType().isArray()) {
+			// It's an array
+			Class arrayClass = bw.getPropertyDescriptor(pv.getName()).getPropertyType();
+			Class componentType = arrayClass.getComponentType();
+			List l = (List) val;
+
 			try {
 				Object[] arr = (Object[]) Array.newInstance(componentType, l.size());
 				for (int i = 0; i < l.size(); i++) {
@@ -417,15 +426,14 @@ public abstract class AbstractBeanFactory implements BeanFactory {
 					arr[i] = newval;
 				}
 				val = arr;
-			}
-			catch (ArrayStoreException ex) {
+			} catch (ArrayStoreException ex) {
 				throw new BeanDefinitionStoreException("Cannot convert array element from String to " + componentType, ex);
 			}
-		 }
-		
+		}
+
 		return val;
 	}
-	
+
 	/**
 	 * Resolve a reference to another bean in the factory
 	 */
@@ -436,8 +444,7 @@ public abstract class AbstractBeanFactory implements BeanFactory {
 			Object bean = getBeanInternal(ref.getBeanName(), newlyCreatedBeans);
 			// Create a new PropertyValue object holding the bean reference
 			return bean;
-		}
-		catch (BeansException ex) {
+		} catch (BeansException ex) {
 			throw new FatalBeanException("Can't resolve reference to bean [" + ref.getBeanName() + "] while setting properties on bean [" + name + "]", ex);
 		}
 	}
@@ -447,6 +454,7 @@ public abstract class AbstractBeanFactory implements BeanFactory {
 	 * and a chance to know about its owning bean factory (this object).
 	 * This means checking whether the bean implements InitializingBean
 	 * and/or Lifecycle, and invoking the necessary callback(s) if it does.
+	 *
 	 * @param bean new bean instance we may need to initialize
 	 * @param name the bean has in the factory. Used for debug output.
 	 */
@@ -455,11 +463,9 @@ public abstract class AbstractBeanFactory implements BeanFactory {
 			logger.debug("configureBeanInstance calling afterPropertiesSet on bean with name '" + name + "'");
 			try {
 				((InitializingBean) bean).afterPropertiesSet();
-			}
-			catch (BeansException ex) {
+			} catch (BeansException ex) {
 				throw ex;
-			}
-			catch (Exception ex) {
+			} catch (Exception ex) {
 				throw new FatalBeanException("afterPropertiesSet on with name '" + name + "' threw an exception", ex);
 			}
 		}
@@ -468,11 +474,9 @@ public abstract class AbstractBeanFactory implements BeanFactory {
 			logger.debug("configureBeanInstance calling setBeanFactory() on Lifecycle bean with name '" + name + "'");
 			try {
 				((Lifecycle) bean).setBeanFactory(this);
-			}
-			catch (BeansException ex) {
+			} catch (BeansException ex) {
 				throw ex;
-			}
-			catch (Exception ex) {
+			} catch (Exception ex) {
 				throw new FatalBeanException("Lifecycle method on bean with name '" + name + "' threw an exception", ex);
 			}
 		}
@@ -481,10 +485,11 @@ public abstract class AbstractBeanFactory implements BeanFactory {
 	/**
 	 * Convenience method for use by subclasses.
 	 * Resolves class, even by traversing parent if child definition.
-	 * @return the Class of this bean
+	 *
 	 * @param bd the BeanDefinition we want to check. This BeanDefinition
-	 * may not actually contain the class--this method may need to navigate
-	 * its ancestors to find the class.
+	 *           may not actually contain the class--this method may need to navigate
+	 *           its ancestors to find the class.
+	 * @return the Class of this bean
 	 */
 	protected final Class getBeanClass(AbstractBeanDefinition bd) {
 		if (bd instanceof RootBeanDefinition)
@@ -493,19 +498,19 @@ public abstract class AbstractBeanFactory implements BeanFactory {
 			ChildBeanDefinition cbd = (ChildBeanDefinition) bd;
 			try {
 				return getBeanClass(getBeanDefinition(cbd.getParentName()));
-			}
-			catch (NoSuchBeanDefinitionException ex) {
+			} catch (NoSuchBeanDefinitionException ex) {
 				throw new FatalBeanException("Shouldn't happen: BeanDefinition store corrupted: cannot resolve parent " + cbd.getParentName());
 			}
 		}
 		throw new FatalBeanException("Shouldn't happen: BeanDefinition " + bd + " is Neither a rootBeanDefinition or a ChildBeanDefinition");
 	}
-	
+
 	/**
 	 * Given a bean name, create an alias. This must respect prototype/
 	 * singleton behaviour. We typically use this method to support
 	 * names that are illegal within XML ids (used for bean names).
-	 * @param name name of the bean
+	 *
+	 * @param name  name of the bean
 	 * @param alias alias that will behave the same as the bean names
 	 */
 	public final void registerAlias(String name, String alias) {
@@ -515,7 +520,7 @@ public abstract class AbstractBeanFactory implements BeanFactory {
 
 	public final String[] getAliases(String name) {
 		List aliases = new ArrayList();
-		for (Iterator it = this.aliasMap.entrySet().iterator(); it.hasNext();) {
+		for (Iterator it = this.aliasMap.entrySet().iterator(); it.hasNext(); ) {
 			Map.Entry entry = (Map.Entry) it.next();
 			if (entry.getValue().equals(name)) {
 				aliases.add(entry.getKey());
@@ -534,6 +539,7 @@ public abstract class AbstractBeanFactory implements BeanFactory {
 	 * <b>Template Method</b> GoF design pattern.
 	 * <br>Subclasses should normally implement caching, as this method is invoked
 	 * by this class every time a bean is requested.
+	 *
 	 * @param beanName name of the bean to find a definition for
 	 * @return the BeanDefinition for this prototype name. Must never return null.
 	 * @throws NoSuchBeanDefinitionException if the bean definition cannot be resolved

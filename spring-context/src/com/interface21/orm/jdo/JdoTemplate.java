@@ -50,9 +50,9 @@ import com.interface21.dao.DataAccessException;
  * JNDI binding isn't supported by some application servers (e.g. Tomcat).
  *
  * @author Juergen Hoeller
- * @since 03.06.2003
  * @see JdoCallback
  * @see JdoTransactionManager
+ * @since 03.06.2003
  */
 public class JdoTemplate implements InitializingBean {
 
@@ -66,6 +66,7 @@ public class JdoTemplate implements InitializingBean {
 
 	/**
 	 * Create a new JdoTemplate instance.
+	 *
 	 * @param pmf PersistenceManagerFactory to create PersistenceManagers
 	 */
 	public JdoTemplate(PersistenceManagerFactory pmf) {
@@ -103,11 +104,12 @@ public class JdoTemplate implements InitializingBean {
 	 * i.e. a business object or a collection of business objects.
 	 * <p>Note: Callback code is not supposed to handle transactions itself!
 	 * Use an appropriate transaction manager like JdoTransactionManager.
+	 *
 	 * @param action action object that specifies the JDO action
 	 * @return a result object returned by the action, or null
 	 * @throws DataAccessException in case of JDO errors
-	 * @throws RuntimeException in case of application exceptions thrown by
-	 * the action object
+	 * @throws RuntimeException    in case of application exceptions thrown by
+	 *                             the action object
 	 * @see JdoTransactionManager
 	 * @see com.interface21.dao
 	 * @see com.interface21.transaction
@@ -116,15 +118,12 @@ public class JdoTemplate implements InitializingBean {
 		PersistenceManager pm = PersistenceManagerFactoryUtils.getPersistenceManager(this.persistenceManagerFactory, true);
 		try {
 			return action.doInJdo(pm);
-		}
-		catch (JDOException ex) {
+		} catch (JDOException ex) {
 			throw PersistenceManagerFactoryUtils.convertJdoAccessException(ex);
-		}
-		catch (RuntimeException ex) {
+		} catch (RuntimeException ex) {
 			// callback code threw application exception
 			throw ex;
-		}
-		finally {
+		} finally {
 			PersistenceManagerFactoryUtils.closePersistenceManagerIfNecessary(pm, this.persistenceManagerFactory);
 		}
 	}

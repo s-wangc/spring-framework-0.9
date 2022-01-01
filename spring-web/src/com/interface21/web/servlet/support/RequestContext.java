@@ -19,14 +19,14 @@ import com.interface21.web.util.HtmlUtils;
 /**
  * Context holder for request-specific state, like current web application context,
  * current locale, and possible binding errors.
- *
+ * <p>
  * Suitable for exposition to views, and usage within <jsp:useBean>, JSP scriptlets,
  * JSTL EL, Velocity templates, etc. Especially well-suited for views that do not
  * have access to the servlet request, like Velocity templates.
  *
  * @author Juergen Hoeller
- * @since 03.03.2003
  * @see com.interface21.web.servlet.view.AbstractView
+ * @since 03.03.2003
  */
 public class RequestContext {
 
@@ -50,6 +50,7 @@ public class RequestContext {
 	 * <p>This only works with InternalResourceViews, as Errors instances
 	 * are part of the model and not normally exposed as request attributes.
 	 * It will typically be used within JSPs or custom tags.
+	 *
 	 * @param request current HTTP request
 	 */
 	public RequestContext(HttpServletRequest request) throws ServletException {
@@ -61,8 +62,9 @@ public class RequestContext {
 	 * using the given model attributes for Errors retrieval.
 	 * <p>This works with all View implementations.
 	 * It will typically be used by View implementations.
+	 *
 	 * @param request current HTTP request
-	 * @param model the model attributes for the current view
+	 * @param model   the model attributes for the current view
 	 */
 	public RequestContext(HttpServletRequest request, Map model) throws ServletException {
 		this.request = request;
@@ -109,6 +111,7 @@ public class RequestContext {
 
 	/**
 	 * Retrieves the message for the given code, using the defaultHtmlEscape setting.
+	 *
 	 * @param code code of the message
 	 * @param args arguments for the message, or null if none
 	 * @return the message
@@ -119,8 +122,9 @@ public class RequestContext {
 
 	/**
 	 * Retrieves the message for the given code.
-	 * @param code code of the message
-	 * @param args arguments for the message, or null if none
+	 *
+	 * @param code       code of the message
+	 * @param args       arguments for the message, or null if none
 	 * @param htmlEscape HTML escape the message?
 	 * @return the message
 	 */
@@ -132,6 +136,7 @@ public class RequestContext {
 	/**
 	 * Retrieves the given MessageSourceResolvable (e.g. an ObjectError instance),
 	 * using the defaultHtmlEscape setting.
+	 *
 	 * @param resolvable the MessageSourceResolvable
 	 * @return the message
 	 */
@@ -141,6 +146,7 @@ public class RequestContext {
 
 	/**
 	 * Retrieves the given MessageSourceResolvable (e.g. an ObjectError instance).
+	 *
 	 * @param resolvable the MessageSourceResolvable
 	 * @param htmlEscape HTML escape the message?
 	 * @return the message
@@ -153,6 +159,7 @@ public class RequestContext {
 	/**
 	 * Retrieves the Errors instance for the given bind object,
 	 * using the defaultHtmlEscape setting.
+	 *
 	 * @param name name of the bind object
 	 * @return the Errors instance
 	 */
@@ -162,7 +169,8 @@ public class RequestContext {
 
 	/**
 	 * Retrieves the Errors instance for the given bind object.
-	 * @param name name of the bind object
+	 *
+	 * @param name       name of the bind object
 	 * @param htmlEscape create an Errors instance with automatic HTML escaping?
 	 * @return the Errors instance
 	 */
@@ -179,8 +187,7 @@ public class RequestContext {
 		if (htmlEscape && !(errors instanceof EscapedErrors)) {
 			errors = new EscapedErrors(errors);
 			put = true;
-		}
-		else if (!htmlEscape && errors instanceof EscapedErrors) {
+		} else if (!htmlEscape && errors instanceof EscapedErrors) {
 			errors = ((EscapedErrors) errors).getSource();
 			put = true;
 		}
@@ -198,8 +205,7 @@ public class RequestContext {
 		String key = BindException.ERROR_KEY_PREFIX + name;
 		if (this.model != null) {
 			return (Errors) this.model.get(key);
-		}
-		else {
+		} else {
 			return (Errors) this.request.getAttribute(key);
 		}
 	}

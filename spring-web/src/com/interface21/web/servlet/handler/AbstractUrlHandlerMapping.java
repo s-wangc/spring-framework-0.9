@@ -19,9 +19,9 @@ import com.interface21.beans.BeansException;
  * and "*" matches (given "/test" -> registered "/t*").
  *
  * @author Juergen Hoeller
- * @since 16.04.2003
  * @see #setAlwaysUseFullPath
  * @see #setDefaultHandler
+ * @since 16.04.2003
  */
 public abstract class AbstractUrlHandlerMapping extends AbstractHandlerMapping {
 
@@ -41,6 +41,7 @@ public abstract class AbstractUrlHandlerMapping extends AbstractHandlerMapping {
 
 	/**
 	 * Register the given handler instance for the given URL path.
+	 *
 	 * @param urlPath URL the bean is mapped to
 	 * @param handler the handler instance
 	 */
@@ -53,6 +54,7 @@ public abstract class AbstractUrlHandlerMapping extends AbstractHandlerMapping {
 	 * Lookup a handler instance for the given URL path.
 	 * Supports direct matches (given "/test" -> registered "/test")
 	 * and "*" matches (given "/test" -> registered "/t*").
+	 *
 	 * @param urlPath URL the bean is mapped to
 	 * @return the associated handler instance, or null if not found
 	 */
@@ -62,10 +64,10 @@ public abstract class AbstractUrlHandlerMapping extends AbstractHandlerMapping {
 			return handler;
 		}
 		// check for appropriate * mapping
-		for (Iterator it = this.handlerMap.keySet().iterator(); it.hasNext();) {
+		for (Iterator it = this.handlerMap.keySet().iterator(); it.hasNext(); ) {
 			String path = (String) it.next();
-			if (path.endsWith("*") && urlPath.length() >= path.length()-1) {
-				if (path.substring(0, path.length()-1).equals(urlPath.substring(0, path.length()-1))) {
+			if (path.endsWith("*") && urlPath.length() >= path.length() - 1) {
+				if (path.substring(0, path.length() - 1).equals(urlPath.substring(0, path.length() - 1))) {
 					return this.handlerMap.get(path);
 				}
 			}
@@ -77,8 +79,9 @@ public abstract class AbstractUrlHandlerMapping extends AbstractHandlerMapping {
 	/**
 	 * Initialize the handler object with the given name in the bean factory.
 	 * This includes setting the LocaleResolver and mapped URL if aware.
+	 *
 	 * @param beanName name of the bean in the application context
-	 * @param urlPath URL the bean is mapped to
+	 * @param urlPath  URL the bean is mapped to
 	 * @return the initialized handler instance
 	 * @throws ApplicationContextException if the bean wasn't found in the context
 	 */
@@ -90,8 +93,7 @@ public abstract class AbstractUrlHandlerMapping extends AbstractHandlerMapping {
 				((UrlAwareHandler) handler).setUrlMapping(urlPath);
 			}
 			return handler;
-		}
-		catch (BeansException ex) {
+		} catch (BeansException ex) {
 			// We don't need to worry about NoSuchBeanDefinitionException:
 			// we should have got the name from the bean factory.
 			throw new ApplicationContextException("Error initializing handler bean for URL mapping '" + beanName + "': " + ex.getMessage(), ex);
@@ -100,6 +102,7 @@ public abstract class AbstractUrlHandlerMapping extends AbstractHandlerMapping {
 
 	/**
 	 * Lookup a handler for the URL path of the given request.
+	 *
 	 * @param request current HTTP request
 	 * @return the looked up handler instance, or null
 	 */

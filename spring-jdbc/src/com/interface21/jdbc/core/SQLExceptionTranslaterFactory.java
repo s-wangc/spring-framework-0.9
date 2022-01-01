@@ -1,8 +1,8 @@
 /**
- * Generic framework code included with 
+ * Generic framework code included with
  * <a href="http://www.amazon.com/exec/obidos/tg/detail/-/1861007841/">Expert One-On-One J2EE Design and Development</a>
- * by Rod Johnson (Wrox, 2002). 
- * This code is free to use and modify. 
+ * by Rod Johnson (Wrox, 2002).
+ * This code is free to use and modify.
  * Please contact <a href="mailto:rod.johnson@interface21.com">rod.johnson@interface21.com</a>
  * for commercial support.
  */
@@ -31,10 +31,10 @@ import com.interface21.jdbc.datasource.DataSourceUtils;
  * Returns a SQLExceptionTranslator populated with vendor 
  * codes defined in a configuration file named "sql-error-codes.xml".
  * @author Thomas Risberg
-   @version $Id: SQLExceptionTranslaterFactory.java,v 1.6 2003/06/06 16:13:22 jhoeller Exp $
+ @version $Id: SQLExceptionTranslaterFactory.java,v 1.6 2003/06/06 16:13:22 jhoeller Exp $
  */
 public class SQLExceptionTranslaterFactory {
-	
+
 	protected final Log logger = LogFactory.getLog(getClass());
 
 	/**
@@ -43,18 +43,18 @@ public class SQLExceptionTranslaterFactory {
 	 */
 	public static final String SQL_ERROR_CODE_OVERRIDE_PATH = "/sql-error-codes.xml";
 	public static final String SQL_ERROR_CODE_DEFAULT_PATH = "sql-error-codes.xml";
-	
+
 	/**
-	* Keep track of this instance so we can return it to classes that request it.
-	*/
+	 * Keep track of this instance so we can return it to classes that request it.
+	 */
 	private static final SQLExceptionTranslaterFactory instance;
-	
+
 	/**
-	* Create a HashMap to hold error codes for all databases defined in the
-	* config file.
-	*/
+	 * Create a HashMap to hold error codes for all databases defined in the
+	 * config file.
+	 */
 	private Map rdbmsErrorCodes;
-	
+
 	/**
 	 * Not public to enforce Singleton design pattern
 	 */
@@ -63,11 +63,11 @@ public class SQLExceptionTranslaterFactory {
 			java.io.InputStream is = SQLExceptionTranslaterFactory.class.getResourceAsStream(SQL_ERROR_CODE_OVERRIDE_PATH);
 			if (is == null) {
 				is = SQLExceptionTranslaterFactory.class.getResourceAsStream(SQL_ERROR_CODE_DEFAULT_PATH);
-				if (is == null) 
-					throw new BeanDefinitionStoreException("Unable to locate file [" + SQL_ERROR_CODE_DEFAULT_PATH +"]",null);
+				if (is == null)
+					throw new BeanDefinitionStoreException("Unable to locate file [" + SQL_ERROR_CODE_DEFAULT_PATH + "]", null);
 			}
 			ListableBeanFactory bf = new XmlBeanFactory(is);
-			String[] rdbmsNames = bf.getBeanDefinitionNames(com.interface21.jdbc.core.SQLErrorCodes.class);			
+			String[] rdbmsNames = bf.getBeanDefinitionNames(com.interface21.jdbc.core.SQLErrorCodes.class);
 			rdbmsErrorCodes = new HashMap(rdbmsNames.length);
 			for (int i = 0; i < rdbmsNames.length; i++) {
 				SQLErrorCodes ec = (SQLErrorCodes) bf.getBean(rdbmsNames[i]);
@@ -81,13 +81,12 @@ public class SQLExceptionTranslaterFactory {
 					java.util.Arrays.sort(ec.getDataIntegrityViolationCodes());
 				rdbmsErrorCodes.put(rdbmsNames[i], ec);
 			}
-		}
-		catch (BeanDefinitionStoreException be) {
+		} catch (BeanDefinitionStoreException be) {
 			logger.warn("Error loading error codes from config file.  Message = " + be.getMessage());
 			rdbmsErrorCodes = new HashMap(0);
 		}
 	}
-		
+
 	static {
 		instance = new SQLExceptionTranslaterFactory();
 	}
@@ -100,7 +99,7 @@ public class SQLExceptionTranslaterFactory {
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	public SQLExceptionTranslater getDefaultTranslater(DataSource ds) {
 		String dbName = null;
@@ -108,41 +107,39 @@ public class SQLExceptionTranslaterFactory {
 		DatabaseMetaData dbmd = null;
 		try {
 			con = DataSourceUtils.getConnection(ds);
-			if (con != null) 
+			if (con != null)
 				dbmd = con.getMetaData();
 			if (dbmd != null)
 				dbName = dbmd.getDatabaseProductName();
 			if (dbName != null && dbName.startsWith("DB2/"))
 				dbName = "DB2";
-		}
-		catch (SQLException se) {
+		} catch (SQLException se) {
 			// this is bad - we probably lost the connection
 			return new SQLStateSQLExceptionTranslater();
-		}
-		finally {
+		} finally {
 			DataSourceUtils.closeConnectionIfNecessary(con, ds);
 		}
 		SQLErrorCodes sec = null;
 		if (dbName != null)
 			sec = (SQLErrorCodes) rdbmsErrorCodes.get(dbName);
-		
+
 		// could not find the database among the defined ones
-		if (sec == null) 
+		if (sec == null)
 			return new SQLStateSQLExceptionTranslater();
-			
+
 		SQLErrorCodeSQLExceptionTranslater set = new SQLErrorCodeSQLExceptionTranslater(sec);
 		return set;
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	public SQLErrorCodes getErrorCodes(String dbName) {
-		
+
 		SQLErrorCodes sec = (SQLErrorCodes) rdbmsErrorCodes.get(dbName);
-		
+
 		// could not find the database among the defined ones
-		if (sec == null) 
+		if (sec == null)
 			sec = new SQLErrorCodes();
 
 		return sec;

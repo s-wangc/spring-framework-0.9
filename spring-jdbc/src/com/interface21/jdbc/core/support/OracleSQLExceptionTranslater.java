@@ -1,8 +1,8 @@
 /**
- * Generic framework code included with 
+ * Generic framework code included with
  * <a href="http://www.amazon.com/exec/obidos/tg/detail/-/1861007841/">Expert One-On-One J2EE Design and Development</a>
- * by Rod Johnson (Wrox, 2002). 
- * This code is free to use and modify. 
+ * by Rod Johnson (Wrox, 2002).
+ * This code is free to use and modify.
  * Please contact <a href="mailto:rod.johnson@interface21.com">rod.johnson@interface21.com</a>
  * for commercial support.
  */
@@ -37,27 +37,26 @@ public class OracleSQLExceptionTranslater implements SQLExceptionTranslater {
 	 */
 	public DataAccessException translate(String task, String sql, SQLException sqlex) {
 		switch (sqlex.getErrorCode()) {
-			case 1 :
+			case 1:
 				// Unique constraint violated
 				return new DataIntegrityViolationException(task + ": " + sqlex.getMessage(), sqlex);
-			
+
 			case 1400:
 				// 	Can't insert null into non-nullable column
 				return new DataIntegrityViolationException(task + ": " + sqlex.getMessage(), sqlex);
-			case 936 : 
-					// missing expression
-					return new BadSqlGrammarException(task, sql, sqlex);
-			case 942 :
-					// table or view does not ex
-			 return new BadSqlGrammarException(task, sql, sqlex);
+			case 936:
+				// missing expression
+				return new BadSqlGrammarException(task, sql, sqlex);
+			case 942:
+				// table or view does not ex
+				return new BadSqlGrammarException(task, sql, sqlex);
 		}
 
 		// We couldn't identify it more precisely
 		return new UncategorizedSQLException("(" + task +
-			"): encountered SQLException [" + 
-			sqlex.getMessage() + "]", sql, sqlex);
+				"): encountered SQLException [" +
+				sqlex.getMessage() + "]", sql, sqlex);
 	}
-
 
 
 }

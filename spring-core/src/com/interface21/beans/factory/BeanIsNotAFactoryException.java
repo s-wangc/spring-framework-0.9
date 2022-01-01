@@ -2,7 +2,7 @@
  * The Spring Framework is published under the terms
  * of the Apache Software License.
  */
- 
+
 package com.interface21.beans.factory;
 
 /**
@@ -10,10 +10,11 @@ package com.interface21.beans.factory;
  * but a user tries to get at the factory for the given bean name.
  * Whether a bean is a factory is determined by whether it implements
  * the FactoryBean interface.
+ *
  * @author Rod Johnson
- * @since 10-Mar-2003
- * @see com.interface21.beans.factory.FactoryBean
  * @version $Revision: 1.1 $
+ * @see com.interface21.beans.factory.FactoryBean
+ * @since 10-Mar-2003
  */
 public class BeanIsNotAFactoryException extends BeanNotOfRequiredTypeException {
 

@@ -7,9 +7,9 @@ import com.interface21.jdbc.datasource.ConnectionHolder;
  * Used as transaction object by DataSourceTransactionManager.
  *
  * @author Juergen Hoeller
- * @since 02.05.2003
  * @see com.interface21.transaction.datasource.DataSourceTransactionManager
  * @see com.interface21.jdbc.datasource.ConnectionHolder
+ * @since 02.05.2003
  */
 public class DataSourceTransactionObject {
 

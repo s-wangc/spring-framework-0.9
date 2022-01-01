@@ -15,11 +15,12 @@ import com.interface21.beans.MutablePropertyValues;
  * Each property must be on a new line.
  * <br>
  * The present implementation relies on a PropertiesEditor.
+ *
  * @author Rod Johnson
  */
 public class PropertyValuesEditor extends PropertyEditorSupport {
-	
-	
+
+
 	/**
 	 * @see java.beans.PropertyEditor#setAsText(String)
 	 */

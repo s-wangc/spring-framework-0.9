@@ -20,8 +20,8 @@ import com.interface21.beans.factory.FactoryBean;
  * used for test setups, standalone clients, etc.
  *
  * @author Juergen Hoeller
- * @since 22.05.2003
  * @see com.interface21.jdbc.core.JdbcTemplate#setDataSource
+ * @since 22.05.2003
  */
 public class JndiObjectFactoryBean extends AbstractJndiLocator implements FactoryBean {
 

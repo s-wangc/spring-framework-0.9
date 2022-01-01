@@ -6,6 +6,7 @@ package com.interface21.beans;
  * path encounters a null pointer exception. For example,
  * navigating spouse.age fails because the spouse property of the
  * target object has a null value.
+ *
  * @author Rod Johnson
  */
 public class NullValueInNestedPathException extends FatalBeanException {
@@ -16,6 +17,7 @@ public class NullValueInNestedPathException extends FatalBeanException {
 
 	/**
 	 * Constructor for NullValueInNestedPathException.
+	 *
 	 * @param clazz
 	 * @param propertyName
 	 */

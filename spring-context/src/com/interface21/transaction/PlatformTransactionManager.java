@@ -17,13 +17,13 @@ package com.interface21.transaction;
  *
  * @author Rod Johnson
  * @author Juergen Hoeller
- * @since 16-Mar-2003
  * @version $Revision: 1.6 $
  * @see com.interface21.transaction.support.TransactionTemplate
  * @see com.interface21.aop.interceptor.transaction.TransactionInterceptor
  * @see com.interface21.transaction.support.AbstractPlatformTransactionManager
  * @see com.interface21.transaction.datasource.DataSourceTransactionManager
  * @see com.interface21.transaction.jta.JtaTransactionManager
+ * @since 16-Mar-2003
  */
 public interface PlatformTransactionManager {
 
@@ -34,13 +34,14 @@ public interface PlatformTransactionManager {
 	 * Furthermore, they aren't supported by every transaction manager:
 	 * A proper implementation should thrown an exception when custom values
 	 * that it doesn't support are specified.
+	 *
 	 * @param definition TransactionDefinition instance (can be null for defaults),
-	 * describing propagation behavior, isolation level, timeout etc.
+	 *                   describing propagation behavior, isolation level, timeout etc.
 	 * @return transaction status object representing the new or current transaction
 	 * @throws TransactionException in case of lookup, creation, or system errors
 	 */
 	TransactionStatus getTransaction(TransactionDefinition definition)
-	    throws TransactionException;
+			throws TransactionException;
 
 	/**
 	 * Commit the given transaction, with regard to its status.
@@ -48,6 +49,7 @@ public interface PlatformTransactionManager {
 	 * perform a rollback.
 	 * If the transaction wasn't a new one, omit the commit
 	 * to take part in the surrounding transaction properly.
+	 *
 	 * @param status object returned by the getTransaction() method.
 	 * @throws TransactionException in case of commit or system errors
 	 */
@@ -57,6 +59,7 @@ public interface PlatformTransactionManager {
 	 * Roll back the given transaction, with regard to its status.
 	 * If the transaction wasn't a new one, just set it rollback-only
 	 * to take part in the surrounding transaction properly.
+	 *
 	 * @param status object returned by the getTransaction() method.
 	 * @throws TransactionException in case of system errors
 	 */

@@ -15,9 +15,9 @@ import com.interface21.dao.UncategorizedDataAccessException;
  * the particular data access strategy used by the service implementations.
  *
  * @author Juergen Hoeller
- * @since 02.05.2003
  * @see HibernateTemplate
  * @see com.interface21.dao
+ * @since 02.05.2003
  */
 public class HibernateSystemException extends UncategorizedDataAccessException {
 

@@ -9,6 +9,7 @@ import com.interface21.context.NoSuchMessageException;
 
 /**
  * Allows for accessing a MessageSource as a ResourceBundle.
+ *
  * @author Juergen Hoeller
  * @since 27.02.2003
  */

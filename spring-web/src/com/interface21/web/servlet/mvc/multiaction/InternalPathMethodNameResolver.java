@@ -21,7 +21,7 @@ import com.interface21.web.util.WebUtils;
  *
  * @author Rod Johnson
  * @author Juergen Hoeller
-*/
+ */
 public class InternalPathMethodNameResolver implements MethodNameResolver {
 
 	protected final Log logger = LogFactory.getLog(getClass());
@@ -32,7 +32,7 @@ public class InternalPathMethodNameResolver implements MethodNameResolver {
 		// look at resource name after last slash
 		int slashIndex = name.lastIndexOf('/');
 		if (slashIndex != -1) {
-			name = name.substring(slashIndex+1);
+			name = name.substring(slashIndex + 1);
 		}
 		// ignore extension
 		int dotIndex = name.lastIndexOf('.');

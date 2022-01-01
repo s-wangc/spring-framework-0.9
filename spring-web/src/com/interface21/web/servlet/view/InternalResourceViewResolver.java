@@ -31,13 +31,13 @@ import com.interface21.web.servlet.View;
  * a symbolic view name to different resources depending on the current locale.
  *
  * @author Juergen Hoeller
- * @since 17.02.2003
  * @see #setViewClass
  * @see #setPrefix
  * @see #setSuffix
  * @see #setRequestContextAttribute
  * @see InternalResourceView
  * @see JstlView
+ * @since 17.02.2003
  */
 public class InternalResourceViewResolver extends AbstractCachingViewResolver {
 
@@ -51,6 +51,7 @@ public class InternalResourceViewResolver extends AbstractCachingViewResolver {
 
 	/**
 	 * Set the view class that should be used to create views.
+	 *
 	 * @param viewClass class that is assignable to InternalResourceView
 	 */
 	public void setViewClass(Class viewClass) {
@@ -62,6 +63,7 @@ public class InternalResourceViewResolver extends AbstractCachingViewResolver {
 
 	/**
 	 * Set the prefix that gets applied to view names when building a URL.
+	 *
 	 * @param prefix view name prefix
 	 */
 	public void setPrefix(String prefix) {
@@ -70,6 +72,7 @@ public class InternalResourceViewResolver extends AbstractCachingViewResolver {
 
 	/**
 	 * Set the suffix that gets applied to view names when building a URL.
+	 *
 	 * @param suffix view name suffix
 	 */
 	public void setSuffix(String suffix) {
@@ -79,6 +82,7 @@ public class InternalResourceViewResolver extends AbstractCachingViewResolver {
 	/**
 	 * Set the name of the RequestContext attribute for all views,
 	 * or null if not needed.
+	 *
 	 * @param requestContextAttribute name of the RequestContext attribute
 	 */
 	public void setRequestContextAttribute(String requestContextAttribute) {
@@ -91,11 +95,9 @@ public class InternalResourceViewResolver extends AbstractCachingViewResolver {
 			view.setUrl(this.prefix + viewName + this.suffix);
 			view.setRequestContextAttribute(this.requestContextAttribute);
 			return view;
-		}
-		catch (InstantiationException ex) {
+		} catch (InstantiationException ex) {
 			throw new ServletException("Cannot instantiate view class", ex);
-		}
-		catch (IllegalAccessException ex) {
+		} catch (IllegalAccessException ex) {
 			throw new ServletException("Cannot access view class", ex);
 		}
 	}

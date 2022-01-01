@@ -18,9 +18,9 @@ import java.util.Date;
  * implementation of BaseCommandController's initBinder method.
  *
  * @author Juergen Hoeller
- * @since 28.04.2003
  * @see com.interface21.validation.DataBinder#registerCustomEditor
  * @see com.interface21.web.servlet.mvc.BaseCommandController#initBinder
+ * @since 28.04.2003
  */
 public class CustomDateEditor extends PropertyEditorSupport {
 
@@ -34,6 +34,7 @@ public class CustomDateEditor extends PropertyEditorSupport {
 	 * <p>The allowEmpty parameter states if an empty String should
 	 * be allowed for parsing, i.e. get interpreted as null value.
 	 * Else, an IllegalArgumentException gets thrown in that case.
+	 *
 	 * @param dateFormat DateFormat to use for parsing and rendering
 	 * @param allowEmpty if empty strings should be allowed
 	 */
@@ -49,12 +50,10 @@ public class CustomDateEditor extends PropertyEditorSupport {
 		if (this.allowEmpty && text.trim().equals("")) {
 			// treat empty String as null value
 			setValue(null);
-		}
-		else {
+		} else {
 			try {
 				setValue(this.dateFormat.parse(text));
-			}
-			catch (ParseException ex) {
+			} catch (ParseException ex) {
 				throw new IllegalArgumentException("Could not parse date: " + ex.getMessage());
 			}
 		}

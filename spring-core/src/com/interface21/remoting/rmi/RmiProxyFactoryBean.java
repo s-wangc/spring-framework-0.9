@@ -33,10 +33,10 @@ import com.interface21.remoting.support.RemoteProxyFactoryBean;
  * HTTP-based and thus much easier to setup than RMI.
  *
  * @author Juergen Hoeller
- * @since 13.05.2003
  * @see RmiServiceExporter
  * @see RemoteInvocationHandler
  * @see RemoteInvocationWrapper
+ * @since 13.05.2003
  */
 public class RmiProxyFactoryBean extends RemoteProxyFactoryBean {
 
@@ -56,18 +56,15 @@ public class RmiProxyFactoryBean extends RemoteProxyFactoryBean {
 				public Object invoke(MethodInvocation invocation) throws Throwable {
 					try {
 						return invocation.invokeNext();
-					}
-					catch (UndeclaredThrowableException ex) {
+					} catch (UndeclaredThrowableException ex) {
 						throw new RemoteAccessException("Error on remote access", ex.getUndeclaredThrowable());
 					}
 				}
 			});
 			return pf.getProxy();
-		}
-		catch (RemoteException ex) {
+		} catch (RemoteException ex) {
 			throw new RemoteAccessException("Cannot contact RMI registry", ex);
-		}
-		catch (NotBoundException ex) {
+		} catch (NotBoundException ex) {
 			throw new RemoteAccessException("Requested RMI object not bound", ex);
 		}
 	}

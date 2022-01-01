@@ -38,8 +38,9 @@ public class MockInitialContextFactoryBuilder implements InitialContextFactoryBu
 
 	/**
 	 * Initialize the context builder by registering it with the JNDI NamingManager.
+	 *
 	 * @throws NamingException if there's already a naming context builder
-	 * registered with the JNDI NamingManager
+	 *                         registered with the JNDI NamingManager
 	 */
 	public static void init() throws NamingException {
 		NamingManager.setInitialContextFactoryBuilder(new MockInitialContextFactoryBuilder());
@@ -48,8 +49,9 @@ public class MockInitialContextFactoryBuilder implements InitialContextFactoryBu
 	/**
 	 * Bind the given object under the given name, for all naming contexts
 	 * that this context builder will generate.
+	 *
 	 * @param name the JNDI name of the object (e.g. "java:comp/env/jdbc/myds")
-	 * @param obj the object to bind (e.g. a DataSource implementation)
+	 * @param obj  the object to bind (e.g. a DataSource implementation)
 	 */
 	public static void bind(String name, Object obj) {
 		logger.info("Static JNDI binding: '" + name + "'='" + obj + "'");
@@ -60,17 +62,17 @@ public class MockInitialContextFactoryBuilder implements InitialContextFactoryBu
 	public MockInitialContextFactoryBuilder() {
 		super();
 	}
-	
+
 	public InitialContextFactory createInitialContextFactory(Hashtable props) throws NamingException {
 		return new MockInitialContextFactory();
 	}
 
 
 	private class MockInitialContextFactory implements InitialContextFactory {
-		
+
 		public MockInitialContextFactory() {
 		}
-		
+
 		public Context getInitialContext(Hashtable newProps) throws NamingException {
 			// no newProps support, to be able to share the main Hashtable instance
 			return new MockContext(boundObjects);

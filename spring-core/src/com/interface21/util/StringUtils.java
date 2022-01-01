@@ -24,14 +24,16 @@ import java.util.TreeSet;
  * replace all occurrences of a given substring in a target string.
  * It also provides easy-to-use methods to convert between delimited
  * strings, such as CSV strings, and collections and arrays.
- * @author  Rod Johnson
+ *
+ * @author Rod Johnson
  * @since 16 April 2001
  */
 public abstract class StringUtils {
 
 	/**
 	 * Count the occurrences of the substring in string s
-	 * @param s string to search in. Returns 0 if this is null
+	 *
+	 * @param s   string to search in. Returns 0 if this is null
 	 * @param sub string to search for. Return 0 if this is null.
 	 */
 	public static int countOccurrencesOf(String s, String sub) {
@@ -47,7 +49,8 @@ public abstract class StringUtils {
 
 	/**
 	 * Replaces all occurences of a substring within a string with another string.
-	 * @param inString String to examine
+	 *
+	 * @param inString   String to examine
 	 * @param oldPattern String to replace
 	 * @param newPattern String to insert
 	 * @return a String with the replacements
@@ -76,6 +79,7 @@ public abstract class StringUtils {
 
 	/**
 	 * Delete all occurrences of the given substring.
+	 *
 	 * @param pattern pattern to delete all occurrences of
 	 */
 	public static String delete(String inString, String pattern) {
@@ -84,6 +88,7 @@ public abstract class StringUtils {
 
 	/**
 	 * Delete any character in a given string.
+	 *
 	 * @param chars characters to delete e.g. az\n will delete as, zs and new lines
 	 */
 	public static String deleteAny(String inString, String chars) {
@@ -102,7 +107,8 @@ public abstract class StringUtils {
 
 	/**
 	 * Take a String which is a delimited list and convert it to a String array
-	 * @param s String
+	 *
+	 * @param s         String
 	 * @param delimiter delimiter. This will not be returned
 	 * @return an array of the tokens in the list
 	 */
@@ -140,6 +146,7 @@ public abstract class StringUtils {
 
 	/**
 	 * Convert a CSV list into an array of Strings
+	 *
 	 * @param s CSV list
 	 * @return an array of Strings. Returns the empty array if
 	 * s is null.
@@ -152,6 +159,7 @@ public abstract class StringUtils {
 	/**
 	 * Convenience method to convert a CSV string list to a set. Note that
 	 * this will suppress duplicates.
+	 *
 	 * @param s CSV String
 	 * @return a Set of String entries in the list
 	 */
@@ -167,8 +175,9 @@ public abstract class StringUtils {
 	/**
 	 * Convenience method to return a String array as a delimited (e.g. CSV)
 	 * String. Useful for toString() implementations
-	 * @param arr array to display. Elements may be of any type (toString() will be
-	 * called on each element).
+	 *
+	 * @param arr   array to display. Elements may be of any type (toString() will be
+	 *              called on each element).
 	 * @param delim delimiter to use (probably a ,)
 	 */
 	public static String arrayToDelimitedString(Object[] arr, String delim) {
@@ -189,7 +198,8 @@ public abstract class StringUtils {
 	/**
 	 * Convenience method to return a Collection as a delimited (e.g. CSV)
 	 * String. Useful for toString() implementations
-	 * @param c Collection to display
+	 *
+	 * @param c     Collection to display
 	 * @param delim delimiter to use (probably a ",")
 	 */
 	public static String collectionToDelimitedString(Collection c, String delim) {
@@ -202,7 +212,8 @@ public abstract class StringUtils {
 	/**
 	 * Convenience method to return a Collection as a delimited (e.g. CSV)
 	 * String. Useful for toString() implementations
-	 * @param itr Iterator of the collection to display
+	 *
+	 * @param itr   Iterator of the collection to display
 	 * @param delim delimiter to use (probably a ,)
 	 */
 	public static String iteratorToDelimitedString(Iterator itr, String delim) {

@@ -1,10 +1,10 @@
 /**
- * Generic framework code included with 
+ * Generic framework code included with
  * <a href="http://www.amazon.com/exec/obidos/tg/detail/-/1861007841/">Expert One-On-One J2EE Design and Development</a>
- * by Rod Johnson (Wrox, 2002). 
+ * by Rod Johnson (Wrox, 2002).
  * This code is free to use and modify. However, please
  * acknowledge the source and include the above URL in each
- * class using or derived from this code. 
+ * class using or derived from this code.
  * Please contact <a href="mailto:rod.johnson@interface21.com">rod.johnson@interface21.com</a>
  * for commercial support.
  */
@@ -123,7 +123,7 @@ public abstract class BaseCommandController extends AbstractController {
 	private void checkValidator(Validator validator, Class commandClass) throws IllegalArgumentException {
 		if (validator != null && commandClass != null && !validator.supports(commandClass))
 			throw new IllegalArgumentException(
-				"Validator [" + validator + "] can't validate command class of type " + commandClass);
+					"Validator [" + validator + "] can't validate command class of type " + commandClass);
 	}
 
 	/**
@@ -145,14 +145,14 @@ public abstract class BaseCommandController extends AbstractController {
 		logger.info("Must create new command of " + commandClass);
 		try {
 			return commandClass.newInstance();
-		}	catch (InstantiationException ex) {
+		} catch (InstantiationException ex) {
 			throw new ServletException(
-				"Cannot instantiate command " + commandClass + "; does it have a public no arg constructor?",
-				ex);
+					"Cannot instantiate command " + commandClass + "; does it have a public no arg constructor?",
+					ex);
 		} catch (IllegalAccessException ex) {
 			throw new ServletException(
-				"Cannot instantiate command " + commandClass + "; cannot access constructor",
-				ex);
+					"Cannot instantiate command " + commandClass + "; cannot access constructor",
+					ex);
 		}
 	}
 
@@ -222,7 +222,7 @@ public abstract class BaseCommandController extends AbstractController {
 	 * @see #bindAndValidate
 	 */
 	protected void onBindAndValidate(HttpServletRequest request, Object command, BindException errors)
-	    throws ServletException {
+			throws ServletException {
 	}
 
 }

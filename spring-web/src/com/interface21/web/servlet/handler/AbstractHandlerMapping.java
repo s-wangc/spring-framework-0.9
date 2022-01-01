@@ -18,9 +18,10 @@ import com.interface21.web.servlet.HandlerMapping;
  * Abstract base class for HandlerMapping implementations.
  * Provides the basic infrastructure and a handler initialization method that
  * cares about LocaleResolver. Supports a default handler.
+ *
  * @author Juergen Hoeller
- * @since 07.04.2003
  * @see #getHandlerInternal
+ * @since 07.04.2003
  */
 public abstract class AbstractHandlerMapping extends ApplicationObjectSupport implements HandlerMapping, Ordered {
 
@@ -33,15 +34,16 @@ public abstract class AbstractHandlerMapping extends ApplicationObjectSupport im
 	private List interceptors;
 
 	public void setOrder(int order) {
-	  this.order = order;
+		this.order = order;
 	}
 
 	public int getOrder() {
-	  return order;
+		return order;
 	}
 
 	/**
 	 * Set the default handler.
+	 *
 	 * @param defaultHandler default handler instance, or null if none
 	 */
 	public void setDefaultHandler(Object defaultHandler) {
@@ -51,6 +53,7 @@ public abstract class AbstractHandlerMapping extends ApplicationObjectSupport im
 
 	/**
 	 * Return the default handler.
+	 *
 	 * @return the default handler instance, or null if none
 	 */
 	public Object getDefaultHandler() {
@@ -64,6 +67,7 @@ public abstract class AbstractHandlerMapping extends ApplicationObjectSupport im
 	/**
 	 * Lookup a handler for the given request, falling back to the default
 	 * handler if no specific one is found.
+	 *
 	 * @param request current HTTP request
 	 * @return the looked up handler instance, or the default handler
 	 */
@@ -86,6 +90,7 @@ public abstract class AbstractHandlerMapping extends ApplicationObjectSupport im
 	 * Lookup a handler for the given request, returning null if no specific
 	 * one is found. This method is evaluated by getHandler, a null return
 	 * value will lead to the default handler, if one is set.
+	 *
 	 * @param request current HTTP request
 	 * @return the looked up handler instance, or null
 	 */

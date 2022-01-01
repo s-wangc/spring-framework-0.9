@@ -11,8 +11,8 @@ import org.apache.log4j.xml.DOMConfigurator;
  * Convenience class that features simple methods for custom Log4J configuration.
  *
  * @author Juergen Hoeller
- * @since 13.03.2003
  * @see com.interface21.web.util.Log4jConfigListener
+ * @since 13.03.2003
  */
 public abstract class Log4jConfigurer {
 
@@ -23,7 +23,8 @@ public abstract class Log4jConfigurer {
 	/**
 	 * Initialize Log4J with the given configuration.
 	 * Assumes an XML file in case of a ".xml" file extension.
-	 * @param location location of the config file
+	 *
+	 * @param location        location of the config file
 	 * @param refreshInterval interval between config file refresh checks
 	 * @throws FileNotFoundException if the location specifies an invalid file path
 	 */
@@ -40,6 +41,7 @@ public abstract class Log4jConfigurer {
 
 	/**
 	 * Initialize Log4J with the given configuration and the default refresh interval.
+	 *
 	 * @param location location of the property config file
 	 * @throws FileNotFoundException if the location specifies an invalid file path
 	 */
@@ -51,6 +53,7 @@ public abstract class Log4jConfigurer {
 	 * Set the specified system property to the current working directory.
 	 * This can be used e.g. for test environments, for applications that leverage
 	 * Log4jConfigListener's "webAppRootKey" support in a web environment.
+	 *
 	 * @param key system property key to use
 	 * @see com.interface21.web.util.Log4jConfigListener
 	 */

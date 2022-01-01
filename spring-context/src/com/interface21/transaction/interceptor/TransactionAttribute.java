@@ -2,7 +2,7 @@
  * The Spring Framework is published under the terms
  * of the Apache Software License.
  */
- 
+
 package com.interface21.transaction.interceptor;
 
 import com.interface21.transaction.TransactionDefinition;
@@ -13,17 +13,18 @@ import com.interface21.transaction.TransactionDefinition;
  * in the AOP transaction package.
  *
  * @author Rod Johnson
- * @since 16-Mar-2003
  * @version $Revision: 1.1 $
  * @see com.interface21.transaction.interceptor.DefaultTransactionAttribute
+ * @since 16-Mar-2003
  */
 public interface TransactionAttribute extends TransactionDefinition {
-	
+
 	/**
 	 * Should we roll back on a checked exception?
+	 *
 	 * @param ex the exception to evaluate
 	 * @return boolean rollback or not
 	 */
 	boolean rollBackOn(Throwable ex);
-	
+
 }

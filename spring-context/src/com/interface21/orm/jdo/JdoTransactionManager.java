@@ -37,11 +37,11 @@ import com.interface21.transaction.support.AbstractPlatformTransactionManager;
  * Hibernate's transactional JVM-level cache.
  *
  * @author Juergen Hoeller
- * @since 03.06.2003
  * @see PersistenceManagerFactoryUtils#getPersistenceManager
  * @see PersistenceManagerFactoryUtils#closePersistenceManagerIfNecessary
  * @see JdoTemplate#execute
  * @see com.interface21.orm.hibernate.HibernateTransactionManager
+ * @since 03.06.2003
  */
 public class JdoTransactionManager extends AbstractPlatformTransactionManager implements InitializingBean {
 
@@ -50,6 +50,7 @@ public class JdoTransactionManager extends AbstractPlatformTransactionManager im
 	/**
 	 * Create a new JdoTransactionManager instance.
 	 * A PersistenceManagerFactory has to be set to be able to use it.
+	 *
 	 * @see #setPersistenceManagerFactory
 	 */
 	public JdoTransactionManager() {
@@ -57,6 +58,7 @@ public class JdoTransactionManager extends AbstractPlatformTransactionManager im
 
 	/**
 	 * Create a new JdoTransactionManager instance.
+	 *
 	 * @param pmf PersistenceManagerFactory to manage transactions for
 	 */
 	public JdoTransactionManager(PersistenceManagerFactory pmf) {
@@ -89,8 +91,7 @@ public class JdoTransactionManager extends AbstractPlatformTransactionManager im
 			logger.debug("Found thread-bound PersistenceManager for JDO transaction");
 			PersistenceManagerHolder pmHolder = (PersistenceManagerHolder) PersistenceManagerFactoryUtils.getThreadObjectManager().getThreadObject(this.persistenceManagerFactory);
 			return new JdoTransactionObject(pmHolder, false);
-		}
-		else {
+		} else {
 			logger.debug("Using new PersistenceManager for JDO transaction");
 			PersistenceManager pm = PersistenceManagerFactoryUtils.getPersistenceManager(this.persistenceManagerFactory, true);
 			return new JdoTransactionObject(new PersistenceManagerHolder(pm), true);
@@ -117,8 +118,7 @@ public class JdoTransactionManager extends AbstractPlatformTransactionManager im
 				PersistenceManagerFactoryUtils.getThreadObjectManager().bindThreadObject(
 						this.persistenceManagerFactory, txObject.getPersistenceManagerHolder());
 			}
-		}
-		catch (JDOException ex) {
+		} catch (JDOException ex) {
 			throw new CannotCreateTransactionException("Cannot create JDO transaction", ex);
 		}
 	}
@@ -128,16 +128,13 @@ public class JdoTransactionManager extends AbstractPlatformTransactionManager im
 		if (txObject.getPersistenceManagerHolder().isRollbackOnly()) {
 			// nested JDO transaction demanded rollback-only
 			doRollback(status);
-		}
-		else {
+		} else {
 			logger.debug("Committing JDO transaction");
 			try {
 				txObject.getPersistenceManagerHolder().getPersistenceManager().currentTransaction().commit();
-			}
-			catch (JDOException ex) {
+			} catch (JDOException ex) {
 				throw new TransactionSystemException("Cannot commit JDO transaction", ex);
-			}
-			finally {
+			} finally {
 				closePersistenceManager(txObject);
 			}
 		}
@@ -148,11 +145,9 @@ public class JdoTransactionManager extends AbstractPlatformTransactionManager im
 		logger.debug("Rolling back JDO transaction");
 		try {
 			txObject.getPersistenceManagerHolder().getPersistenceManager().currentTransaction().rollback();
-		}
-		catch (JDOException ex) {
+		} catch (JDOException ex) {
 			throw new TransactionSystemException("Cannot rollback JDO transaction", ex);
-		}
-		finally {
+		} finally {
 			closePersistenceManager(txObject);
 		}
 	}
@@ -168,14 +163,12 @@ public class JdoTransactionManager extends AbstractPlatformTransactionManager im
 			PersistenceManagerFactoryUtils.getThreadObjectManager().removeThreadObject(this.persistenceManagerFactory);
 			try {
 				PersistenceManagerFactoryUtils.closePersistenceManagerIfNecessary(
-				    txObject.getPersistenceManagerHolder().getPersistenceManager(), this.persistenceManagerFactory);
-			}
-			catch (CleanupFailureDataAccessException ex) {
+						txObject.getPersistenceManagerHolder().getPersistenceManager(), this.persistenceManagerFactory);
+			} catch (CleanupFailureDataAccessException ex) {
 				// just log it, to keep a transaction-related exception
 				logger.error("Cannot close JDO PersistenceManager after transaction", ex);
 			}
-		}
-		else {
+		} else {
 			logger.debug("Not closing pre-bound JDO PersistenceManager after transaction");
 		}
 	}

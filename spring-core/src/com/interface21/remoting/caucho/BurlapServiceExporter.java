@@ -25,8 +25,8 @@ import com.interface21.web.servlet.mvc.Controller;
  * any Burlap client, as there isn't any special handling involved.
  *
  * @author Juergen Hoeller
- * @since 13.05.2003
  * @see BurlapProxyFactoryBean
+ * @since 13.05.2003
  */
 public class BurlapServiceExporter implements Controller {
 
@@ -47,9 +47,9 @@ public class BurlapServiceExporter implements Controller {
 		BurlapInput in = new BurlapInput(request.getInputStream());
 		BurlapOutput out = new BurlapOutput(response.getOutputStream());
 		try {
-		  this.skeleton.invoke(in, out);
+			this.skeleton.invoke(in, out);
 		} catch (Throwable ex) {
-		  throw new ServletException(ex);
+			throw new ServletException(ex);
 		}
 		return null;
 	}

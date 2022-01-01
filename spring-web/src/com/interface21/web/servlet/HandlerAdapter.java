@@ -29,7 +29,7 @@ import com.interface21.context.ApplicationContextAware;
  * @author Rod Johnson
  */
 public interface HandlerAdapter extends ApplicationContextAware {
-	
+
 	/**
 	 * Given a handler instance, return whether or not this HandlerAdapter can
 	 * support it. Usually HandlerAdapters will base the decision on the handler
@@ -38,32 +38,35 @@ public interface HandlerAdapter extends ApplicationContextAware {
 	 * <code>
 	 * return handler != null && MyHandler.class.isAssignableFrom(handler.getClass());
 	 * </code>
+	 *
 	 * @param handler handler object to check
 	 * @return whether or not this object can use the given handler
 	 */
-	boolean supports(Object handler); 
-	
+	boolean supports(Object handler);
+
 	/**
 	 * Use the given handler to handle this request.
 	 * The workflow that is required may vary widely.
 	 * Can also perform authorization checks.
-	 * @param request current HTTP request
+	 *
+	 * @param request  current HTTP request
 	 * @param response current HTTP response
-	 * @param handler handler to use. This object must have previously been passed
-	 * to the supports() method of this interface, which must have returned true.
-	 * Implementations that generate output themselves (and return null
-	 * from this method) may encounter IOExceptions.
-	 * @throws ServletException if there is a general error
-	 * @throws IOException in case of I/O errors
+	 * @param handler  handler to use. This object must have previously been passed
+	 *                 to the supports() method of this interface, which must have returned true.
+	 *                 Implementations that generate output themselves (and return null
+	 *                 from this method) may encounter IOExceptions.
 	 * @return ModelAndView object with the name of the view and the required
 	 * model data, or null if the request has been handled directly.
+	 * @throws ServletException if there is a general error
+	 * @throws IOException      in case of I/O errors
 	 */
 	ModelAndView handle(HttpServletRequest request, HttpServletResponse response, Object handler)
-	    throws ServletException, IOException;
+			throws ServletException, IOException;
 
 	/**
 	 * Same contract as for HttpServlet.getLastModified.
 	 * Can simply return -1 if there's no support in the handler class.
+	 *
 	 * @param request current HTTP request
 	 * @param handler handler to use
 	 * @return the lastModified value for the given handler
