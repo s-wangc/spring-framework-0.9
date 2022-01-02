@@ -2,8 +2,7 @@
 package com.interface21.beans;
 
 /**
- * Object containing 0 or more PropertyValues comprising
- * one update.
+ * 包含0个或更多PropertyValue的对象, 包含一个更新.
  *
  * @author Rod Johnson
  * @version $Id: PropertyValues.java,v 1.1.1.1 2003/02/11 08:10:11 johnsonr Exp $
@@ -12,37 +11,34 @@ package com.interface21.beans;
 public interface PropertyValues {
 
 	/**
-	 * Return an array of the PropertyValue objects
-	 * held in this object.
+	 * 返回此对象中保存的PropertyValue对象的数组.
 	 *
-	 * @return an array of the PropertyValue objects
-	 * held in this object.
+	 * @return 此对象中保存的PropertyValue对象的数组.
 	 */
 	PropertyValue[] getPropertyValues();
 
 	/**
-	 * Is there a propertyValue object for this property?
+	 * 是否有此属性的propertyValue对象?
 	 *
-	 * @param propertyName name of the property we're interested in
-	 * @return whether there is a propertyValue object for this property?
+	 * @param propertyName 我们感兴趣的属性的名称
+	 * @return 是否有此属性的propertyValue对象?
 	 */
 	boolean contains(String propertyName);
 
 	/**
-	 * Return the property value with the given name
+	 * 返回具有给定名称的属性值
 	 *
-	 * @param propertyName name to search for
+	 * @param propertyName 要搜索的名称
 	 * @return pv or null
 	 */
 	PropertyValue getPropertyValue(String propertyName);
 
 	/**
-	 * Return the changes since the previous PropertyValues.
-	 * Subclasses should also override equals.
+	 * 返回自上一个PropertyValues以来所做的更改.
+	 * 子类也应该重新equals.
 	 *
-	 * @param old old property values
-	 * @return PropertyValues updated or new properties.
-	 * Return the empty PropertyValues if there are no changes.
+	 * @param old 旧属性值
+	 * @return PropertyValues更新或新属性. 如果没有更改, 则返回空的PropertyValues.
 	 */
 	PropertyValues changesSince(PropertyValues old);
 
