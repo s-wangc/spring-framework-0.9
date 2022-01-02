@@ -2,14 +2,11 @@
 package com.interface21.beans;
 
 /**
- * Class to hold information and value for an individual property.
- * Using an object here, rather than just storing all properties in a
- * map keyed by property name, allows for more flexibility, and the
- * ability to handle indexed properties etc. if necessary.
- * <br/>Note that the value doesn't need to be the final required type:
- * a BeanWrapper implementation should handle any necessary conversion,
- * as this object doesn't know anything about the objects it will be
- * applied to.
+ * 类用于保存单个属性的信息和值.
+ * 在此处使用一个对象, 而不是仅将所有属性存储在由属性命名作为key的map中,
+ * 允许更大的灵活性, 并且在必要时处理索引属性等的能力.
+ * <br/>请注意, 该值不必是最终所需的类型:
+ * BeanFactory实现应该处理任何必要的转换, 因为该对象不知道它将应用到的对象的任何信息.
  *
  * @author Rod Johnson
  * @version $Id: PropertyValue.java,v 1.1.1.1 2003/02/11 08:10:11 johnsonr Exp $
@@ -18,15 +15,15 @@ package com.interface21.beans;
 public class PropertyValue {
 
 	//---------------------------------------------------------------------
-	// Instance data
+	// 实例数据
 	//---------------------------------------------------------------------
 	/**
-	 * Property name
+	 * 属性名
 	 */
 	private String name;
 
 	/**
-	 * Value of the property
+	 * 属性值
 	 */
 	private Object value;
 
@@ -35,10 +32,10 @@ public class PropertyValue {
 	//---------------------------------------------------------------------
 
 	/**
-	 * Creates new PropertyValue
+	 * 创建新的PropertyValue
 	 *
-	 * @param name  name of the property
-	 * @param value value of the property (posibly before type conversion)
+	 * @param name  属性的名称
+	 * @param value 属性的值(在类型转换之前)
 	 */
 	public PropertyValue(String name, Object value) {
 		this.name = name;
@@ -51,20 +48,18 @@ public class PropertyValue {
 	//---------------------------------------------------------------------
 
 	/**
-	 * Return the name of the property
+	 * 返回属性的名称
 	 *
-	 * @return the name of the property
+	 * @return 属性的名称
 	 */
 	public String getName() {
 		return name;
 	}
 
 	/**
-	 * Return the value of the property
+	 * 返回属性的值
 	 *
-	 * @return the value of the property. Type conversion
-	 * will probably not have occurred. It is the responsibility
-	 * of BeanWrapper implementations to perform type conversion.
+	 * @return 属性的值. 可能不会发生类型转换. BeanWrapper实现负责执行类型转换.
 	 */
 	public Object getValue() {
 		return value;
