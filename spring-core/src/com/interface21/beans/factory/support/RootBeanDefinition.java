@@ -11,19 +11,19 @@ import com.interface21.beans.BeansException;
 import com.interface21.beans.PropertyValues;
 
 /**
- * Root bean definitions have a class and properties.
+ * root bean定义具有class和properties.
  *
  * @author Rod Johnson
  */
 public class RootBeanDefinition extends AbstractBeanDefinition {
 
 	/**
-	 * Class of the wrapped object
+	 * 包装对象的类
 	 */
 	private Class clazz;
 
 	/**
-	 * Creates new AbstractRootBeanDefinition
+	 * 创建新的AbstractRootBeanDefinition
 	 */
 	public RootBeanDefinition(Class clazz, PropertyValues pvs, boolean singleton) {
 		super(pvs, singleton);
@@ -38,7 +38,7 @@ public class RootBeanDefinition extends AbstractBeanDefinition {
 	}
 
 	/**
-	 * Setter for the name of the JavaBean target class.
+	 * JavaBean目标类名称的Setter.
 	 */
 	public void setBeanClassName(String classname) throws ClassNotFoundException {
 		this.clazz = Class.forName(classname);
@@ -46,25 +46,24 @@ public class RootBeanDefinition extends AbstractBeanDefinition {
 
 
 	/**
-	 * @return the class of the wrapped bean
+	 * @return 包装的bean类
 	 */
 	public final Class getBeanClass() {
 		return this.clazz;
 	}
 
 	/**
-	 * Subclasses may override this, to create bean
-	 * wrappers differently or perform custom preprocessing.
-	 * This implementation wraps the bean class directly.
+	 * 子类可以重写此方法, 以不同方式创建bean包装器或执行自定义预处理.
+	 * 此实现直包装bean类.
 	 *
-	 * @return a new BeanWrapper wrapper the target object
+	 * @return 一个新的BeanWrapper包装目标对象
 	 */
 	protected BeanWrapper newBeanWrapper() {
 		return new BeanWrapperImpl(getBeanClass());
 	}
 
 	/**
-	 * Given a bean wrapper, add listeners
+	 * 给定一个bean wrapper, 添加listeners
 	 */
 	public final BeanWrapper getBeanWrapperForNewInstance() throws BeansException {
 		BeanWrapper bw = newBeanWrapper();
