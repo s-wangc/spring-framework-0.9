@@ -10,10 +10,8 @@ import java.util.Set;
 import com.interface21.util.StringUtils;
 
 /**
- * Default implementation of the PropertyValues interface.
- * Allows simple manipulation of properties,
- * and provides constructors to support deep copy
- * and construction from a Map.
+ * PropertyValues接口的默认实现.
+ * 允许对属性进行简单操作, 并提供构造函数以支持Map的深度复制和构造.
  *
  * @author Rod Johnson
  * @version $Id: MutablePropertyValues.java,v 1.2 2003/02/27 10:10:39 jhoeller Exp $
@@ -22,10 +20,10 @@ import com.interface21.util.StringUtils;
 public class MutablePropertyValues implements PropertyValues {
 
 	//---------------------------------------------------------------------
-	// Instance data
+	// 实例数据
 	//---------------------------------------------------------------------
 	/**
-	 * List of PropertyValue objects
+	 * PropertyValue对象List
 	 */
 	private List propertyValuesList;
 
@@ -34,18 +32,16 @@ public class MutablePropertyValues implements PropertyValues {
 	//---------------------------------------------------------------------
 
 	/**
-	 * Creates a new empty MutablePropertyValues object.
-	 * PropertyValue objects can be added with the
-	 * addPropertyValue() method.
+	 * 创建一个新的空MutablePropertyValues对象.
+	 * 可以使用addPropertyValue()方法添加PropertyValue对象.
 	 */
 	public MutablePropertyValues() {
 		propertyValuesList = new ArrayList(10);
 	}
 
 	/**
-	 * Deep copy constructor. Guarantees PropertyValue references
-	 * are independent, although it can't deep copy objects currently
-	 * referenced by individual PropertyValue objects
+	 * 深度拷贝构造函数.
+	 * 保证PropertyValue引用是独立的, 但它不能深度复制当前由各个PropertyValue对象引用的对象.
 	 */
 	public MutablePropertyValues(PropertyValues other) {
 		PropertyValue[] pvs = other.getPropertyValues();
@@ -55,10 +51,9 @@ public class MutablePropertyValues implements PropertyValues {
 	}
 
 	/**
-	 * Construct a new PropertyValues object from a Map.
+	 * 从Map构造一个新的PropertyValues对象.
 	 *
-	 * @param map Map with property values keyed by property name,
-	 *            which must be a String
+	 * @param map 使用属性名称作为key的属性值Map, 该属性值必须是String
 	 */
 	public MutablePropertyValues(Map map) {
 		Set keys = map.keySet();
@@ -75,30 +70,28 @@ public class MutablePropertyValues implements PropertyValues {
 	//---------------------------------------------------------------------
 
 	/**
-	 * Add a PropertyValue object
+	 * 添加PropertyValue对象
 	 *
-	 * @param pv PropertyValue object to add
+	 * @param pv 要添加的PropertyValue对象
 	 */
 	public void addPropertyValue(PropertyValue pv) {
 		propertyValuesList.add(pv);
 	}
 
 	/**
-	 * Return an array of the PropertyValue objects
-	 * held in this object.
+	 * 返回此对象中保存的PropertyValue对象的数字.
 	 *
-	 * @return an array of the PropertyValue objects
-	 * held in this object.
+	 * @return 此对象中保存的PropertyValue对象的数组.
 	 */
 	public PropertyValue[] getPropertyValues() {
 		return (PropertyValue[]) propertyValuesList.toArray(new PropertyValue[0]);
 	}
 
 	/**
-	 * Is there a propertyValue object for this property?
+	 * 此属性是否有propertyValue对象?
 	 *
-	 * @param propertyName name of the property we're interested in
-	 * @return whether there is a propertyValue object for this property?
+	 * @param propertyName 我们感兴趣的属性的名称
+	 * @return 此属性是否有propertyValue对象?
 	 */
 	public boolean contains(String propertyName) {
 		return getPropertyValue(propertyName) != null;
@@ -114,8 +107,7 @@ public class MutablePropertyValues implements PropertyValues {
 	}
 
 	/**
-	 * Modify a PropertyValue object held in this object
-	 * Indexed from 0
+	 * 修改此对象中保存的从0开始索引的PropertyValue对象
 	 */
 	public void setPropertyValueAt(PropertyValue pv, int i) {
 		propertyValuesList.set(i, pv);
@@ -136,10 +128,10 @@ public class MutablePropertyValues implements PropertyValues {
 		if (old == this)
 			return changes;
 
-		// For each property value in the new set
+		// 遍历新集合中的每个属性值
 		for (int i = 0; i < this.propertyValuesList.size(); i++) {
 			PropertyValue newPv = (PropertyValue) this.propertyValuesList.get(i);
-			// If there wasn't an old one, add it
+			// 如果没有旧值, 请添加它
 			PropertyValue pvOld = old.getPropertyValue(newPv.getName());
 			if (pvOld == null) {
 				//System.out.println("No old pv for " + newPv.getName());
