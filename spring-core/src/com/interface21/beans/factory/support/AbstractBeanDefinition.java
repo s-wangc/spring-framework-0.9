@@ -8,17 +8,13 @@ package com.interface21.beans.factory.support;
 import com.interface21.beans.PropertyValues;
 
 /**
- * Internal BeanFactory implementation class. This abstract base
- * class defines the BeanFactory type.Use a FactoryBean to
- * customize behaviour when returning application beans.
+ * 内部BeanFactory实现类. 此抽象基类定义了BeanFactory类型.
+ * 使用Factorybean定制返回application bean时的行为.
  *
- * <p> A BeanDefinition describes a bean instance,
- * which has property values and further information supplied
- * by concrete classes or subinterfaces.
+ * <p> BeanDefinition描述了一个bean实例, 它具有属性值以及由具体类
+ * 或子接口提供的更多信息.
  *
- * <p>Once configuration is complete, a BeanFactory will be able
- * to return direct references to objects defined by
- * BeanDefinitions.
+ * <p>配置完成后, BeanFactory将能够返回对BeanDefinition定义的对象的直接引用.
  *
  * @author Rod Johnson
  * @version $Revision: 1.6 $
@@ -26,7 +22,7 @@ import com.interface21.beans.PropertyValues;
 public abstract class AbstractBeanDefinition {
 
 	/**
-	 * Is this a singleton bean?
+	 * 这是一个单例bean?
 	 */
 	private boolean singleton;
 
@@ -36,9 +32,9 @@ public abstract class AbstractBeanDefinition {
 	private PropertyValues pvs;
 
 	/**
-	 * Creates new BeanDefinition
+	 * 创建新的BeanDefinition
 	 *
-	 * @param pvs properties of the bean
+	 * @param pvs bean的属性
 	 */
 	protected AbstractBeanDefinition(PropertyValues pvs, boolean singleton) {
 		this.pvs = pvs;
@@ -50,14 +46,12 @@ public abstract class AbstractBeanDefinition {
 	}
 
 	/**
-	 * Is this a <b>Singleton</b>, with a single, shared
-	 * instance returned on all calls,
-	 * or should the BeanFactory apply the <b>Prototype</b> design pattern,
-	 * with each caller requesting an instance getting an independent
-	 * instance? How this is defined will depend on the BeanFactory.
-	 * "Singletons" are the commoner type.
+	 * 这是一个<b>Singleton</b>, 在所有调用中返回一个共享实例, 或BeanFactory
+	 * 是否应用<b>Prototype</b>设计模式, 每个调用者请求实例获取一个独立实例?
+	 * 如何定义将取决于BeanFactory.
+	 * "Singletons" 是最常见的类型.
 	 *
-	 * @return whether this is a Singleton
+	 * @return 这是否是一个单例
 	 */
 	public final boolean isSingleton() {
 		return singleton;
@@ -68,11 +62,9 @@ public abstract class AbstractBeanDefinition {
 	}
 
 	/**
-	 * Return the PropertyValues to be applied to a new instance
-	 * of this bean.
+	 * 返回要应用于此bean的新实例的PropertyValues.
 	 *
-	 * @return the PropertyValues to be applied to a new instance
-	 * of this bean
+	 * @return 要应用于此bean的新实例的PropertyValues
 	 */
 	public PropertyValues getPropertyValues() {
 		return pvs;
