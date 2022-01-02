@@ -8,8 +8,7 @@ package com.interface21.beans.factory.support;
 import java.util.LinkedList;
 
 /**
- * Tag subclass used to hold managed elements, which may
- * include runtime bean references
+ * 用于保存托管元素的标记子类, 其中可能包括运行时bean引用
  *
  * @author Rod Johnson
  * @version $Id: ManagedList.java,v 1.1 2003/05/28 07:14:14 johnsonr Exp $
