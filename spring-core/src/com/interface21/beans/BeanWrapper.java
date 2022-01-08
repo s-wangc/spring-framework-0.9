@@ -19,23 +19,17 @@ import java.beans.VetoableChangeListener;
 import java.util.Map;
 
 /**
- * The central interface of the Interface21 JavaBeans infrastructure.
- * Interface to be implemented by classes that can manipulate
- * Java beans.
- * <br/>Implementing classes have the ability to get and set
- * property values (individually or in bulk), get property descriptors
- * and query the readability and writability of properties.
- * <p/>This interface supports <b>nested properties</b> enabling the setting of properties
- * on subproperties to an unlimited depth.
- * <br/>If a property update causes an exception, a PropertyVetoException will
- * be thrown. Bulk updates continue after exceptions are encountered, throwing an exception
- * wrapping <B>all</B> exceptions encountered during the update.
- * <br/>BeanWrapper implementations can be used repeatedly, with their "target" or wrapped
- * object changed.
- * <br/>This interface supports the ability to add standard JavaBeans API
- * PropertyChangeListeners and VetoableChangeListeners, without the need for
- * supporting code in the target class. VetoableChangeListeners
- * can veto individual property changes.
+ * Interface21 JavaBeans基础设施的中央接口. 接口将由可以操作Java bean
+ * 的类实现.
+ * <br/>实现类能够获取和设置属性值(单独或批量), 获取属性描述符并
+ * 查询属性的readability和writability.
+ * <p/>此接口支持<b>嵌套属性</b>, 可以将子属性上的属性设置为无限深度.
+ * <br/>如果属性更新导致异常, 则将抛出PropertyVetoException. 遇到异常
+ * 后批量更新继续, 并抛出一个异常, 将更新过程中遇到的<B>所有</B>异常包装起来.
+ * <br/>BeanWrapper实现可以重复使用, 其"target"或包装对象也可以更改.
+ * <br/>此接口支持添加标准JavaBeans API PropertyChangeListeners和
+ * VetoableChangeListeners的功能, 而无需在目标类中提供支持代码.
+ * VetoableChangeListeners可以否决个别属性更改.
  *
  * @author Rod Johnson
  * @version 1.1
@@ -44,195 +38,170 @@ import java.util.Map;
 public interface BeanWrapper {
 
 	/**
-	 * Path separator for nested properties.
-	 * Follows normal Java conventions:
-	 * getFoo().getBar() would be
-	 * foo.bar
+	 * 嵌套属性的路径分隔符.
+	 * 遵循正常的Java约定:
+	 * getFoo().getBar()就是foo.bar
 	 */
 	String NESTED_PROPERTY_SEPARATOR = ".";
 
 	/**
-	 * Set a property value. This method is provided for convenience only.
-	 * The setPropertyValue(PropertyValue)
-	 * method is more powerful, providing the ability to set indexed properties etc.
+	 * 设置属性值. 提供此方法仅是为了方便起见.
+	 * setPropertyValue(PropertyValue)方法功能更强大, 提供了设置索引属性等功能.
 	 *
-	 * @param propertyName name of the property to set value of
+	 * @param propertyName 要设置值的属性的名称
 	 * @param value        the new value
 	 */
 	void setPropertyValue(String propertyName, Object value) throws PropertyVetoException, BeansException;
 
 	/**
-	 * Update a property value.
-	 * <b>This is the preferred way to update an individual property.</b>
+	 * 更新属性值.
+	 * <b>这是更新单个属性的首选方法.</b>
 	 *
-	 * @param pv object containing new property value
+	 * @param pv 包含新属性值的对象
 	 */
 	void setPropertyValue(PropertyValue pv) throws PropertyVetoException, BeansException;
 
 	/**
-	 * Get the value of a property
+	 * 获取属性的值
 	 *
-	 * @param propertyName name of the property to get the value of
-	 * @return the value of the property.
-	 * @throws FatalBeanException if there is no such property,
-	 *                            if the property isn't readable or if the property getter throws
-	 *                            an exception.
+	 * @param propertyName 要获取值的属性的名称
+	 * @return 属性的值.
+	 * @throws FatalBeanException 如果没有这样的属性, 如果属性不可读, 或者如果属性getter抛出异常.
 	 */
 	Object getPropertyValue(String propertyName) throws BeansException;
 
 	/**
-	 * Get the value of an indexed property
+	 * 获取索引属性的值
 	 *
-	 * @param propertyName name of the property to get value of
-	 * @param index        index from 0 of the property
-	 * @return the value of the property
-	 * @throws FatalBeanException if there is no such indexed property
-	 *                            or if the getter method throws an exception.
+	 * @param propertyName 要获取其值的属性的名称
+	 * @param index        索引从0开始
+	 * @return 属性的值
+	 * @throws FatalBeanException 如果没有这样的索引属性或者getter方法抛出异常.
 	 */
 	Object getIndexedPropertyValue(String propertyName, int index) throws BeansException;
 
 
 	/**
-	 * Perform a bulk update from a Map.
-	 * Bulk updates from PropertyValues are more powerful: this method is
-	 * provided for convenience. It is impossible to set indexed properties
-	 * using this method. Otherwise, behaviour will be identical to that of
-	 * the setPropertyValues(PropertyValues) method.
+	 * 从Map执行批量更新.
+	 * 从PropertyValues批量更新功能更强大: 提供此方法是为了方便. 使用此方法无法
+	 * 设置索引属性. 否则, 行为将于setPropertyValues(PropertyValues)方法相同.
 	 *
-	 * @param m Map to take properties from. Contains property value objects, keyed by
-	 *          property name
+	 * @param m 从中获取属性的Map. 包含属性值对象, 由属性名称作为Key.
 	 * @throws BeansException
 	 */
 	void setPropertyValues(Map m) throws BeansException;
 
 	/**
-	 * The preferred way to perform a bulk update.
-	 * Note that performing a bulk update differs from performing a single update,
-	 * in that an implementation of this class will continue to update properties
-	 * if a <b>recoverable</b> error (such as a vetoed property change or a type mismatch,
-	 * but <b>not</b> an invalid fieldname or the like) is encountered, throwing a
-	 * PropertyVetoExceptionsException containing all the individual errors. Does not allow
-	 * unknown fields. Equivalent to setPropertyValues(pvs, false, null).
-	 * This exception can be examined later to see all binding errors.
-	 * Properties that were successfully updated stay changed.
+	 * 执行批量更新的首选方法.
+	 * 请注意, 执行批量更新与执行单个更新不同, 因为如果遇到<b>可恢复</b>的错误(例如否决
+	 * 的属性更改或类型不匹配, 但<b>不是</b>无效的字段名称等), 此类的实现将继续更新属性,
+	 * 抛出包含所有单个错误的PropertyVetoExceptionsException. 不允许未知字段. 相当于
+	 * setPropertyValues(pvs, false, null).
+	 * 稍后可以检查此异常以查看所有绑定错误.
+	 * 已成功更新的属性保持更改状态.
 	 *
-	 * @param pvs PropertyValues to set on the target object
+	 * @param pvs 要在目标对象上设置的PropertyValues
 	 */
 	void setPropertyValues(PropertyValues pvs) throws BeansException;
 
 	/**
-	 * Perform a bulk update with full control over behavior.
-	 * Note that performing a bulk update differs from performing a single update,
-	 * in that an implementation of this class will continue to update properties
-	 * if a <b>recoverable</b> error (such as a vetoed property change or a type mismatch,
-	 * but <b>not</b> an invalid fieldname or the like) is encountered, throwing a
-	 * PropertyVetoExceptionsException containing all the individual errors.
-	 * This exception can be examined later to see all binding errors.
-	 * Properties that were successfully updated stay changed.
+	 * 在完全控制行为的请下执行批量更新.
+	 * 请注意, 执行批量更新与执行单个更新不同, 因为如果遇到<b>可恢复</b>的错误(例如被否决
+	 * 的属性更改或类型不匹配, 但不是无效的字段名等),
+	 * 抛出包含所有单个错误的PropertyVetoExceptionsException.
+	 * 稍后可以检查此异常以查看所有绑定错误.
+	 * 已成功更新的属性保持更改状态.
 	 *
-	 * @param pvs           PropertyValues to set on the target object
-	 * @param ignoreUnknown should we ignore unknown values (not found in the bean!?)
-	 * @param pvsValidator  property values validator. Ignored if it's null.
+	 * @param pvs           要在目标对象上设置的PropertyValues
+	 * @param ignoreUnknown 我们应该忽略未知值(在bean中找不到!?)
+	 * @param pvsValidator  属性值validator. 如果它为null则忽略.
 	 */
 	void setPropertyValues(PropertyValues pvs, boolean ignoreUnknown, PropertyValuesValidator pvsValidator) throws BeansException;
 
 	/**
-	 * Get the PropertyDescriptors standard JavaBeans introspection identified
-	 * on this object.
+	 * 获取此对象上标识的PropertyDescriptors标准JavaBeans内省.
 	 *
-	 * @return the PropertyDescriptors standard JavaBeans introspection identified
-	 * on this object
+	 * @return 在此对象上标识的PropertyDescriptors标准JavaBeans内省
 	 */
 	PropertyDescriptor[] getPropertyDescriptors() throws BeansException;
 
 	/**
-	 * Get the property descriptor for a particular property, or null if there
-	 * is no such property
+	 * 获取特定属性的属性描述符, 如果没有此属性, 则返回null
 	 *
-	 * @param propertyName property to check status for
-	 * @return the property descriptor for a particular property, or null if there
-	 * is no such property
+	 * @param propertyName 要检查状态的属性
+	 * @return 特定属性的属性描述符, 如果没有此属性, 则返回null
 	 */
 	PropertyDescriptor getPropertyDescriptor(String propertyName) throws BeansException;
 
 	/**
-	 * Return whether this property is readable
+	 * 返回此属性是否可读
 	 *
-	 * @param propertyName property to check status for
-	 * @return whether this property is readable
+	 * @param propertyName 要检查状态的属性
+	 * @return 此属性是否可读
 	 */
 	boolean isReadableProperty(String propertyName);
 
 	/**
-	 * Return whether this property is writable
+	 * 返回此属性是否可写
 	 *
-	 * @param propertyName property to check status for
-	 * @return whether this property is writable
+	 * @param propertyName 要检查状态的属性
+	 * @return 此属性是否可写
 	 */
 	boolean isWritableProperty(String propertyName);
 
 	/**
-	 * Return the bean wrapped by this object.
-	 * Cannot be null
+	 * 返回此对象包装的bean.
+	 * 不能为null
 	 *
-	 * @return the bean wrapped by this object
+	 * @return 被这个对象包装的bean
 	 */
 	Object getWrappedInstance();
 
 	/**
-	 * Change the wrapped object. Implementations are required
-	 * to allow the type of the wrapped object to change.
+	 * 更改包装的对象. 需要实现来允许包装对象类型的更改.
 	 *
-	 * @param obj wrapped object that we are manipulating
+	 * @param obj 我们正在操纵的包装对象
 	 */
 	void setWrappedInstance(Object obj) throws BeansException;
 
 	/**
-	 * This method is included for efficiency. If an implementation
-	 * caches all necessary information about the class,
-	 * it might be faster to instantiate a new instance in the
-	 * class than create a new wrapper to work with a new object
+	 * 为了提高效率, 包括了这种方法. 如果实现缓存了有关该类的所有必要信息,
+	 * 那么在类中实例化新实例可能比创建一个新包装器来处理新对象要快.
 	 */
 	void newWrappedInstance() throws BeansException;
 
 	/**
-	 * This method is included for efficiency. If an implementation
-	 * caches all necessary information about the class,
-	 * it might be <b>much</b> faster to instantiate a new wrapper copying
-	 * the cached information, than to use introspection again.
-	 * The wrapped instance is independent, as is the new BeanWrapper:
-	 * only the cached introspection information is copied. Does <b>not</b>
-	 * copy listeners.
+	 * 为了提高效率, 包括了这种方法. 如果实现缓存了有关该类的所有必要信息,
+	 * 那么实例化一个新的包装器来复制缓存的信息可能比再次使用内省要快得<b>多</b>.
+	 * 包装的实例是独立的, 就像新的BeanWrapper一样:
+	 * 只复制缓存的内省信息. <b>不</b>复制listener.
 	 */
 	BeanWrapper newWrapper(Object obj) throws BeansException;
 
 	/**
-	 * Convenience method to return the class of the wrapped object
+	 * 返回包装对象的类的方便方法
 	 *
-	 * @return the class of the wrapped object
+	 * @return 包装对象的类
 	 */
 	Class getWrappedClass();
 
 	/**
-	 * Register the given custom property editor for the given type and
-	 * property, or for all properties of the given type.
+	 * 为给定的类型和属性或给定类型的所有属性注册给定的自定义属性编辑器.
 	 *
-	 * @param requiredType   type of the property, can be null if a property is
-	 *                       given but should be specified in any case for consistency checking
-	 * @param propertyPath   path of the property (name or nested path), or
-	 *                       null if registering an editor for all properties of the given type
-	 * @param propertyEditor editor to register
+	 * @param requiredType   属性的类型, 如果给出了属性, 则可以为null,
+	 *                       但在任何情况下都应该指定以进行一致性检查
+	 * @param propertyPath   属性的路径(名称或嵌套路径), 如果为给定类型的所有属性注册编辑器, 则为null
+	 * @param propertyEditor 要注册的editor
 	 */
 	void registerCustomEditor(Class requiredType, String propertyPath, PropertyEditor propertyEditor);
 
 	/**
-	 * Find a custom property editor for the given type and property.
+	 * 查找给定类型和属性的自定义属性编辑器.
 	 *
-	 * @param requiredType type of the property, can be null if a property is
-	 *                     given but should be specified in any case for consistency checking
-	 * @param propertyPath path of the property (name or nested path), or
-	 *                     null if looking for an editor for all properties of the given type
-	 * @return the registered editor, or null if none
+	 * @param requiredType 属性的类型, 如果给出了属性, 则可以为null,
+	 *                     但在任何情况下都应该指定以进行一致性检查
+	 * @param propertyPath 属性的路径(名称或嵌套路径), 如果为给定类型的所有属性查找编辑器, 则为null
+	 * @return 已注册的编辑器, 如果没有则为null
 	 */
 	PropertyEditor findCustomEditor(Class requiredType, String propertyPath);
 
@@ -241,96 +210,98 @@ public interface BeanWrapper {
 	//---------------------------------------------------------------------
 
 	/**
-	 * Add a VetoableChangeListener that will be notified of property updates
+	 * 添加将通知属性更新的VetoableChangeListener
 	 *
-	 * @param l VetoableChangeListener notified of all property updates
+	 * @param l 将收到属性更新通知的VetoableChangeListener
 	 */
 	void addVetoableChangeListener(VetoableChangeListener l);
 
 	/**
-	 * Remove a VetoableChangeListener that will be notified of property updates
+	 * 删除将收到属性更新通知的VetoableChangeListener
 	 *
-	 * @param l VetoableChangeListener to remove
+	 * @param l 要删除的VetoableChangeListener
 	 */
 	void removeVetoableChangeListener(VetoableChangeListener l);
 
 	/**
-	 * Add a VetoableChangeListener that will be notified of updates to a single property
+	 * 添加一个VetoableChangeListener，它将收到单个属性更新的通知
 	 *
-	 * @param l            VetoableChangeListener to add
-	 * @param propertyName name of property this listeners will listen to updates for
+	 * @param l            要添加的VetoableChangeListener
+	 * @param propertyName 此listener将侦听其更新的属性的名称
 	 */
 	void addVetoableChangeListener(String propertyName, VetoableChangeListener l);
 
 	/**
-	 * Remove a VetoableChangeListener that will be notified of updates to a single property
+	 * 添加一个VetoableChangeListener, 它将收到单个属性更新的通知
 	 *
-	 * @param l            VetoableChangeListener to remove
-	 * @param propertyName name of property this listeners formerly listened to updates for
+	 * @param l            要添加的VetoableChangeListener
+	 * @param propertyName 此listener将侦听其更新的属性的名称
+	 *                     <p>
+	 *                     /
+	 *                     void addVetoableChangeListener(String propertyName, VetoableChangeListener l);
+	 *                     <p>
+	 *                     /**
+	 *                     删除将收到单个属性更新的VetoableChangeListener
+	 * @param l            要删除的VetoableChangeListener
+	 * @param propertyName 此listener以前侦听更新的属性的名称
 	 */
 	void removeVetoableChangeListener(String propertyName, VetoableChangeListener l);
 
 	/**
-	 * Add a PropertyChangeListener that will be notified of property updates
+	 * 添加将收到属性更新通知的PropertyChangeListener
 	 *
-	 * @param l PropertyChangeListener notified of all property updates
+	 * @param l PropertyChangeListener通知所有属性更新
 	 */
 	void addPropertyChangeListener(PropertyChangeListener l);
 
 	/**
-	 * Remove a PropertyChangeListener that was formerly notified of property updates
+	 * 删除以前收到属性更新通知的PropertyChangeListener
 	 *
-	 * @param l PropertyChangeListener to remove
+	 * @param l 要删除的PropertyChangeListener
 	 */
 	void removePropertyChangeListener(PropertyChangeListener l);
 
 	/**
-	 * Add a PropertyChangeListener that will be notified of updates to a single property
+	 * 添加一个PropertyChangeListener, 它将收到单个属性的通知
 	 *
-	 * @param propertyName property the listener is interested in
-	 * @param l            PropertyChangeListener notified of property updates to this property
+	 * @param propertyName listener感兴趣的属性
+	 * @param l            PropertyChangeListener收到有关此属性更新的通知
 	 */
 	void addPropertyChangeListener(String propertyName, PropertyChangeListener l);
 
 	/**
-	 * Remove a PropertyChangeListener that was notified of updates to a single property
+	 * 删除已经通知单个属性更新的PropertyChangeListener
 	 *
-	 * @param propertyName property the listener is interested in
-	 * @param l            PropertyChangeListener to remove
+	 * @param propertyName listener感兴趣的属性
+	 * @param l            要删除的PropertyChangeListener
 	 */
 	void removePropertyChangeListener(String propertyName, PropertyChangeListener l);
 
 	/**
-	 * Should we send out event notifications?
-	 * Disabling this functionality (which is enabled by default)
-	 * may improve performance.
+	 * 我们应该发出事件通知吗?
+	 * 禁用此功能(默认情况下已启用)可以提高性能.
 	 *
-	 * @return whether we notify listeners of property updates
+	 * @return 我们是否通知listener属性的更新
 	 */
 	boolean isEventPropagationEnabled();
 
 	/**
-	 * Enable or disable event propogation
-	 * Any existing listeners will be preserved and will again be notified
-	 * of events when event propagation is reenabled.
-	 * However no new listeners can be added in this period:
-	 * calls to add or remove listeners will be ignored.
+	 * 启用或禁用事件传播
+	 * 将保留任何现有listener, 并在重新启用事件传播时再次通知事件.
+	 * 但是, 在此期间不能添加新的listener:
+	 * 添加或删除listener的调用将被忽略.
 	 *
-	 * @param flag whether we notify listeners of property updates
+	 * @param flag 我们是否通知listener属性的更新
 	 */
 	void setEventPropagationEnabled(boolean flag);
 
 	/**
-	 * Invoke the named method. This interface is designed
-	 * to encourage working with bean properties, rather than methods,
-	 * so this method shouldn't be used in most cases,
-	 * but it is necessary to provide a simple means to invoking
-	 * a named method.
+	 * 调用命名方法. 此接口旨在鼓励使用bean属性而不是方法, 因此在大多数情况下
+	 * 不应该使用此方法, 但有必要提供一种调用命名方法的简单方法.
 	 *
-	 * @param methodName name of the method to invoke
-	 * @param args       args to pass
-	 * @return follows java.util.Method.invoke(). Void calls
-	 * return null; primitives are wrapped as objects
+	 * @param methodName 要调用的方法的名称
+	 * @param args       要通过的参数
+	 * @return 遵循java.util.Method.invoke(). void调用返回null; 基本数据类型被包装为对象
 	 */
 	Object invoke(String methodName, Object[] args) throws BeansException;
 

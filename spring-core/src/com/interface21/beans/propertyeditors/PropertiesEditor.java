@@ -11,14 +11,12 @@ import java.util.StringTokenizer;
 
 
 /**
- * Editor for java.util.Properties objects. Handles
- * conversion from String to Properties object. Not
- * a GUI editor.
- * <br>NB: this editor must be registered with the JavaBeans API before it
- * will be available. Editors in this package are
- * registered by BeanWrapperImpl.
- * <br>The required format is defined in java.util.Properties documentation.
- * Each property must be on a new line.
+ * java.util.Properties对象的编辑器. 处理从String到Properties对象的转换.
+ * 不是GUI编辑器.
+ * <br>注意: 此编辑器必须先在JavaBean API中注册才能使用. 此包中的编辑器由
+ * BeanWrapperImpl注册.
+ * <br>java.util.Properties文档中定义了所需的格式.
+ * 每个属性必须在新行上.
  *
  * @author Rod Johnson
  * @version $Id: PropertiesEditor.java,v 1.5 2003/05/21 21:15:20 johnsonr Exp $
@@ -26,9 +24,8 @@ import java.util.StringTokenizer;
 public class PropertiesEditor extends PropertyEditorSupport {
 
 	/**
-	 * Any of these characters, if they're first after whitespace
-	 * or first on a line, mean that the line is a comment and should
-	 * be ignored.
+	 * 这些字符串中的任何一个, 如果它们在空格之后或在一行中的第一个, 都意味着该行是注释,
+	 * 应该被忽略.
 	 */
 	private final static String COMMENT_MARKERS = "#!";
 
@@ -40,16 +37,15 @@ public class PropertiesEditor extends PropertyEditorSupport {
 		if (s == null)
 			throw new IllegalArgumentException("Cannot set properties to null");
 
-		Properties props =
-				load(s);
+		Properties props = load(s);
 		//parse(s);
 		setValue(props);
 	}
 
 
 	/**
-	 * Parse the string ourselves.
-	 * Workaround for Orion 1.6 issue
+	 * 自己解析字符串.
+	 * Orion 1.6问题的解决方法
 	 *
 	 * @param s
 	 * @return Properties
@@ -66,8 +62,7 @@ public class PropertiesEditor extends PropertyEditorSupport {
 			// Tokens look like "/welcome.html=mainController"
 			int eqpos = tok.indexOf("=");
 			if (eqpos == -1) {
-				// We only have the property name, but
-				// the value is the the empty string
+				// 我们只有属性名, 但值是空字符串的值
 				props.put(tok, "");
 			} else {
 				String key = tok.substring(0, eqpos);
@@ -81,8 +76,7 @@ public class PropertiesEditor extends PropertyEditorSupport {
 
 
 	/**
-	 * NB: the following code, using properties default works in JBoss 3.0.0,
-	 * but not Orion 1.6
+	 * 注意: 下面的代码, 使用属性默认在JBoss3.0.0中工作, 但在Orion 1.6中不工作
 	 */
 	private Properties load(String s) {
 		Properties props = new Properties();
@@ -99,20 +93,18 @@ public class PropertiesEditor extends PropertyEditorSupport {
 
 
 	/**
-	 * Remove comment lines. We shouldn't need to do this,
-	 * according to java.util.Properties documentation, but
-	 * if we don't we end up with properties like "#this=is a comment"
-	 * if we have whitespace before the comment marker.
+	 * 删除注释行. 根据java.util.Properties文档, 我们不应该这样做, 但如果
+	 * 我们不这样做, 如果我们在注释标记之前有空格, 我们最终会得到
+	 * "#this=is a comment"这样的属性.
 	 */
 	private void dropComments(Properties props) {
 		Iterator keys = props.keySet().iterator();
 		List commentKeys = new LinkedList();
 		while (keys.hasNext()) {
 			String key = (String) keys.next();
-			// A comment line starts with one of our comment markers
+			// 注释行以我们的注释标记之一开头
 			if (key.length() > 0 && COMMENT_MARKERS.indexOf(key.charAt(0)) != -1) {
-				// We can't actually remove it as we'll get a 
-				// concurrent modification exception with the iterator
+				// 我们实际上无法删除它, 因为iterator会出现并发修改异常
 				commentKeys.add(key);
 			}
 		}
