@@ -43,18 +43,14 @@ import com.interface21.util.StringUtils;
 
 
 /**
- * Partial implementation of ApplicationContext. Doesn't mandate the
- * type of storage used for configuration, but implements common functionality.
+ * ApplicationContext的部分实现. 不强制要求用于配置的存储类型, 而是实现通用功能.
  *
- * <p>This class uses the Template Method design pattern, requiring
- * concrete subclasses to implement protected abstract methods.
+ * <p>此类使用模板方法设计模式, 需要具体的子类来实现受保护的抽象方法.
  *
- * <p>The context options may be supplied as a bean in the default bean factory,
- * with the name "contextOptions".
+ * <p>context options可以作为默认bean工厂中的bean提供, 名为"contextOptions".
  *
- * <p>A message source may be supplied as a bean in the default bean factory,
- * with the name "messageSource". Else, message resolution is delegated to the
- * parent context.
+ * <p>message source可以作为默认bean工厂中的bean提供, 名称为"messageSource".
+ * 否则, 消息解析将委托给父上下文.
  *
  * @author Rod Johnson
  * @version $Revision: 1.22 $
@@ -67,32 +63,31 @@ import com.interface21.util.StringUtils;
 public abstract class AbstractApplicationContext implements ApplicationContext {
 
 	/**
-	 * Name of options bean in the factory.
-	 * If none is supplied, a default ContextOptions instance will be used.
+	 * 工厂中options bean的名称. 如果未提供, 则将使用默认的ContextOptions实例.
 	 *
 	 * @see ContextOptions
 	 */
 	public static final String OPTIONS_BEAN_NAME = "contextOptions";
 
 	/**
-	 * Name of the MessageSource bean in the factory.
-	 * If none is supplied, message resolution is delegated to the parent.
+	 * 工厂中MessageSource bean的名称.
+	 * 如果未提供, 则将消息解析委托给父类.
 	 *
 	 * @see MessageSource
 	 */
 	public static final String MESSAGE_SOURCE_BEAN_NAME = "messageSource";
 
 	//---------------------------------------------------------------------
-	// Instance data
+	// 实例数据
 	//---------------------------------------------------------------------
 
 	/**
-	 * Log4j logger used by this class. Available to subclasses.
+	 * 此类使用的Log4j logger. 可用于子类.
 	 */
 	protected final Log logger = LogFactory.getLog(getClass());
 
 	/**
-	 * Parent context
+	 * 父context
 	 */
 	private ApplicationContext parent;
 
@@ -102,29 +97,29 @@ public abstract class AbstractApplicationContext implements ApplicationContext {
 	private String displayName = getClass().getName() + ";hashCode=" + hashCode();
 
 	/**
-	 * System time in milliseconds when this context started
+	 * 此context启动时的系统时间(以毫秒为单位)
 	 */
 	private long startupTime;
 
 	/**
-	 * Special bean to handle configuration
+	 * 处理配置的特殊bean
 	 */
 	private ContextOptions contextOptions;
 
 	/**
-	 * Helper class used in event publishing.
-	 * TODO: This could be parameterized as a JavaBean (with a distinguished name
-	 * specified), enabling a different thread usage policy for event publication.
+	 * 事件发布中使用的辅助类.
+	 * TODO: 可以将其参数化为JavaBean(指定了可分辨名称),
+	 * 从而为事件发布启用不同的线程使用策略.
 	 */
 	private ApplicationEventMulticaster eventMulticaster = new ApplicationEventMulticasterImpl();
 
 	/**
-	 * MessageSource helper we delegate our implementation of this interface to
+	 * 我们将此接口的实现委托给MessageSource辅助程序
 	 */
 	private MessageSource messageSource;
 
 	/**
-	 * Hash table of shared objects, keyed by String.
+	 * 共享对象的哈希表, 由String作为key
 	 */
 	private Map sharedObjects = new HashMap();
 
@@ -134,15 +129,15 @@ public abstract class AbstractApplicationContext implements ApplicationContext {
 	//---------------------------------------------------------------------
 
 	/**
-	 * Create a new AbstractApplicationContext with no parent.
+	 * 创建一个没有父项的新AbstractApplicationContext.
 	 */
 	public AbstractApplicationContext() {
 	}
 
 	/**
-	 * Create a new AbstractApplicationContext with the given parent context.
+	 * 使用给定的父context创建一个新的AbstractApplicationContext.
 	 *
-	 * @param parent parent context
+	 * @param parent 父context
 	 */
 	public AbstractApplicationContext(ApplicationContext parent) {
 		this.parent = parent;
@@ -154,20 +149,18 @@ public abstract class AbstractApplicationContext implements ApplicationContext {
 	//---------------------------------------------------------------------
 
 	/**
-	 * Return the parent context, or null if there is no parent,
-	 * and this is the root of the context hierarchy.
+	 * 返回父context, 如果没有父, 则返回null, 这是context层次结构的根.
 	 *
-	 * @return the parent context, or null if there is no parent
+	 * @return 父context, 如果没有父, 则为null
 	 */
 	public ApplicationContext getParent() {
 		return parent;
 	}
 
 	/**
-	 * Subclasses may call this to set parent after constructor.
-	 * Note that parent shouldn't be changed: it should only be
-	 * set later if it isn't available when an object of this
-	 * class is created.
+	 * 子类可以在构造函数之后调用它来设置父级.
+	 * 请注意, 不应该更改父级:
+	 * 只有在创建此类的对象时父级不可用, 才应该在以后设置父级.
 	 *
 	 * @param ac parent context
 	 */
@@ -176,33 +169,32 @@ public abstract class AbstractApplicationContext implements ApplicationContext {
 	}
 
 	/**
-	 * Return a friendly name for context
+	 * 返回此context的友好名称
 	 *
-	 * @return a display name for the context
+	 * @return context的显示名称
 	 */
 	public String getDisplayName() {
 		return displayName;
 	}
 
 	/**
-	 * To avoid endless constructor chaining, only concrete classes
-	 * take this in their constructor, and then invoke this method
+	 * 为了避免无限的构造函数链接, 只有具体的类在其构造函数中采用这种方法, 然后调用此方法
 	 */
 	protected void setDisplayName(String displayName) {
 		this.displayName = displayName;
 	}
 
 	/**
-	 * Return the timestamp when this context was first loaded
+	 * 首次加载此context时返回的时间戳
 	 *
-	 * @return the timestamp (ms) when this context was first loaded
+	 * @return 首次加载context时的时间戳(ms)
 	 */
 	public final long getStartupDate() {
 		return startupTime;
 	}
 
 	/**
-	 * Return context options. These control reloading etc.
+	 * 返回context options. 这些控制reloading等.
 	 *
 	 * @return context options
 	 */
@@ -211,11 +203,10 @@ public abstract class AbstractApplicationContext implements ApplicationContext {
 	}
 
 	/**
-	 * Load or reload configuration.
+	 * 加载或重新加载配置.
 	 *
-	 * @throws ApplicationContextException if the configuration was invalid or couldn't
-	 *                                     be found, or if configuration has already been loaded and reloading is forbidden
-	 *                                     DYNAMIC CLASSLOADER ISSUE...subclass to get classloader!?
+	 * @throws ApplicationContextException 如果配置无效或找不到, 或者配置已经加载并且
+	 *                                     重新加载DYNAMIC CLASSLOADER ISSUE...子类来获取classloader!?
 	 */
 	public final void refresh() throws ApplicationContextException {
 		if (this.contextOptions != null && !this.contextOptions.isReloadable())
@@ -240,15 +231,15 @@ public abstract class AbstractApplicationContext implements ApplicationContext {
 
 		try {
 			this.messageSource = (MessageSource) getBeanFactory().getBean(MESSAGE_SOURCE_BEAN_NAME);
-			// set parent message source if applicable,
-			// and if the message source is defined in this context, not in a parent
+			// 设置父message source(如果适用), 如果消息源是此context中定义的,
+			// 则不在父context中定义
 			if (this.parent != null && (this.messageSource instanceof NestingMessageSource) &&
 					Arrays.asList(getBeanFactory().getBeanDefinitionNames()).contains(MESSAGE_SOURCE_BEAN_NAME)) {
 				((NestingMessageSource) this.messageSource).setParent(this.parent);
 			}
 		} catch (NoSuchBeanDefinitionException ex) {
 			logger.warn("No MessageSource found for: " + getDisplayName());
-			// use empty message source to be able to accept getMessage calls
+			// 使用空message source来接受getMessage调用
 			this.messageSource = new StaticMessageSource();
 		}
 
@@ -257,20 +248,20 @@ public abstract class AbstractApplicationContext implements ApplicationContext {
 	}
 
 	/**
-	 * Callback method which can be overridden to add context-specific refresh work.
+	 * 回调方法, 可以重写该方法以添加特定于context的刷新工作.
 	 *
-	 * @throws ApplicationContextException in case of errors during refresh
+	 * @throws ApplicationContextException 如果刷新时出错
 	 */
 	protected void onRefresh() throws ApplicationContextException {
-		// For subclasses: do nothing by default.
+		// 对于子类: 默认情况下不执行任何操作.
 	}
 
 	/**
-	 * The BeanFactory must be loaded before this method is called
+	 * 调用此方法之前必须加载BeanFactory
 	 */
 	private void loadOptions() throws BeansException {
 		if (this.contextOptions == null) {
-			// Try to load from bean
+			// 尝试从bean加载
 			try {
 				this.contextOptions = (ContextOptions) getBeanFactory().getBean(OPTIONS_BEAN_NAME);
 			} catch (NoSuchBeanDefinitionException ex) {
@@ -281,9 +272,8 @@ public abstract class AbstractApplicationContext implements ApplicationContext {
 	}
 
 	/**
-	 * Invoke the setApplicationContext() callback on all objects
-	 * in the context. This involves instantiating the objects.
-	 * Only singletons will be instantiated eagerly.
+	 * 在context中的所有对象上调用setApplicationContext()回调.
+	 * 这涉及到实例化对象. 只会热切地实例化单例.
 	 */
 	private void configureAllManagedObjects() throws ApplicationContextException {
 		logger.info("Configuring singleton beans in context");
@@ -304,8 +294,8 @@ public abstract class AbstractApplicationContext implements ApplicationContext {
 	}
 
 	/**
-	 * Add beans that implement listener as listeners.
-	 * Doesn't affect other listeners, that can be added without being beans.
+	 * 添加实现listener的bean作为listeners.
+	 * 不影响其他listener, 可以添加而不必成为bean.
 	 */
 	private void refreshListeners() throws ApplicationContextException {
 		logger.info("Refreshing listeners");
@@ -326,13 +316,11 @@ public abstract class AbstractApplicationContext implements ApplicationContext {
 	}
 
 	/**
-	 * If the object is context-aware, give it a reference to this object.
-	 * Note that the implementation of the ApplicationContextAware interface
-	 * must check itself that if it is already initialized resp. if it wants
-	 * to perform reinitialization.
+	 * 如果对象是context-aware, 则为其提供此对象的引用.
+	 * 请注意, ApplicationContextAware接口的实现必须检查自己是否已经初始化为resp.
+	 * 如果要执行重新初始化.
 	 *
-	 * @param o object to invoke the setApplicationContext() method on,
-	 *          if it implements the ApplicationContextAware interface
+	 * @param o 如果它实现了ApplicationContextAware接口, 则调用对象上的setApplicationContext()方法
 	 */
 	protected void configureManagedObject(Object o) throws ApplicationContextException {
 		if (o instanceof ApplicationContextAware) {
@@ -343,10 +331,9 @@ public abstract class AbstractApplicationContext implements ApplicationContext {
 	}
 
 	/**
-	 * Publish the given event to all listeners.
+	 * 将给定事件发布给所有listener.
 	 *
-	 * @param event event to publish. The event may be application-specific,
-	 *              or a standard framework event.
+	 * @param event 要发布的事件. 该事件可能是特定于application的, 也可以是标准框架事件.
 	 */
 	public final void publishEvent(ApplicationEvent event) {
 		logger.debug("Publishing event in context [" + getDisplayName() + "]: " + event.toString());
@@ -356,17 +343,15 @@ public abstract class AbstractApplicationContext implements ApplicationContext {
 	}
 
 	/**
-	 * Add a listener. Any beans that are listeners are
-	 * automatically added.
+	 * 添加一个listener. 任何作为listener的bean都会自动添加.
 	 */
 	protected void addListener(ApplicationListener l) {
 		this.eventMulticaster.addApplicationListener(l);
 	}
 
 	/**
-	 * This implementation supports fully qualified URLs and appropriate
-	 * (file) paths, via getResourceByPath.
-	 * Throws a FileNotFoundException if getResourceByPath returns null.
+	 * 此实现通过getResourceByPath支持完全限定的URL和适当的(文件)路径.
+	 * 如果getResourceByPath返回null, 则抛出FileNotFoundException.
 	 *
 	 * @see #getResourceByPath
 	 */
@@ -387,25 +372,21 @@ public abstract class AbstractApplicationContext implements ApplicationContext {
 	}
 
 	/**
-	 * Return input stream to the resource at the given (file) path.
-	 * <p>Default implementation supports file paths, either absolute or
-	 * relative to the application's working directory. This should be
-	 * appropriate for standalone implementations but can be overridden,
-	 * e.g. for implementations targetted at a container.
+	 * 返回给定(文件)路径上资源的将输入流.
+	 * <p>默认实现支持文件路径, 可以是绝对路径, 也可以是相对于应用程序的
+	 * 工作目录的相对路径. 这应该适用于独立立实现, 但可以重写, 例如, 针对容器的实现.
 	 *
 	 * @param path path to the resource
-	 * @return InputStream for the specified resource, can be null if
-	 * not found (instead of throwing an exception)
-	 * @throws IOException exception when opening the specified resource
+	 * @return 指定资源的InputStream, 如果找不到则可以为null(而不是抛出异常)
+	 * @throws IOException 打开指定资源时的异常
 	 */
 	protected InputStream getResourceByPath(String path) throws IOException {
 		return new FileInputStream(path);
 	}
 
 	/**
-	 * This implementation returns the working directory of the Java VM.
-	 * This should be appropriate for standalone implementations but can
-	 * be overridden for implementations targetted at a container.
+	 * 此实现返回Java VM的工作目录.
+	 * 这应该适用于独立实现, 但可以针对容器的实现进行重写.
 	 */
 	public String getResourceBasePath() {
 		return (new File("")).getAbsolutePath() + File.separatorChar;
@@ -437,30 +418,30 @@ public abstract class AbstractApplicationContext implements ApplicationContext {
 	//---------------------------------------------------------------------
 
 	/**
-	 * Try to resolve the message.Return default message if no message was found.
+	 * 尝试解析该message. 如果找不到message, 则返回默认message.
 	 *
-	 * @param code           code to lookup up, such as 'calculator.noRateSet'
-	 * @param locale         Locale in which to do lookup
-	 * @param args           Array of arguments that will be filled in for params within
-	 *                       the message (params look like "{0}", "{1,date}", "{2,time}" within a message).
-	 * @param defaultMessage String to return if the lookup fails
-	 * @return a resolved message if the lookup is successful;
-	 * otherwise return the default message passed as a parameter
-	 * @see <a href=http://java.sun.com/j2se/1.3/docs/api/java/text/MessageFormat.html>java.text.MessageFormat</a>
+	 * @param code           要查找的code, 例如'calculator.noRateSet'. 鼓励此类用户将message
+	 *                       名称基于相关的完全限定类名, 从而避免冲突并确保最大程度的清晰性.
+	 * @param args           将填充消息中的参数的参数数组(参数在消息中看起来像"{0}", "{1,date}", "{2,time}"),
+	 *                       如果没有则为null.
+	 * @param locale         要在其中进行查找操作的locale
+	 * @param defaultMessage 查找失败时返回的字符串
+	 * @return 如果查找成功, 则返回已解析的消息; 否则返回作为参数传递的默认消息;
+	 * @see <a href="http://java.sun.com/j2se/1.3/docs/api/java/text/MessageFormat.html">java.text.MessageFormat</a>
 	 */
 	public String getMessage(String code, Object args[], String defaultMessage, Locale locale) {
 		return this.messageSource.getMessage(code, args, defaultMessage, locale);
 	}
 
 	/**
-	 * Try to resolve the message. Treat as an error if the message can't be found.
+	 * 尝试解析该message. 如果找不到message, 则视为错误.
 	 *
-	 * @param code   code to lookup up, such as 'calculator.noRateSet'
-	 * @param locale Locale in which to do lookup
-	 * @param args   Array of arguments that will be filled in for params within
-	 *               the message (params look like "{0}", "{1,date}", "{2,time}" within a message).
+	 * @param code   要查找的code, 例如'calculator.noRateSet'
+	 * @param args   将填充消息中的参数的参数数组(参数在消息中看起来像"{0}", "{1,date}", "{2,time}"),
+	 *               如果没有则为null.
+	 * @param locale 要在其中进行查找操作的locale
 	 * @return message
-	 * @throws NoSuchMessageException not found in any locale
+	 * @throws NoSuchMessageException 在任何locale中都找不到
 	 * @see <a href="http://java.sun.com/j2se/1.3/docs/api/java/text/MessageFormat.html">java.text.MessageFormat</a>
 	 */
 	public String getMessage(String code, Object args[], Locale locale) throws NoSuchMessageException {
@@ -468,18 +449,17 @@ public abstract class AbstractApplicationContext implements ApplicationContext {
 	}
 
 	/**
-	 * <b>Using all the attributes contained within the <code>MessageSourceResolvable</code>
-	 * arg that was passed in (except for the <code>locale</code> attribute)</b>,
-	 * try to resolve the message from the <code>MessageSource</code> contained within the <code>Context</code>.<p>
+	 * <b>使用传入的<code>MessageSourceResolvable</code>arg中包含的所有属性
+	 * (<code>locale</code>属性除外)</b>,
+	 * 尝试从<code>Context</code>中包含的<code>MessageSource</code>解析消息.<p>
 	 * <p>
-	 * NOTE: We must throw a <code>NoSuchMessageException</code> on this method since
-	 * at the time of calling this method we aren't able to determine if the <code>defaultMessage</code>
-	 * attribute is null or not.
+	 * 注意: 我们必须对此方法抛出<code>NoSuchMessageException</code>, 因为在调用此方法时,
+	 * 我们无法确定<code>defaultMessage</code>属性是否为null.
 	 *
-	 * @param resolvable Value object storing 4 attributes required to properly resolve a message.
-	 * @param locale     Locale to be used as the "driver" to figuring out what message to return.
+	 * @param resolvable value对象, 存储正确解析消息所需的4个属性.
+	 * @param locale     Locale用作"driver", 以确定要返回的消息.
 	 * @return message Resolved message.
-	 * @throws NoSuchMessageException not found in any locale
+	 * @throws NoSuchMessageException 在任何locale中都找不到
 	 * @see <a href="http://java.sun.com/j2se/1.3/docs/api/java/text/MessageFormat.html">java.text.MessageFormat</a>
 	 */
 	public String getMessage(MessageSourceResolvable resolvable, Locale locale) throws NoSuchMessageException {
@@ -491,7 +471,7 @@ public abstract class AbstractApplicationContext implements ApplicationContext {
 	//---------------------------------------------------------------------
 
 	/**
-	 * Try to find the bean instance in the hierarchy.
+	 * 尝试在层次结构中查找bean实例.
 	 */
 	public Object getBean(String name) throws BeansException {
 		Object bean = getBeanFactory().getBean(name);
@@ -505,10 +485,23 @@ public abstract class AbstractApplicationContext implements ApplicationContext {
 		return bean;
 	}
 
+	/**
+	 * 这个bean是单例吗? getBean()总是会返回相同的对象吗?
+	 *
+	 * @param name 要查询的bean的name
+	 * @return 这个bean是单例吗
+	 * @throws NoSuchBeanDefinitionException 如果没有给定name的bean
+	 */
 	public boolean isSingleton(String name) throws NoSuchBeanDefinitionException {
 		return getBeanFactory().isSingleton(name);
 	}
 
+	/**
+	 * 如果已定义, 则返回给定bean名称的别名.
+	 *
+	 * @param name 用于检查别名的bean的name
+	 * @return 别名, 如果没有, 则返回空数组
+	 */
 	public String[] getAliases(String name) {
 		return getBeanFactory().getAliases(name);
 	}
@@ -518,20 +511,37 @@ public abstract class AbstractApplicationContext implements ApplicationContext {
 	// Implementation of ListableBeanFactory
 	//---------------------------------------------------------------------
 
+	/**
+	 * 返回工厂中定义的bean数
+	 *
+	 * @return 工厂中定义的bean数量
+	 */
 	public int getBeanDefinitionCount() {
 		return getBeanFactory().getBeanDefinitionCount();
 	}
 
+	/**
+	 * 返回此工厂中定义的所有bean的名称
+	 *
+	 * @return 此工厂中定义的所有bean的name.
+	 * 如果没有定义bean, 则返回空String[], 而不是null.
+	 */
 	public String[] getBeanDefinitionNames() {
 		return getBeanFactory().getBeanDefinitionNames();
 	}
 
+	/**
+	 * 返回与给定对象类型匹配的bean的name(包括子类).
+	 *
+	 * @param type 要匹配的类或接口
+	 * @return 与给定对象类型匹配的bean的name(包括子类). 永远不会返回null.
+	 */
 	public String[] getBeanDefinitionNames(Class type) {
 		return getBeanFactory().getBeanDefinitionNames(type);
 	}
 
 	/**
-	 * Show information about this context
+	 * 显示有关此context的信息
 	 */
 	public String toString() {
 		StringBuffer sb = new StringBuffer("ApplicationContext: displayName=**" + displayName + "'**; ");
@@ -549,19 +559,18 @@ public abstract class AbstractApplicationContext implements ApplicationContext {
 
 
 	//---------------------------------------------------------------------
-	// Abstract methods that must be implemented by subclasses
+	// 必须由子类实现的抽象方法
 	//---------------------------------------------------------------------
 
 	/**
-	 * Subclasses must implement this method to perform the actual configuration load.
+	 * 子类必须实现此方法才能执行实际的配置加载.
 	 */
 	protected abstract void refreshBeanFactory() throws ApplicationContextException;
 
 	/**
-	 * Unimplemented interface method. Subclasses must implement this
-	 * efficiently, so that it can be called repeatedly without a performance penalty.
+	 * 未实现的接口方法. 子类必须有效地实现它, 以便可以重复调用它而不会降低性能.
 	 *
-	 * @return this application context's default BeanFactory
+	 * @return 此应用程序context的默认BeanFactory
 	 */
 	protected abstract ListableBeanFactory getBeanFactory();
 
