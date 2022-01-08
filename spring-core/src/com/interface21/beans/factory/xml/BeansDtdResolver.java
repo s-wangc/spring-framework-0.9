@@ -8,7 +8,7 @@ import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 
 /**
- * EntityResolver implementation for the Spring beans DTD.
+ * Spring bean DTD的EntityResolver实现.
  *
  * @author Juergen Hoeller
  * @since 04.06.2003
@@ -39,7 +39,7 @@ public class BeansDtdResolver implements EntityResolver {
 		} else {
 			log.debug("Ignoring DTD [" + systemId + "]");
 		}
-		// use the default behaviour -> download from website
+		// 使用默认行为 -> 从网站下载
 		return null;
 	}
 
