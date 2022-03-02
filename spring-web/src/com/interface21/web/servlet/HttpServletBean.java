@@ -103,16 +103,15 @@ public class HttpServletBean extends HttpServlet {
 		}
 	}
 
-	/**
-	 * Subclasses may override this to perform custom initialization.
-	 * All bean properties of this servlet will have been set before this
-	 * method is invoked. This default implementation does nothing.
-	 *
-	 * @throws ServletException if subclass initialization fails
-	 */
-	protected void initServletBean() throws ServletException {
-		logger.debug(getIdentifier() + "NOP default implementation of initServletBean");
-	}
+    /**
+     * 子类可以重写此项以执行自定义初始化. 在调用此方法之前, 将设置此servlet
+     * 的所有bean属性. 这个默认实现什么也不做.
+     *
+     * @throws ServletException 如果子类初始化失败
+     */
+    protected void initServletBean() throws ServletException {
+        logger.debug(getIdentifier() + "NOP default implementation of initServletBean");
+    }
 
 	/**
 	 * Return the name of this servlet:
