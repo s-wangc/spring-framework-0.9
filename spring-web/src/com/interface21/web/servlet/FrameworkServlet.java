@@ -27,21 +27,18 @@ import com.interface21.web.context.support.WebApplicationContextUtils;
 import com.interface21.web.context.support.XmlWebApplicationContext;
 
 /**
- * Base servlet for servlets within the Interface21 framework. Allows integration
- * with bean factory and application context, in a JavaBean-based overall solution.
+ * Interface21框架中servlet的基本servlet.
+ * 允许在基于JavaBean的整体解决方案中与bean工厂和应用程序上下文集成.
  *
- * <p>This class offers the following functionality:
+ * <p>该类提供以下功能:
  * <ul>
- * <li>Uses a WebApplicationContext to access a BeanFactory. The servlet's
- * configuration is determined by the beans in the namespace 'servlet-name'-servlet,
- * if not overridden via the namespace property.
- * <li>Publishes events on request processing, whether or not a request is
- * successfully handled.
+ * <li>使用WebApplicationContext访问BeanFactory. 如果不通过命名空间属性重写,
+ * servlet的配置由命名空间'servlet-name' - servlet中的bean决定.
+ * <li>在处理请求时发布事件, 无论请求是否成功处理.
  * </ul>
  *
- * <p>Subclasses must implement doService() to handle requests. Because this extends
- * HttpServletBean rather than HttpServlet directly, bean properties are mapped
- * onto it. Subclasses can override initFrameworkServlet() for custom initialization.
+ * <p>子类必须实现doServlet()来处理请求. 因为这扩展HttpServletBean而不是HttpServlet,
+ * 所以bean属性会映射到HttpServlet上面. 子类可以覆盖initFrameworkServlet()以进行自定义初始化.
  *
  * @author Rod Johnson
  * @version $Revision: 1.11 $
@@ -51,21 +48,19 @@ import com.interface21.web.context.support.XmlWebApplicationContext;
 public abstract class FrameworkServlet extends HttpServletBean {
 
 	/**
-	 * Suffix for namespace bean factory names. If a servlet of this class is
-	 * given the name 'test' in a context, the namespace used by the servlet will
-	 * resolve to 'test-servlet'.
+	 * 命名空间bean工厂名称的后缀. 如果此类的servlet在上下文中被命名为"test",
+	 * 则servlet使用的命名空间将解析为"test-servlet".
 	 */
 	public static final String DEFAULT_NAMESPACE_SUFFIX = "-servlet";
 
 	/**
-	 * Prefix for the ServletContext attribute for the web application context.
-	 * The completion is the servlet name.
+	 * Web应用程序上下文的ServletContext属性的前缀. 完成是servlet名称.
 	 */
 	public static final String SERVLET_CONTEXT_PREFIX = FrameworkServlet.class.getName() + ".CONTEXT.";
 
 
 	/**
-	 * Namespace for this servlet
+	 * 此servlet的命名空间
 	 */
 	private String namespace;
 
@@ -75,12 +70,12 @@ public abstract class FrameworkServlet extends HttpServletBean {
 	private String contextClass;
 
 	/**
-	 * Should we publish the context as a ServletContext attribute?
+	 * 我们是否应该将上下文发布为ServletContext属性?
 	 */
 	private boolean publishContext = true;
 
 	/**
-	 * WebApplicationContext for this servlet
+	 * 此servlet的WebApplicationContext
 	 */
 	private WebApplicationContext webApplicationContext;
 
