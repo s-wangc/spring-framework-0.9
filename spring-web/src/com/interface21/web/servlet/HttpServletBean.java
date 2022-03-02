@@ -72,25 +72,23 @@ public class HttpServletBean extends HttpServlet {
 	}
 
 	/**
-	 * Map config parameters onto bean properties of this servlet, and
-	 * invoke subclass initialization.
+	 * 将配置参数映射到此servlet的bean属性, 并调用子类初始化.
 	 *
-	 * @throws ServletException if bean properties are invalid (or required properties
-	 *                          are missing), or if subclass initialization fails.
+	 * @throws ServletException 如果bean属性无效(或缺少必需的属性), 或者子类初始化失败.
 	 */
 	public final void init() throws ServletException {
 		this.identifier = "Servlet with name '" + getServletConfig().getServletName() + "' ";
 
 		logger.info(getIdentifier() + "entering init...");
 
-		// Set bean properties
+		// 设置bean属性
 		try {
 			PropertyValues pvs = new ServletConfigPropertyValues(getServletConfig(), requiredProperties);
 			BeanWrapper bw = new BeanWrapperImpl(this);
 			bw.setPropertyValues(pvs);
 			logger.debug(getIdentifier() + "properties bound OK");
 
-			// Let subclasses do whatever initialization they like
+			// 让子类做他们喜欢的任何初始化
 			initServletBean();
 			logger.info(getIdentifier() + "configured successfully");
 		} catch (BeansException ex) {
@@ -98,7 +96,7 @@ public class HttpServletBean extends HttpServlet {
 			logger.error(mesg, ex);
 			throw new ServletException(mesg, ex);
 		} catch (Throwable t) {
-			// Let subclasses throw unchecked exceptions
+			// 让子抛出unchecked exceptions
 			String mesg = getIdentifier() + ": initialization error";
 			logger.error(mesg, t);
 			throw new ServletException(mesg, t);
