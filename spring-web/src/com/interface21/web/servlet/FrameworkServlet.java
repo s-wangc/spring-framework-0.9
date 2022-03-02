@@ -137,8 +137,8 @@ public abstract class FrameworkServlet extends HttpServletBean {
 
 
 	/**
-	 * Overridden method of HttpServletBean, invoked after any bean properties
-	 * have been set. Creates this servlet's WebApplicationContext.
+	 * 重写的HttpServletBean方法, 在设置任何bean属性后调用.
+	 * 创建此servlet的WebApplicationContext.
 	 */
 	protected final void initServletBean() throws ServletException {
 		long startTime = System.currentTimeMillis();
