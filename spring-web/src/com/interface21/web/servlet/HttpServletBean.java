@@ -26,14 +26,12 @@ import com.interface21.beans.BeansException;
 import com.interface21.beans.PropertyValues;
 
 /**
- * Simple extension of javax.servlet.http.HttpServlet that treats its config
- * parameters as bean properties. A very handy superclass for any type of servlet.
- * Type conversion is automatic. It is also
- * possible for subclasses to specify required properties. This servlet leaves
- * request handling to subclasses, inheriting the default behaviour of HttpServlet.
- * <p/>This servlet superclass has no dependency on the application context.
- * However, it does use Java 1.4 logging emulation, which must have been
- * configured by another component.
+ * javax.servlet.http.HttpServlet的简单扩展, 将其配置参数视为bean属性.
+ * 对于任何类型的servlet都是一个非常方便的超类. 类型转换是自动的. 子类也可以指定必需的属性.
+ * 这个servelt将请求处理留给子类, 继承了HttpServlet的默认行为.
+ * <p/>此servlet超类不依赖于应用程序上下文. 但是, 它确实使用Java1.4日志模拟, 它必须
+ * 由另一个组件配置.
+ *
  * @author Rod Johnson
  * @version $Revision: 1.2 $
  */
@@ -42,12 +40,13 @@ public class HttpServletBean extends HttpServlet {
 	protected final Log logger = LogFactory.getLog(getClass());
 
 	/**
-	 * May be null. List of required properties (Strings) that must
-	 * be supplied as config parameters to this servlet.
+	 * 可能为空. 必须作为配置参数提供给此servlet的必需属性(字符串)的list.
 	 */
 	private List requiredProperties = new LinkedList();
 
-	/** Holds name info: useful for logging */
+	/**
+	 * 保留name信息: 对日志记录很有用
+	 */
 	private String identifier;
 
 
@@ -65,6 +64,7 @@ public class HttpServletBean extends HttpServlet {
 	 * Subclasses can invoke this method to specify that this property
 	 * (which must match a JavaBean property they expose) is mandatory,
 	 * and must be supplied as a config parameter.
+	 *
 	 * @param property name of the required property
 	 */
 	protected final void addRequiredProperty(String property) {
@@ -74,8 +74,9 @@ public class HttpServletBean extends HttpServlet {
 	/**
 	 * Map config parameters onto bean properties of this servlet, and
 	 * invoke subclass initialization.
+	 *
 	 * @throws ServletException if bean properties are invalid (or required properties
-	 * are missing), or if subclass initialization fails.
+	 *                          are missing), or if subclass initialization fails.
 	 */
 	public final void init() throws ServletException {
 		this.identifier = "Servlet with name '" + getServletConfig().getServletName() + "' ";
@@ -106,8 +107,9 @@ public class HttpServletBean extends HttpServlet {
 
 	/**
 	 * Subclasses may override this to perform custom initialization.
-	 *  All bean properties of this servlet will have been set before this
+	 * All bean properties of this servlet will have been set before this
 	 * method is invoked. This default implementation does nothing.
+	 *
 	 * @throws ServletException if subclass initialization fails
 	 */
 	protected void initServletBean() throws ServletException {
@@ -117,10 +119,11 @@ public class HttpServletBean extends HttpServlet {
 	/**
 	 * Return the name of this servlet:
 	 * handy to include in log messages. Subclasses may override it if
-	 * necessary to include additional information. Use like this: 
+	 * necessary to include additional information. Use like this:
 	 * <code>
 	 * Category.getInstance(getClass()).debug(getIdentifier() + "body of message");
 	 * </code>
+	 *
 	 * @return the name of this servlet
 	 */
 	protected String getIdentifier() {
