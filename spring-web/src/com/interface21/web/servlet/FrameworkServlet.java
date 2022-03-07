@@ -164,6 +164,7 @@ public abstract class FrameworkServlet extends HttpServletBean {
 		WebApplicationContext waca = (this.contextClass != null) ?
 				instantiateCustomWebApplicationContext(this.contextClass, parent, namespace) :
 				new XmlWebApplicationContext(parent, namespace);
+		// 创建好ApplicationContext后将ServletContext设置进去
 		waca.setServletContext(sc);
 		logger.info("Servlet with name '" + getServletName() + "' loaded child context " + waca);
 		if (this.publishContext) {
