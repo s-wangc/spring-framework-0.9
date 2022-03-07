@@ -131,7 +131,7 @@ public class XmlWebApplicationContext extends AbstractXmlUiApplicationContext im
 		if (this.namespace == null) {
 			// 我们是root上下文
 			WebApplicationContextUtils.publishConfigObjects(this);
-			// Expose as a ServletContext object
+			// 作为servletContext对象公开
 			WebApplicationContextUtils.publishWebApplicationContext(this);
 		}
 	}

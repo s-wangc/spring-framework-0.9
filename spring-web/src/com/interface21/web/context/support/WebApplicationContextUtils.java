@@ -50,12 +50,11 @@ public abstract class WebApplicationContextUtils {
 	}
 
 	/**
-	 * Expose the given WebApplcicationContext as an attribute of the
-	 * ServletContext it references.
+	 * 将给定的WebApplicationContext作为其引导的ServletContext的属性公开.
 	 */
 	public static void publishWebApplicationContext(WebApplicationContext wac) {
-		// Set WebApplicationContext as an attribute in the ServletContext so
-		// other components in this web application can access it
+		// 将WebApplicationContext设置为ServletContext中的属性,
+		// 以便此Web应用程序中的其他组件可以访问它
 		ServletContext sc = wac.getServletContext();
 		if (sc == null)
 			throw new IllegalArgumentException("ServletContext can't be null in WebApplicationContext " + wac);
