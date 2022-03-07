@@ -169,7 +169,7 @@ public abstract class FrameworkServlet extends HttpServletBean {
 		logger.info("Servlet with name '" + getServletName() + "' loaded child context " + waca);
 		// 如果需要将ApplicationContext发布出去
 		if (this.publishContext) {
-            // 将上下文发布为servlet上下文属性
+			// 将上下文发布为servlet上下文属性
 			String attName = getServletContextAttributeName();
 			sc.setAttribute(attName, waca);
 			logger.info("Bound servlet's context in global ServletContext with name '" + attName + "'");
@@ -259,11 +259,11 @@ public abstract class FrameworkServlet extends HttpServletBean {
 
 
 	/**
-	 * Subclasses must implement this method to perform any initialization they require.
-	 * The implementation may be empty. This method will be invoked after any bean properties
-	 * have been set and WebApplicationContext and BeanFactory have been loaded.
+	 * 子类必须实现此方法以执行它们所需的任何初始化.
+	 * 实现可能是空的. 此方法将在设置了任何bean属性并加载WebApplicationContext
+	 * 和BeanFacotry之后调用.
 	 *
-	 * @throws ServletException in case of an initialization exception
+	 * @throws ServletException 如果出现初始化异常
 	 */
 	protected abstract void initFrameworkServlet() throws ServletException;
 

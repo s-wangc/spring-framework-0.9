@@ -139,10 +139,9 @@ public class DispatcherServlet extends FrameworkServlet {
 	private ViewResolver viewResolver;
 
 	/**
-	 * Overridden method, invoked after any bean properties have been set and the
-	 * WebApplicationContext and BeanFactory for this namespace is available.
-	 * <p>Loads HandlerMapping and HandlerAdapter objects, and configures a
-	 * ViewResolver and a LocaleResolver.
+	 * 重写的方法, 在设置任何bean属性并且此命名空间的WebApplicationContext和
+	 * BeanFactory可用后调用.
+	 * <p>加载HandlerMapping和HandlerAdapter对象, 并配置一个ViewResolver和一个LocaleResolver.
 	 */
 	protected void initFrameworkServlet() throws ServletException {
 		initLocaleResolver();
@@ -399,7 +398,7 @@ public class DispatcherServlet extends FrameworkServlet {
 	 * In this case we can return.
 	 */
 	private boolean wasRevalidated(HttpServletRequest request, HttpServletResponse response,
-								   HandlerAdapter ha, Object mappedHandler) {
+	                               HandlerAdapter ha, Object mappedHandler) {
 		// Based on code from javax.servlet.HttpServlet from Apache Servlet API
 		// HttpServlet checks getLastModified() before calling doGet(), so we need to
 		// leave the default implementation of getLastModified() to return -1, before
