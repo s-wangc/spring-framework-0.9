@@ -11,12 +11,11 @@ import com.interface21.web.servlet.LocaleResolver;
 import com.interface21.web.util.WebUtils;
 
 /**
- * Implementation of LocaleResolver that uses a cookie sent back to the user
- * in case of a custom setting, with a fallback to the accept header locale.
- * This is especially useful for stateless applications without user sessions.
+ * LocaleResolver的实现, 它使用在自定义设置的情况下发送回用户的cookie,
+ * 并回退到accept头的locale设置.
+ * 这对于没有使用session的无状态应用程序尤其有用.
  *
- * <p>Custom controllers can thus override the user's locale by calling setLocale,
- * e.g. responding to a certain locale change request.
+ * <p>因此, 自定义controller可以通过调用setLocale覆盖用户的语言环境, 例如响应某个locale设置更改请求.
  *
  * @author Juergen Hoeller
  * @since 27.02.2003
@@ -34,7 +33,7 @@ public class CookieLocaleResolver implements LocaleResolver {
 	private int cookieMaxAge = DEFAULT_COOKIE_MAX_AGE;
 
 	/**
-	 * Use the given name for locale cookies.
+	 * 对locale cookie使用给定的name.
 	 */
 	public void setCookieName(String cookieName) {
 		this.cookieName = cookieName;
@@ -45,8 +44,8 @@ public class CookieLocaleResolver implements LocaleResolver {
 	}
 
 	/**
-	 * Use the given maximum age, specified in seconds, for locale cookies.
-	 * Useful special value: -1 ... not persistent, deleted when client shuts down
+	 * 对locale cookie使用给定的最大age(以秒为单位).
+	 * 有用的特殊值: -1... 不持久, 在客户端关闭时删除
 	 */
 	public void setCookieMaxAge(int cookieMaxAge) {
 		this.cookieMaxAge = cookieMaxAge;
@@ -57,16 +56,16 @@ public class CookieLocaleResolver implements LocaleResolver {
 	}
 
 	public Locale resolveLocale(HttpServletRequest request) {
-		// check locale for preparsed resp. preset locale
+		// 检查预先分配的locale设置. 预设locale设置
 		Locale locale = (Locale) request.getAttribute(LOCALE_REQUEST_ATTRIBUTE_NAME);
 		if (locale != null)
 			return locale;
 
-		// retrieve cookie value
+		// 检索cookie值
 		Cookie cookie = WebUtils.getCookie(request, getCookieName());
 
 		if (cookie != null) {
-			// parse cookie value
+			// 解析cookie值
 			String language = "";
 			String country = "";
 			String variant = "";
@@ -79,7 +78,7 @@ public class CookieLocaleResolver implements LocaleResolver {
 			if (tokenizer.hasMoreTokens())
 				variant = tokenizer.nextToken();
 
-			// evaluate results
+			// 计算结果
 			if (language != null) {
 				locale = new Locale(language, country, variant);
 				request.setAttribute(LOCALE_REQUEST_ATTRIBUTE_NAME, locale);
@@ -94,12 +93,12 @@ public class CookieLocaleResolver implements LocaleResolver {
 	public void setLocale(HttpServletRequest request, HttpServletResponse response, Locale locale) {
 		Cookie cookie = null;
 		if (locale != null) {
-			// set request attribute and add cookie
+			// 设置request属性并添加cookie
 			request.setAttribute(LOCALE_REQUEST_ATTRIBUTE_NAME, locale);
 			cookie = new Cookie(getCookieName(), locale.getLanguage() + " " + locale.getCountry() + " " + locale.getVariant());
 			cookie.setMaxAge(getCookieMaxAge());
 		} else {
-			// set request attribute to fallback locale and remove cookie
+			// 将request属性设置为回退locale设置并删除cookie
 			request.setAttribute(LOCALE_REQUEST_ATTRIBUTE_NAME, request.getLocale());
 			cookie = new Cookie(getCookieName(), "");
 			cookie.setMaxAge(0);

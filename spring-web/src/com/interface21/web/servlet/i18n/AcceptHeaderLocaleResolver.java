@@ -8,11 +8,10 @@ import javax.servlet.http.HttpServletResponse;
 import com.interface21.web.servlet.LocaleResolver;
 
 /**
- * Implementation of LocaleResolver that simply uses the primary locale
- * specified in the "accept-language" header of the HTTP request
- * (i.e., the locale sent by the client browser, normally that of the client's OS).
+ * LocaleResolver的实现, 它只使用HTTP请求的"accept-language"请求头
+ * 中指定的主locale(即客户端浏览器发送的locale, 通常是客户端操作系统的locale).
  *
- * <p>Note: Does not support setLocale, because the accept header cannot be changed.
+ * <p>注意: 不支持setLocale, 因为无法更改accepte请求头.
  *
  * @author Juergen Hoeller
  * @since 27.02.2003
