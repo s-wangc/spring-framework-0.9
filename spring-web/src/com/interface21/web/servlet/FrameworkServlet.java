@@ -150,14 +150,17 @@ public abstract class FrameworkServlet extends HttpServletBean {
 	}
 
 	/**
-	 * Create the WebApplicationContext for this web app.
+	 * 为此Web应用创建WebApplicationContext.
 	 *
-	 * @throws ServletException if the context object can't be found
+	 * @throws ServletException 如果无法找到context对象
 	 */
 	private WebApplicationContext createWebApplicationContext() throws ServletException {
+		// 首先去servletContext的属性里面去找一个ApplicationContext
 		ServletContext sc = getServletConfig().getServletContext();
 		WebApplicationContext parent = WebApplicationContextUtils.getWebApplicationContext(sc);
 		String namespace = getNamespace();
+		// 如果配置了contextClass属性, 则使用contextClass、找到的ApplicationContext和命名空间创建一个新的ApplicationContext
+		// 否则就仅仅使用找到的ApplicationContext和命名空间来创建
 		WebApplicationContext waca = (this.contextClass != null) ?
 				instantiateCustomWebApplicationContext(this.contextClass, parent, namespace) :
 				new XmlWebApplicationContext(parent, namespace);
@@ -173,12 +176,13 @@ public abstract class FrameworkServlet extends HttpServletBean {
 	}
 
 	/**
-	 * Try to instantiate a custom web application context, allowing parameterization
-	 * of the class name.
+	 * 尝试实例化自定义Web应用程序上下文, 允许对类名称的参数化.
 	 */
 	private WebApplicationContext instantiateCustomWebApplicationContext(String className, WebApplicationContext parent, String namespace) throws ServletException {
 		logger.info("Servlet with name '" + getServletName() + "' will try to create custom WebApplicationContext context of class '" + className + "'");
 		try {
+			// 根据类的前限定名加载类, 并判断该类是否是一个WebApplicationContext类, 如果不是的话要抛出异常;
+			// 如果这是一个WebApplicationContext类, 则使用parent, namespace作为构造函数入参创建实例化一个对象
 			Class clazz = Class.forName(className);
 			if (!WebApplicationContext.class.isAssignableFrom(clazz))
 				throw new ServletException("Fatal initialization error in servlet with name '" + getServletName() + "': custom WebApplicationContext class '" + className + "' must implement WebApplicationContext");

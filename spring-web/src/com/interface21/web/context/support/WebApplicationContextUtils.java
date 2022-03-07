@@ -22,26 +22,28 @@ import com.interface21.context.ApplicationContextException;
 import com.interface21.web.context.WebApplicationContext;
 
 /**
- * Utilities common to all WebApplicationContext implementations.
+ * 所有WebApplicaitonContext实现所共有的实用程序.
  *
- * <p>Features a convenient method to retrieve the WebApplicationContext
- * for a given ServletContext. This is e.g. useful to access a Spring
- * context from within Struts actions.
+ * <p>提供了一种方便的方法来检索给定ServletContext的WebApplication.
+ * 例如, 这对于从Struts action中访问Spring上下文非常有用.
  *
  * @author Rod Johnson
  * @version $Id: WebApplicationContextUtils.java,v 1.6 2003/05/28 16:39:15 jhoeller Exp $
  */
 public abstract class WebApplicationContextUtils {
 
-	/** Config object prefix in bean names */
+	/**
+	 * bean名称中配置对象前缀
+	 */
 	public static final String CONFIG_OBJECT_PREFIX = "config.";
 
 	private static Log logger = LogFactory.getLog(WebApplicationContextUtils.class);
 
 	/**
-	 * Find the root WebApplicationContext for this web app.
-	 * @param sc ServletContext to find the application context for
-	 * @return the WebApplicationContext for this web app, or null if none
+	 * 找到此Web应用程序的根WebApplicationContext.
+	 *
+	 * @param sc 用于查找应用程序上下文的ServletContext
+	 * @return 此Web应用程序的WebApplicationContext, 如果没有, 则为null
 	 */
 	public static WebApplicationContext getWebApplicationContext(ServletContext sc) {
 		return (WebApplicationContext) sc.getAttribute(WebApplicationContext.WEB_APPLICATION_CONTEXT_ATTRIBUTE_NAME);
@@ -72,11 +74,12 @@ public abstract class WebApplicationContextUtils {
 	 * ServletContext, where it must have been placed by config.
 	 * Can only be called after the ServletContext is available. This means
 	 * it can't be called in a subclass constructor.
-	 * @param sc current ServletContext
-	 * @param name name of the config object
+	 *
+	 * @param sc            current ServletContext
+	 * @param name          name of the config object
 	 * @param requiredClass type of the config object
 	 * @throws ServletException if the object isn't found, or isn't
-	 * of the required type.
+	 *                          of the required type.
 	 */
 	public static Object getConfigObject(ServletContext sc, String name, Class requiredClass) throws ServletException {
 		Object o = sc.getAttribute(CONFIG_OBJECT_PREFIX + name);
@@ -96,6 +99,7 @@ public abstract class WebApplicationContextUtils {
 	/**
 	 * Initialize all config objects if necessary, and publish them as
 	 * ServletContext attributes.
+	 *
 	 * @param wac WebApplicationContext whose config objects should be published
 	 */
 	public static void publishConfigObjects(WebApplicationContext wac) throws ApplicationContextException {
