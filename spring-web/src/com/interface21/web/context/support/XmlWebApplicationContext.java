@@ -23,19 +23,15 @@ import com.interface21.ui.context.support.AbstractXmlUiApplicationContext;
 import com.interface21.web.context.WebApplicationContext;
 
 /**
- * WebApplicationContext implementation that takes configuration from
- * an XML document.
+ * 从XML文档获取配置的WebApplicationContext实现.
  *
- * <p>Supports various servlet context init parameters for config file
- * lookup. By default, the lookup occurs in the web app's WEB-INF
- * directory, looking for "WEB-INF/applicationContext.xml" for a root
- * context, and "WEB-INF/test-servlet.xml" for a namespaced context
- * with the name "test-servlet" (like for a DispatcherServlet instance
- * with the web.xml servlet name "test").
+ * <p>支持用于持配置文件查找的各种servlet上下文init参数. 默认情况下, 查找发生
+ * 在Web应用程序的WEB-INF目录中, 为根上下文查找"WEB-INF/applicationContext.xml",
+ * 为名称为test-servlet"的命名空间context查找"WEB-INF/test-servlet.xml"
+ * (类似于为web.xml servlet名称"test"的DispatcherServlet实例).
  *
- * <p>Interprets (file) paths as servlet context resources, i.e. as
- * paths beneath the web application root. Thus, absolute paths, i.e.
- * files outside the web app root, should be accessed via "file:" URLs.
+ * <p>将(file)路径解释为servlet上下文资源, 即作为Web应用程序根目录下的路径.
+ * 因此, 绝对路径, 即Web应用程序根目录之外的文件, 应通过"file:" URLs访问.
  *
  * @author Rod Johnson
  * @author Juergen Hoeller
@@ -44,54 +40,64 @@ import com.interface21.web.context.WebApplicationContext;
 public class XmlWebApplicationContext extends AbstractXmlUiApplicationContext implements WebApplicationContext {
 
 	/**
-	 * Name of servlet context parameter that can specify the config location prefix
-	 * for namespaced contexts, falling back to DEFAULT_CONFIG_LOCATION_PREFIX.
+	 * servlet上下文参数的名称, 该参数可以指定命名空间上下文的配置位置前缀,
+	 * 可以回退到DEFAULT_CONFIG_LOCATION_PREFIX.
 	 */
 	public static final String CONFIG_LOCATION_PREFIX_PARAM = "contextConfigLocationPrefix";
 
 	/**
-	 * Name of servlet context parameter that can specify the config location suffix
-	 * for namespaced contexts, falling back to DEFAULT_CONFIG_LOCATION_SUFFIX.
+	 * servlet上下文参数的名称, 可以指定命名空间上下文的配置位置后缀,
+	 * 回退到DEFAULT_CONFIG_LOCATION_SUFFIX.
 	 */
 	public static final String CONFIG_LOCATION_SUFFIX_PARAM = "contextConfigLocationSuffix";
 
 	/**
-	 * Name of servlet context parameter that can specify the config location
-	 * for the root context, falling back to DEFAULT_CONFIG_LOCATION.
+	 * servlet上下文参数的名称, 该参数可以指定根上下文的配置位置, 并回退到DEFAULT_CONFIG_LOCATION.
 	 */
 	public static final String CONFIG_LOCATION_PARAM = "contextConfigLocation";
 
-	/** Default prefix for config locations, followed by the namespace */
+	/**
+	 * 配置位置的默认前缀, 后跟命名空间
+	 */
 	public static final String DEFAULT_CONFIG_LOCATION_PREFIX = "/WEB-INF/";
 
-	/** Default suffix for config locations, following the namespace */
+	/**
+	 * 配置位置的默认后缀, 位于命名空间后
+	 */
 	public static final String DEFAULT_CONFIG_LOCATION_SUFFIX = ".xml";
 
-	/** Default config location for the root context. */
+	/**
+	 * 根上下文的默认配置位置.
+	 */
 	public static final String DEFAULT_CONFIG_LOCATION =
 			DEFAULT_CONFIG_LOCATION_PREFIX + "applicationContext" + DEFAULT_CONFIG_LOCATION_SUFFIX;
 
 
-	/** Namespace of this context, or null if root */
+	/**
+	 * 此上下文的命名空间, 如果是root, 则为null
+	 */
 	private String namespace = null;
 
-	/** URL from which the configuration was loaded */
+	/**
+	 * 从中加载配置的URL
+	 */
 	private String configLocation;
 
-	/** Servlet context that this context runs in */
+	/**
+	 * 运行此上下文的servlet上下文
+	 */
 	private ServletContext servletContext;
 
 	/**
-	 * Create a new root web application context, for use in an entire
-	 * web application. This context will be the parent for individual
-	 * servlet contexts.
+	 * 创建新的根Web应用程序上下文, 以便在整个Web应用程序中使用.
+	 * 此上下文将是各个servlet上下文的父级.
 	 */
 	public XmlWebApplicationContext() {
 		setDisplayName("Root WebApplicationContext");
 	}
 
 	/**
-	 * Create a new child WebApplicationContext.
+	 * 创建一个新的子WebApplicationContext.
 	 */
 	public XmlWebApplicationContext(ApplicationContext parent, String namespace) {
 		super(parent);
@@ -101,7 +107,7 @@ public class XmlWebApplicationContext extends AbstractXmlUiApplicationContext im
 
 
 	/**
-	 * @return the namespace of this context, or null if root
+	 * @return 此上下文的命名空间, 如果是root, 则为null
 	 */
 	public String getNamespace() {
 		return this.namespace;
@@ -154,7 +160,7 @@ public class XmlWebApplicationContext extends AbstractXmlUiApplicationContext im
 	}
 
 	/**
-	 * @return the URL or path of the configuration
+	 * @return 配置的URL或路径
 	 */
 	protected final String getConfigLocation() {
 		return this.configLocation;
