@@ -170,20 +170,19 @@ public class DispatcherServlet extends FrameworkServlet {
 
 
 	/**
-	 * Initialize the LocaleResolver used by this class.
-	 * If no bean is defined with the given name in the BeanFactory
-	 * for this namespace, we default to a AcceptHeaderLocaleResolver.
+	 * 初始化此类使用的ThemeResolver.
+	 * 如果在此命名空间的BeanFactory中没有使用给定名称定义bean, 则默认为FixedThemeResolver.
 	 */
 	private void initThemeResolver() throws ServletException {
 		try {
 			this.themeResolver = (ThemeResolver) getWebApplicationContext().getBean(THEME_RESOLVER_BEAN_NAME);
 			logger.info("Loaded theme resolver [" + this.themeResolver + "]");
 		} catch (NoSuchBeanDefinitionException ex) {
-			// We need to use the default
+			// 我们需要使用默认值
 			this.themeResolver = new FixedThemeResolver();
 			logger.info("Unable to load theme resolver with name '" + THEME_RESOLVER_BEAN_NAME + "': using default [" + this.themeResolver + "]");
 		} catch (BeansException ex) {
-			// We tried and failed to load the ThemeResolver specified by a bean
+			// 我们尝试加载bean指定的ThemeResolver, 但失败
 			throw new ServletException("Fatal error loading theme resolver with name '" + THEME_RESOLVER_BEAN_NAME + "': using default", ex);
 		}
 	}
