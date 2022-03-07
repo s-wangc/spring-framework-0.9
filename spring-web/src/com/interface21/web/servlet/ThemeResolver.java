@@ -4,18 +4,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Interface for web-based theme resolution strategies that allows for
- * both theme resolution via the request and theme modification via
- * request and response.
+ * 基于web的主题解析策略的接口, 允许通过请求进行主题解析, 并通过request
+ * 和response进行主题修改.
  *
- * <p>This interface allows for implementations based on session,
- * cookies, etc. The default implementation is FixedThemeResolver,
- * simply using a configured default theme.
+ * <p>此接口允许基于session、cookie等实现. 默认是现实FixedThemeresolver,
+ * 只需要使用配置的默认主题.
  *
- * <p>Note that this resolver is only responsible for determining the
- * current theme name. The Theme instance for the resolved theme name
- * gets looked up by DispatcherServlet via the respective ThemeSource,
- * i.e. the current WebApplicationContext.
+ * <p>注意, 这个解析器只负责确定当前主题名. DispatcherServlet通过相应的
+ * 主题源(即当前的WebApplicationContext)查找已解析主题名的主题实例.
  *
  * @author Jean-Pierre Pawlak
  * @author Juergen Hoeller
@@ -27,20 +23,20 @@ import javax.servlet.http.HttpServletResponse;
 public interface ThemeResolver {
 
 	/**
-	 * Resolve the current theme name via the given request.
-	 * Should return a default theme as fallback in any case.
+	 * 通过给定的请求解析当前主题名称.
+	 * 在任何情况下都应该返回默认主题作为回退.
 	 *
-	 * @param request request to be used for resolution
-	 * @return the current theme name
+	 * @param request 用于解析的请求
+	 * @return 当前的主题名称
 	 */
 	String resolveThemeName(HttpServletRequest request);
 
 	/**
-	 * Set the current theme name to the given one.
+	 * 将当前的themeName设置为给定的名称.
 	 *
-	 * @param request   request to be used for theme name modification
-	 * @param response  response to be used for theme name modification
-	 * @param themeName the new theme name
+	 * @param request   用于修改主题名称的请求
+	 * @param response  用于修改主题名称的响应
+	 * @param themeName 新的主题名称
 	 */
 	void setThemeName(HttpServletRequest request, HttpServletResponse response, String themeName);
 
