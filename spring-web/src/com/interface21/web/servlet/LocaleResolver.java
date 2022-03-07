@@ -6,13 +6,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Interface for web-based locale resolution strategies that allows for
- * both locale resolution via the request and locale modification via
- * request and response.
+ * 基于Web的locale设置解析策略的接口, 允许通过request进行locale设置解析,
+ * 并通过request和response修改locale设置.
  *
- * <p>This interface allows for implementations based on request, session,
- * cookies, etc. The default implementation is AcceptHeaderLocaleResolver,
- * simply using the request's locale provided by the respective HTTP header.
+ * <p>此接口允许基于request, sesssion, cookie等实现. 默认实现是
+ * AcceptHeaderLocaleResolver, 只需使用相应的HTTP请求头提供的locale设置.
  *
  * @author Juergen Hoeller
  * @see com.interface21.web.servlet.i18n.AcceptHeaderLocaleResolver
@@ -21,20 +19,20 @@ import javax.servlet.http.HttpServletResponse;
 public interface LocaleResolver {
 
 	/**
-	 * Resolve the current locale via the given request.
-	 * Should return a default locale as fallback in any case.
+	 * 通过给定request解析当前locale设置.
+	 * 在任何情况下都应该返回默认locale作为回退.
 	 *
-	 * @param request request to be used for resolution
-	 * @return the current locale
+	 * @param request 用于解析的请求
+	 * @return 当前locale
 	 */
 	Locale resolveLocale(HttpServletRequest request);
 
 	/**
-	 * Set the current locale to the given one.
+	 * 将当前localse设置为给定的locale设置.
 	 *
-	 * @param request  request to be used for locale modification
-	 * @param response response to be used for locale modification
-	 * @param locale   the new locale
+	 * @param request  用于修改locale的request
+	 * @param response 用于设置locale的response
+	 * @param locale   新的locale
 	 */
 	void setLocale(HttpServletRequest request, HttpServletResponse response, Locale locale);
 
