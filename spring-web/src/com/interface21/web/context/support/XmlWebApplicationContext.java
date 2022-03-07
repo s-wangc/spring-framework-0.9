@@ -129,7 +129,7 @@ public class XmlWebApplicationContext extends AbstractXmlUiApplicationContext im
 		refresh();
 
 		if (this.namespace == null) {
-			// We're the root context
+			// 我们是root上下文
 			WebApplicationContextUtils.publishConfigObjects(this);
 			// Expose as a ServletContext object
 			WebApplicationContextUtils.publishWebApplicationContext(this);
@@ -175,9 +175,10 @@ public class XmlWebApplicationContext extends AbstractXmlUiApplicationContext im
 
 
 	/**
-	 * Open and return the input stream for the bean factory for this namespace.
-	 * If namespace is null, return the input stream for the default bean factory.
-	 * @exception IOException if the required XML document isn't found
+	 * 打开并返回此命名空间的bean工厂的输入流.
+	 * 如果namespace为null, 则返回默认bean工厂的输入流.
+	 *
+	 * @throws IOException 如果找不到所需的XML文档
 	 */
 	protected InputStream getInputStreamForBeanFactory() throws IOException {
 		InputStream in = getResourceAsStream(this.configLocation);
@@ -188,8 +189,7 @@ public class XmlWebApplicationContext extends AbstractXmlUiApplicationContext im
 	}
 
 	/**
-	 * This implementation supports file paths beneath the root
-	 * of the web application.
+	 * 此实现支持Web应用程序根目录下的文件路径.
 	 */
 	protected InputStream getResourceByPath(String path) throws IOException {
 		if (path.charAt(0) != '/') {
@@ -199,8 +199,8 @@ public class XmlWebApplicationContext extends AbstractXmlUiApplicationContext im
 	}
 
 	/**
-	 * This implementation returns the real path of the root directory of the
-	 * web application that this WebApplicationContext is associated with.
+	 * 此实现返回与此WebApplicationContext关联的Web应用程序的根目录的实际路径.
+	 *
 	 * @see com.interface21.context.ApplicationContext#getResourceBasePath
 	 * @see javax.servlet.ServletContext#getRealPath
 	 */
@@ -209,7 +209,7 @@ public class XmlWebApplicationContext extends AbstractXmlUiApplicationContext im
 	}
 
 	/**
-	 * @return diagnostic information
+	 * @return 诊断信息
 	 */
 	public String toString() {
 		StringBuffer sb = new StringBuffer(super.toString() + "; ");

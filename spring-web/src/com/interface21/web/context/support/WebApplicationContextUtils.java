@@ -97,18 +97,18 @@ public abstract class WebApplicationContextUtils {
 	}
 
 	/**
-	 * Initialize all config objects if necessary, and publish them as
-	 * ServletContext attributes.
+	 * 如有必要, 初始化所有配置对象, 并将它们作为ServletContext属性发布.
 	 *
-	 * @param wac WebApplicationContext whose config objects should be published
+	 * @param wac 应发布其config对象的WebApplicationContext
 	 */
 	public static void publishConfigObjects(WebApplicationContext wac) throws ApplicationContextException {
 		logger.info("Configuring config objects");
 		String[] beanNames = wac.getBeanDefinitionNames();
 		for (int i = 0; i < beanNames.length; i++) {
 			String name = beanNames[i];
+			// 如果bean名称以"config."打头
 			if (name.startsWith(CONFIG_OBJECT_PREFIX)) {
-				// Strip prefix
+				// 带前缀
 				String strippedName = name.substring(CONFIG_OBJECT_PREFIX.length());
 				try {
 					Object configObject = wac.getBean(name);
