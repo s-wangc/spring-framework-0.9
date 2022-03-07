@@ -5,10 +5,10 @@ import javax.servlet.http.HttpServletResponse;
 
 
 /**
- * Implementation of ThemeResolver that simply uses a fixed theme.
- * The fixed name can be defined via the defaultTheme property.
+ * 仅使用固定主题的ThemeResolver的实现.
+ * 可以通过defaultTheme属性定义固定名称.
  *
- * <p>Note: Does not support setThemeName, as the theme is fixed.
+ * <p>主题: 不支持setThemeName, 因为主题已固定.
  *
  * @author Jean-Pierre Pawlak
  * @author Juergen Hoeller

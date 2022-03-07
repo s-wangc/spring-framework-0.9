@@ -7,12 +7,10 @@ import javax.servlet.http.HttpServletResponse;
 import com.interface21.web.util.WebUtils;
 
 /**
- * Implementation of ThemeResolver that uses a cookie sent back to the user
- * in case of a custom setting, with a fallback to the fixed locale.
- * This is especially useful for stateless applications without user sessions.
+ * 在自定义设置的情况下, 使用发送回用户的cookie的ThemeResolver实现, 并回退到固定的locale.
+ * 这对于没有使用session的无状态应用尤其有用.
  *
- * <p>Custom controllers can thus override the user's theme by calling setTheme,
- * e.g. responding to a certain theme change request.
+ * <p>因此, 自定义controller可以通过调用setTheme来覆盖用户的主题, 例如响应某个主题更改请求.
  *
  * @author Jean-Pierre Pawlak
  * @author Juergen Hoeller
@@ -31,7 +29,7 @@ public class CookieThemeResolver extends AbstractThemeResolver {
 	private int cookieMaxAge = DEFAULT_COOKIE_MAX_AGE;
 
 	/**
-	 * Use the given name for theme cookies.
+	 * 使用给定的名称作为主题cookie name.
 	 */
 	public void setCookieName(String cookieName) {
 		this.cookieName = cookieName;
@@ -42,8 +40,8 @@ public class CookieThemeResolver extends AbstractThemeResolver {
 	}
 
 	/**
-	 * Use the given maximum age, specified in seconds, for locale cookies.
-	 * Useful special value: -1 ... not persistent, deleted when client shuts down
+	 * 使用给定的最大有效期(以秒为单位)指定local设置的cookie.
+	 * 有用的特殊值: -1...不持久, 在客户端关闭时删除
 	 */
 	public void setCookieMaxAge(int cookieMaxAge) {
 		this.cookieMaxAge = cookieMaxAge;
@@ -54,12 +52,12 @@ public class CookieThemeResolver extends AbstractThemeResolver {
 	}
 
 	public String resolveThemeName(HttpServletRequest request) {
-		// check theme for preparsed resp. preset theme
+		// 检查主题以获得已准备好的响应. 预设主题
 		String theme = (String) request.getAttribute(THEME_REQUEST_ATTRIBUTE_NAME);
 		if (theme != null)
 			return theme;
 
-		// retrieve cookie value
+		// 检索cookie值
 		Cookie cookie = WebUtils.getCookie(request, getCookieName());
 
 		if (cookie != null) {
@@ -73,12 +71,12 @@ public class CookieThemeResolver extends AbstractThemeResolver {
 	public void setThemeName(HttpServletRequest request, HttpServletResponse response, String themeName) {
 		Cookie cookie = null;
 		if (themeName != null) {
-			// set request attribute and add cookie
+			// 设置request属性并添加cookie
 			request.setAttribute(THEME_REQUEST_ATTRIBUTE_NAME, themeName);
 			cookie = new Cookie(getCookieName(), themeName);
 			cookie.setMaxAge(getCookieMaxAge());
 		} else {
-			// set request attribute to fallback theme and remove cookie
+			// 将request属性设置为fallback主题并删除cookie
 			request.setAttribute(THEME_REQUEST_ATTRIBUTE_NAME, getDefaultThemeName());
 			cookie = new Cookie(getCookieName(), "");
 			cookie.setMaxAge(0);

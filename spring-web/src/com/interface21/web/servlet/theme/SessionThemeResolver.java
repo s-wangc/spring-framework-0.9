@@ -6,12 +6,10 @@ import javax.servlet.http.HttpServletResponse;
 import com.interface21.web.util.WebUtils;
 
 /**
- * Implementation of ThemeResolver that uses a theme attribute in the user's
- * session in case of a custom setting, with a fallback to the fixed default theme.
- * This is most appropriate if the application needs user sessions anyway.
+ * ThemeResolver的实现, 在自定义设置的情况下, 在用户session中使用theme属性, 并回退
+ * 到固定的默认主题. 如果应用程序仍然需要用户session, 这是最合适的.
  *
- * <p>Custom controllers can override the user's theme by calling setTheme,
- * e.g. responding to a theme change request.
+ * <p>自定义控制器可以通过调用setTheme来覆盖用户的主题, 例如响应主题更改请求.
  *
  * @author Jean-Pierre Pawlak
  * @author Juergen Hoeller
