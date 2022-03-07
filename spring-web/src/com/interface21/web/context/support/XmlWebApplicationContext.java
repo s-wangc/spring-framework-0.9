@@ -114,15 +114,18 @@ public class XmlWebApplicationContext extends AbstractXmlUiApplicationContext im
 	}
 
 	/**
-	 * Initialize and attach to the given context.
-	 * @param servletContext ServletContext to use to load configuration,
-	 * and in which this web application context should be set as an attribute.
+	 * 初始化并附加到给定的context.
+	 *
+	 * @param servletContext 要用于加载配置ideServletContext,
+	 *                       其中应该将此Web应用程序context设置为属性.
 	 */
 	public void setServletContext(ServletContext servletContext) throws ApplicationContextException {
 		this.servletContext = servletContext;
 
+		// 设置配置文件地址
 		this.configLocation = getConfigLocationForNamespace();
 		logger.info("Using config location '" + this.configLocation + "'");
+		// 调用ApplicationContext的钩子函数应用配置
 		refresh();
 
 		if (this.namespace == null) {
@@ -138,22 +141,26 @@ public class XmlWebApplicationContext extends AbstractXmlUiApplicationContext im
 	}
 
 	/**
-	 * Initialize the config location for the current namespace.
-	 * This can be overridden in subclasses for custom config lookup.
-	 * <p>Default implementation returns the namespace with the default prefix
-	 * "WEB-INF/" and suffix ".xml", if a namespace is set. For the root context,
-	 * the "configLocation" servlet context parameter is used, falling back to
-	 * "WEB-INF/applicationContext.xml" if no parameter is found.
-	 * @return the URL or path of the configuration to use
+	 * 初始化当前命名空间的配置位置. 这可以在自定义配置查到的子类中重写.
+	 * <p>如果设置了命名空间, 则默认实现将返回具有默认前缀"WEB-INF/"和后缀".xml"的命名空间.
+	 * 对于根context, 使用"configLocation" servlet context参数, 如果未找到参数, 则返回
+	 * WEB-INF/applicationContext.xml".
+	 *
+	 * @return 要使用的配置的URL或路径
 	 */
 	protected String getConfigLocationForNamespace() {
+		// 如果配置了命名空间, 那么配置文件地址为: 前缀(默认为/WEB-INF/)+命名空间+后缀(默认为.xml)
 		if (getNamespace() != null) {
+			// 获取contextConfigLocationPrefix这个初始化属性
 			String configLocationPrefix = this.servletContext.getInitParameter(CONFIG_LOCATION_PREFIX_PARAM);
 			String prefix = (configLocationPrefix != null) ? configLocationPrefix : DEFAULT_CONFIG_LOCATION_PREFIX;
+			// 获取contextConfigLocationSuffix这个初始化属性
 			String configLocationSuffix = this.servletContext.getInitParameter(CONFIG_LOCATION_SUFFIX_PARAM);
 			String suffix = (configLocationSuffix != null) ? configLocationSuffix : DEFAULT_CONFIG_LOCATION_SUFFIX;
 			return prefix + getNamespace() + suffix;
-		} else {
+		}
+		// 如果没有配置命名空间, 那么配置文件地址为"contextConfigLocation"属性的值, 默认为/WEB-INF/applicationContext.xml
+		else {
 			String configLocation = this.servletContext.getInitParameter(CONFIG_LOCATION_PARAM);
 			return (configLocation != null) ? configLocation : DEFAULT_CONFIG_LOCATION;
 		}
