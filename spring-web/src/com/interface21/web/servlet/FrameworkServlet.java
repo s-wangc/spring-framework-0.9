@@ -167,8 +167,9 @@ public abstract class FrameworkServlet extends HttpServletBean {
 		// 创建好ApplicationContext后将ServletContext设置进去
 		waca.setServletContext(sc);
 		logger.info("Servlet with name '" + getServletName() + "' loaded child context " + waca);
+		// 如果需要将ApplicationContext发布出去
 		if (this.publishContext) {
-			// Publish the context as a servlet context attribute
+            // 将上下文发布为servlet上下文属性
 			String attName = getServletContextAttributeName();
 			sc.setAttribute(attName, waca);
 			logger.info("Bound servlet's context in global ServletContext with name '" + attName + "'");
