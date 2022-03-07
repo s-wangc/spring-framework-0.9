@@ -75,8 +75,7 @@ import com.interface21.web.util.WebUtils;
 public class DispatcherServlet extends FrameworkServlet {
 
 	/**
-	 * Well-known name for the LocaleResolver object in the bean factory for
-	 * this namespace.
+	 * 此命名空间的bean factory中LocaleResolver对象的已知名称.
 	 */
 	public static final String LOCALE_RESOLVER_BEAN_NAME = "localeResolver";
 
@@ -152,20 +151,19 @@ public class DispatcherServlet extends FrameworkServlet {
 	}
 
 	/**
-	 * Initialize the LocaleResolver used by this class.
-	 * If no bean is defined with the given name in the BeanFactory
-	 * for this namespace, we default to a AcceptHeaderLocaleResolver.
+	 * 初始化此类使用的LocaleResolver.
+	 * 如果此命名空间的BeanFactory中没有使用给定名称定义bean, 则默认为AcceptHeaderLocaleResolver.
 	 */
 	private void initLocaleResolver() throws ServletException {
 		try {
 			this.localeResolver = (LocaleResolver) getWebApplicationContext().getBean(LOCALE_RESOLVER_BEAN_NAME);
 			logger.info("Loaded locale resolver [" + this.localeResolver + "]");
 		} catch (NoSuchBeanDefinitionException ex) {
-			// We need to use the default
+			// 我们需要使用默认值
 			this.localeResolver = new AcceptHeaderLocaleResolver();
 			logger.info("Unable to load locale resolver with name '" + LOCALE_RESOLVER_BEAN_NAME + "': using default [" + this.localeResolver + "]");
 		} catch (BeansException ex) {
-			// We tried and failed to load the LocaleResolver specified by a bean
+			// 我们尝试加载bean指定的LocaleResolver, 但失败
 			throw new ServletException("Fatal error loading locale resolver with name '" + LOCALE_RESOLVER_BEAN_NAME + "': using default", ex);
 		}
 	}
